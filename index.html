@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Секретарь — Умный антивирус</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #121212;
+            --surface: #1e1e1e;
+            --surface-light: #2b2b2b;
+            --text: #e0e0e0;
+            --text-muted: #888888;
+            --accent: #4da8da;
+            --accent-glow: rgba(77, 168, 218, 0.4);
+            --success: #2e7d32;
+            --success-glow: rgba(46, 125, 50, 0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Шапка --- */
+        header {
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .logo { font-size: 24px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 10px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 20px; font-size: 15px; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* --- Главный экран --- */
+        .hero {
+            padding: 180px 20px 100px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .hero h1 { font-size: 56px; font-weight: 700; margin-bottom: 20px; line-height: 1.2; }
+        .hero h1 span { color: var(--accent); }
+        .hero p { font-size: 20px; color: var(--text-muted); max-width: 600px; margin-bottom: 40px; }
+        
+        .btn-download {
+            background-color: var(--success);
+            color: white;
+            padding: 18px 45px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px var(--success-glow);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-download:hover { transform: translateY(-3px); box-shadow: 0 8px 30px var(--success-glow); background-color: #388e3c; }
+        
+        /* Фейковое окно программы */
+        .mockup {
+            margin-top: 60px;
+            width: 100%;
+            max-width: 900px;
+            background-color: var(--surface);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .mockup-header {
+            background-color: #1a1a1a;
+            padding: 10px 15px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot.red { background-color: #ff5f56; }
+        .dot.yellow { background-color: #ffbd2e; }
+        .dot.green { background-color: #27c93f; }
+        .mockup-body {
+            padding: 40px;
+            text-align: left;
+            background: linear-gradient(135deg, #1e1e1e 0%, #151515 100%);
+        }
+        .mockup-title { font-size: 24px; color: var(--accent); font-weight: bold; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .mockup-status { background-color: var(--success); color: white; display: inline-block; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-bottom: 20px; }
+        .mockup-console { background-color: #0a0a0a; padding: 20px; border-radius: 8px; font-family: monospace; color: #a5d6a7; border: 1px solid #333; }
+
+        /* --- Блок фишек --- */
+        .features { padding: 100px 20px; background-color: #161616; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 36px; margin-bottom: 60px; font-weight: 700; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .card {
+            background-color: var(--surface);
+            padding: 40px 30px;
+            border-radius: 16px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .card:hover { transform: translateY(-10px); border-color: var(--accent); }
+        .icon { font-size: 40px; margin-bottom: 20px; }
+        .card h3 { font-size: 22px; margin-bottom: 15px; color: white; }
+        .card p { color: var(--text-muted); font-size: 15px; }
+
+        /* --- Подвал --- */
+        footer { padding: 40px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); }
+
+        /* Адаптивность для телефонов */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 36px; }
+            header { padding: 20px; }
+            .nav-links { display: none; }
+            .mockup-body { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">🛡️ СЕКРЕТАРЬ</div>
+        <div class="nav-links">
+            <a href="#features">Возможности</a>
+            <a href="#security">Защита</a>
+            <a href="#download">Скачать</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Твой ПК под защитой <br><span>умного антивируса</span></h1>
+        <p>Легкий, адаптивный и защищенный от взлома. Секретарь позаботится о твоем железе, пока ты играешь или работаешь.</p>
+        
+        <a href="#" class="btn-download" id="download">⬇ Скачать для Windows (10/11)</a>
+        <span style="margin-top: 15px; font-size: 13px; color: #666;">Версия 7.4.0 | Бесплатно</span>
+
+        <!-- Фейковое окно программы -->
+        <div class="mockup">
+            <div class="mockup-header">
+                <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+            </div>
+            <div class="mockup-body">
+                <div class="mockup-title">🛡️ СЕКРЕТАРЬ</div>
+                <div class="mockup-status">✅ Ядро защищено (HMAC + Anti-Debug)</div>
+                <div class="mockup-console">
+                    > Секретарь: Владелец распознан. Пароль в памяти.<br>
+                    > Секретарь: Режим работы: Эко-режим.<br>
+                    > Секретарь: Авто-обновление активно. Ожидание новых версий.<br>
+                    > Секретарь: Проверка системы завершена. Угроз нет.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Почему пользователи выбирают нас?</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="icon">🪶</div>
+                    <h3>Невидимая работа</h3>
+                    <p>Приоритет IDLE и умный мониторинг. Секретарь потребляет минимум ОЗУ и не мешает вашим играм.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">🔒</div>
+                    <h3>Защита от подмены</h3>
+                    <p>Код привязан к вашему аккаунту Windows (SID) и подписан цифровым сертификатом. Вирусы не смогут его изменить.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">🔄</div>
+                    <h3>Умные обновления</h3>
+                    <p>Секретарь сам предлагает установить новые улучшения безопасности, не требуя сложных действий.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">🧹</div>
+                    <h3>Безопасная очистка</h3>
+                    <p>Удаляет системный мусор старше 24 часов, не трогая важные файлы. Освобождает место на диске.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">🌐</div>
+                    <h3>Кибер-Щит</h3>
+                    <p>Проверяет открытые порты (RDP, SMB), ищет попытки подбора пароля и защищает файл hosts.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">🛡️</div>
+                    <h3>Сторожевой процесс</h3>
+                    <p>Даже если вирус попытается закрыть программу, Сторож мгновенно перезапустит защиту.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2024 Секретарь Defender. Сайт защищен от XSS и DDoS атак.</p>
+    </footer>
+
+</body>
+</html>
