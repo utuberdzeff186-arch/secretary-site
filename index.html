@@ -7,135 +7,52 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #080a0f;
-            --surface: rgba(30, 30, 35, 0.6);
-            --surface-hover: rgba(40, 40, 48, 0.8);
-            --text: #ffffff;
-            --text-muted: #a0a0a0;
-            --accent: #4da8da;
-            --accent-glow: rgba(77, 168, 218, 0.2);
-            --success: #2e7d32;
-            --success-glow: rgba(46, 125, 50, 0.4);
-            --border: rgba(255, 255, 255, 0.08);
+            --bg: #080a0f; --surface: rgba(30, 30, 35, 0.6); --surface-hover: rgba(40, 40, 48, 0.8);
+            --text: #ffffff; --text-muted: #a0a0a0; --accent: #4da8da; --success: #2e7d32;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; 
-            background-image: radial-gradient(circle at 15% 50%, rgba(77, 168, 218, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(46, 125, 50, 0.05), transparent 25%);
-            background-attachment: fixed;
-        }
-
-        header { padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 10, 15, 0.7); backdrop-filter: blur(16px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; background-image: radial-gradient(circle at 15% 50%, rgba(77, 168, 218, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(46, 125, 50, 0.05), transparent 25%); background-attachment: fixed; }
+        
+        header { padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 10, 15, 0.7); backdrop-filter: blur(16px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .logo { font-size: 24px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 10px; }
         .logo span { color: var(--accent); }
         .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 30px; font-size: 15px; font-weight: 600; transition: 0.3s; }
-        .nav-links a:hover { color: var(--text); text-shadow: 0 0 10px var(--accent-glow); }
+        .nav-links a:hover { color: var(--text); text-shadow: 0 0 10px rgba(77, 168, 218, 0.2); }
 
         .hero { padding: 180px 20px 60px; text-align: center; position: relative; }
         .hero h1 { font-size: 64px; font-weight: 800; margin-bottom: 20px; line-height: 1.1; background: linear-gradient(180deg, #fff 0%, #a0a0a0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero h1 span { background: linear-gradient(90deg, #4da8da, #2e7d32); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero p { font-size: 20px; color: var(--text-muted); max-width: 650px; margin: 0 auto 40px; }
         
-        .btn-download { background: linear-gradient(135deg, #2e7d32, #1b5e20); color: white; padding: 20px 50px; font-size: 18px; font-weight: 800; border-radius: 16px; text-decoration: none; display: inline-block; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 25px var(--success-glow); border: 1px solid rgba(255,255,255,0.1); }
-        .btn-download:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 35px var(--success-glow); }
+        .btn-download { background: linear-gradient(135deg, #2e7d32, #1b5e20); color: white; padding: 20px 50px; font-size: 18px; font-weight: 800; border-radius: 16px; text-decoration: none; display: inline-block; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 25px rgba(46, 125, 50, 0.4); border: 1px solid rgba(255,255,255,0.1); }
+        .btn-download:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 35px rgba(46, 125, 50, 0.4); }
         .sys-req { margin-top: 15px; font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; gap: 15px; }
 
-        .mockup-container { max-width: 900px; margin: 60px auto 0; padding: 0 20px; perspective: 1000px; }
-        .mockup-window { background: #1e1e1e; border-radius: 12px; border: 1px solid #333; box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(77, 168, 218, 0.1); overflow: hidden; transform: rotateX(5deg); transition: transform 0.5s ease; }
-        .mockup-window:hover { transform: rotateX(0deg); }
-        .mockup-header { background: #121212; padding: 12px 20px; display: flex; gap: 8px; border-bottom: 1px solid #333; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; } .dot.r { background: #ff5f56; } .dot.y { background: #ffbd2e; } .dot.g { background: #27c93f; }
-        .mockup-body { padding: 30px; display: flex; gap: 20px; background: #151515; }
-        .mockup-sidebar { width: 200px; display: flex; flex-direction: column; gap: 10px; }
-        .mockup-tab { padding: 12px; background: #252526; border-radius: 8px; color: #888; font-size: 14px; font-weight: 600; border-left: 3px solid transparent; }
-        .mockup-tab.active { background: #2b2b2b; color: #fff; border-left-color: var(--accent); }
-        .mockup-content { flex: 1; background: #0f0f0f; border-radius: 8px; padding: 20px; border: 1px solid #222; font-family: monospace; font-size: 14px; color: #a5d6a7; }
-        
-        .trust-section { max-width: 1000px; margin: 80px auto; padding: 0 20px; text-align: center; }
-        .trust-badges { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 30px; }
-        .badge { background: var(--surface); border: 1px solid var(--border); padding: 15px 30px; border-radius: 50px; display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; transition: 0.3s; }
-        .badge:hover { border-color: var(--accent); background: var(--surface-hover); }
-        .badge span { color: var(--success); font-size: 18px; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        .section-title { text-align: center; font-size: 36px; margin-bottom: 40px; font-weight: 800; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: var(--surface); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 30px; text-align: left; transition: all 0.3s ease; }
+        .card:hover { background: var(--surface-hover); transform: translateY(-5px); border-color: rgba(77, 168, 218, 0.4); }
+        .card h3 { font-size: 18px; margin-bottom: 10px; color: #fff; }
+        .card p { font-size: 14px; color: var(--text-muted); }
 
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1000px; margin: 60px auto; padding: 0 20px; }
-        .feature-card { background: var(--surface); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: 20px; padding: 30px; text-align: left; transition: all 0.3s ease; }
-        .feature-card:hover { background: var(--surface-hover); transform: translateY(-5px); border-color: rgba(77, 168, 218, 0.4); }
-        .feature-icon { font-size: 32px; margin-bottom: 15px; }
-        .feature-card h3 { font-size: 18px; margin-bottom: 10px; color: #fff; }
-        .feature-card p { font-size: 14px; color: var(--text-muted); }
+        .guide-box { background: var(--surface); border-radius: 24px; padding: 40px; border: 1px solid rgba(255,255,255,0.08); margin-top: 40px; text-align: left; }
+        .guide-box h3 { color: var(--accent); font-size: 22px; margin-bottom: 15px; }
+        .warning-box { background: rgba(230, 126, 34, 0.1); border-left: 4px solid #e67e22; padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .warning-box h4 { color: #e67e22; margin-bottom: 10px; }
+        .warning-box p { color: #ccc; font-size: 14px; }
 
-        .changelog-section { max-width: 800px; margin: 80px auto; padding: 0 20px; }
-        .changelog-title { font-size: 32px; font-weight: 800; margin-bottom: 30px; text-align: center; }
-        .version-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 25px; margin-bottom: 20px; border-left: 4px solid var(--accent); }
-        .version-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .version-num { font-weight: 800; color: var(--accent); font-size: 18px; }
-        .version-date { color: var(--text-muted); font-size: 14px; }
-        .version-list { list-style: none; padding-left: 0; color: #ccc; font-size: 14px; }
-        .version-list li { margin-bottom: 5px; }
-        .version-list li::before { content: "•"; color: var(--success); margin-right: 8px; }
-
-        .guide-wrapper { max-width: 900px; margin: 80px auto; padding: 0 20px; }
-        .guide-container { background: var(--surface); backdrop-filter: blur(12px); border-radius: 24px; padding: 50px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .guide-title { font-size: 32px; font-weight: 800; color: #fff; margin-bottom: 40px; text-align: center; }
-        .step-block { display: flex; gap: 25px; margin-bottom: 30px; align-items: flex-start; }
-        .step-icon { font-size: 24px; background: rgba(255,255,255,0.05); width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; border-radius: 16px; border: 1px solid var(--border); flex-shrink: 0; }
-        .step-content h3 { font-size: 18px; color: var(--accent); margin-bottom: 8px; }
-        .step-content p { font-size: 15px; color: var(--text-muted); margin-bottom: 10px; }
-        .highlight { color: #fff; font-weight: 600; background: rgba(77, 168, 218, 0.2); padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(77, 168, 218, 0.3); }
-        .warning-text { color: #e67e22; font-weight: 600; font-size: 14px; }
-
-        .faq-section { max-width: 800px; margin: 80px auto; padding: 0 20px; }
-        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 15px; padding: 20px; }
-        .faq-question { font-weight: 700; font-size: 16px; color: #fff; margin-bottom: 10px; }
-        .faq-answer { font-size: 14px; color: var(--text-muted); }
-
-        /* --- ЧАТ --- */
-        .chat-section { padding: 100px 20px; background: #0a0d13; }
-        .chat-container { background: var(--surface); border-radius: 24px; border: 1px solid var(--border); overflow: hidden; max-width: 750px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(12px); }
-        .chat-header { background: rgba(255,255,255,0.02); padding: 20px; font-weight: 600; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 15px; color: #fff; font-size: 16px; }
-        .chat-box { height: 400px; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
-        .message { max-width: 85%; padding: 14px 20px; border-radius: 16px; font-size: 15px; line-height: 1.5; animation: fadeIn 0.3s ease; }
-        .msg-bot { background: rgba(255,255,255,0.05); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid var(--border); }
-        .msg-user { background: var(--accent); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; box-shadow: 0 4px 15px var(--accent-glow); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* КНОПКИ БЫСТРЫХ ОТВЕТОВ */
-        .quick-replies { display: flex; gap: 10px; padding: 0 20px 15px 20px; flex-wrap: wrap; background: rgba(0,0,0,0.2); }
-        .quick-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-muted); padding: 8px 15px; border-radius: 20px; font-size: 13px; cursor: pointer; transition: 0.3s; }
-        .quick-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
-
-        .chat-input-area { display: flex; padding: 20px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--border); }
-        .chat-input-area input { flex: 1; padding: 15px 20px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.3); color: white; outline: none; font-family: 'Inter', sans-serif; font-size: 15px; transition: 0.3s; }
-        .chat-input-area input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
-        .chat-input-area button { background: var(--accent); color: white; border: none; padding: 15px 30px; margin-left: 15px; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.3s; }
-        .chat-input-area button:hover { background: #3a8bb8; box-shadow: 0 0 20px var(--accent-glow); }
-
-        footer { padding: 50px 20px; background: #05070a; text-align: center; border-top: 1px solid var(--border); }
-        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-        .footer-logo { font-size: 24px; font-weight: 800; color: var(--text); }
+        footer { padding: 50px 20px; background: #05070a; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 80px; }
         .footer-text { color: var(--text-muted); font-size: 14px; }
-        .footer-signature { color: #555; font-size: 12px; margin-top: 15px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 40px; }
-            .guide-container { padding: 30px 20px; }
-            .step-block { flex-direction: column; align-items: center; text-align: center; }
-            header { padding: 15px 20px; }
-            .nav-links { display: none; }
-            .mockup-sidebar { display: none; }
-        }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
     <header>
         <div class="logo">🛡️ СЕКРЕТАРЬ<span>.</span></div>
         <div class="nav-links">
             <a href="#features">Возможности</a>
             <a href="#guide">Установка</a>
-            <a href="#faq">FAQ</a>
-            <a href="#support">Поддержка</a>
         </div>
     </header>
 
@@ -144,275 +61,46 @@
         <p>Легкий, адаптивный и защищенный от взлома. Секретарь позаботится о твоем железе, пока ты играешь или работаешь.</p>
         <a href="SecretarySetup.exe" class="btn-download">⬇ Скачать для Windows</a>
         <div class="sys-req">
-            <span>Windows 10 / 11 (64-bit)</span> | <span>~12 МБ</span> | <span>Бесплатно</span>
-        </div>
-
-        <div class="mockup-container">
-            <div class="mockup-window">
-                <div class="mockup-header">
-                    <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
-                </div>
-                <div class="mockup-body">
-                    <div class="mockup-sidebar">
-                        <div class="mockup-tab active">🛡️ ГЛАВНАЯ</div>
-                        <div class="mockup-tab">🗄️ КАРАНТИН</div>
-                        <div class="mockup-tab">🌐 ВЕБ-ЩИТ</div>
-                        <div class="mockup-tab">📊 ПРОЦЕССЫ</div>
-                    </div>
-                    <div class="mockup-content">
-                        > Секретарь: Владелец распознан. Пароль в памяти.<br>
-                        > Секретарь: Режим работы: Эко-режим.<br>
-                        > Секретарь: Авто-обновление активно.<br>
-                        > Секретарь: Проверка системы завершена. Угроз нет.<br>
-                        <span style="color: #fff; background: #333; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 10px;">✅ Защита активна</span>
-                    </div>
-                </div>
-            </div>
+            <span>Windows 10 / 11 (64-bit)</span> | <span>~25 МБ</span> | <span>Бесплатно</span>
         </div>
     </section>
 
-    <section class="trust-section">
-        <div class="trust-badges">
-            <div class="badge"><span>✔</span> Безопасно на VirusTotal</div>
-            <div class="badge"><span>✔</span> Открытый исходный код</div>
-            <div class="badge"><span>✔</span> Не собирает данные</div>
+    <div class="container">
+        <!-- БЛОК ДОВЕРИЯ -->
+        <div class="grid" style="margin-bottom: 60px;">
+            <div class="card">
+                <h3>✅ Полностью безопасно</h3>
+                <p>Программа не собирает ваши данные и не отправляет их на сервера. Весь анализ происходит локально на вашем ПК.</p>
+            </div>
+            <div class="card">
+                <h3>🚀 Защита от вирусов</h3>
+                <p>Использует базы Windows Defender, но добавляет собственную защиту от шифровальщиков и проверку автозагрузки.</p>
+            </div>
+            <div class="card">
+                <h3>🔒 Самозащита (Anti-Kill)</h3>
+                <p>Два процесса следят друг за другом. Если вирус попытается убить антивирус, сторожевой процесс мгновенно его перезапустит.</p>
+            </div>
         </div>
-    </section>
 
-    <section id="features" class="features-grid">
-        <div class="feature-card">
-            <div class="feature-icon">🪶</div>
-            <h3>Невидимая работа</h3>
-            <p>Приоритет IDLE и умный мониторинг. Секретарь потребляет минимум ОЗУ и не мешает играм.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">🔒</div>
-            <h3>Защита от подмены</h3>
-            <p>Код привязан к вашему SID (Windows) и подписан цифровым сертификатом. Вирусы не изменят ядро.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">🌐</div>
-            <h3>Кибер-Щит</h3>
-            <p>Проверка открытых портов (RDP, SMB), поиск попыток подбора пароля и защита файла hosts.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">💬</div>
-            <h3>Живой чат</h3>
-            <p>Встроенный ассистент ответит на вопросы и поможет разобраться с настройками программы.</p>
-        </div>
-    </section>
+        <!-- ИНСТРУКЦИЯ -->
+        <div class="guide-box" id="guide">
+            <h3>📖 Как установить Секретаря</h3>
+            <p>1. Нажмите зеленую кнопку скачивания выше. Скачается файл <b>SecretarySetup.exe</b>.</p>
+            <p>2. Запустите его двойным кликом.</p>
+            <p>3. Нажмите <b>«Установить»</b> в открывшемся темном окне.</p>
+            <p>4. Готово! На рабочем столе появится ярлык, а антивирус добавится в автозагрузку.</p>
 
-    <section class="changelog-section">
-        <div class="changelog-title">🔄 Что нового</div>
-        <div class="version-card">
-            <div class="version-header"><div class="version-num">v9.5 (Текущая)</div><div class="version-date">10.11.2026</div></div>
-            <ul class="version-list">
-                <li>Добавлен «Кибер-щит» (защита от сетевых атак)</li>
-                <li>Внедрен ИИ-ассистент для общения с пользователем</li>
-                <li>Оптимизация потребления ОЗУ (Эко-режим)</li>
-            </ul>
-        </div>
-        <div class="version-card" style="border-left-color: #555;">
-            <div class="version-header"><div class="version-num">v1.0 (Релиз)</div><div class="version-date">02.11.2026</div></div>
-            <ul class="version-list">
-                <li>Первый официальный релиз Secretary Defender</li>
-            </ul>
-        </div>
-    </section>
-
-    <section id="guide" class="guide-wrapper">
-        <div class="guide-container">
-            <div class="guide-title">📖 Инструкция по установке</div>
-            <div class="step-block">
-                <div class="step-icon">📥</div>
-                <div class="step-content">
-                    <h3>Шаг 1: Скачивание</h3>
-                    <p>Нажмите зеленую кнопку скачивания выше. Дождитесь загрузки файла <b>SecretarySetup.exe</b>.</p>
-                </div>
-            </div>
-            <div class="step-block">
-                <div class="step-icon">⚠️</div>
-                <div class="step-content">
-                    <h3>Шаг 2: Обход защиты Windows</h3>
-                    <p>Если Windows покажет <b>синее окно</b> («Windows защитила ваш компьютер»):</p>
-                    <p>1. Нажмите на текст <span class="highlight">«Подробнее» (More info)</span>.</p>
-                    <p>2. Внизу появится кнопка <span class="highlight">«Выполнить в любом случае»</span>.</p>
-                    <p class="warning-text">* Это нормально! Windows пока не знает о новой программе.</p>
-                </div>
-            </div>
-            <div class="step-block">
-                <div class="step-icon">🚀</div>
-                <div class="step-content">
-                    <h3>Шаг 3: Запуск и пароль</h3>
-                    <p>После установки запустите ярлык. При первом запуске придумайте <b>Мастер-пароль</b>. Запишите его!</p>
-                </div>
+            <div class="warning-box">
+                <h4>⚠️ Windows SmartScreen (Синее окно)</h4>
+                <p>Так как у нас нет платного сертификата Microsoft (стоит ~300$ в год), Windows может показать синее окно: <i>«Windows защитила ваш компьютер»</i>.</p>
+                <p>Это <b>нормально для новых программ</b>. Нажмите на текст <b>«Подробнее» (More info)</b> и затем на кнопку <b>«Выполнить в любом случае» (Run anyway)</b>.</p>
             </div>
         </div>
-    </section>
-
-    <section id="faq" class="faq-section">
-        <div class="changelog-title">❓ Частые вопросы</div>
-        <div class="faq-item">
-            <div class="faq-question">Это вирус?</div>
-            <div class="faq-answer">Нет. Наш код полностью открыт на GitHub. Windows может ругаться из-за отсутствия платной подписи Microsoft, но это стандартное поведение для новых программ.</div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-question">Вы собираете мои данные?</div>
-            <div class="faq-answer">Абсолютно нет. Секретарь работает локально на вашем ПК и не отправляет никакую информацию в интернет.</div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-question">Заменяет ли Секретарь Windows Defender?</div>
-            <div class="faq-answer">Нет, он дополняет его. Мы используем базы Defender для проверки файлов, но добавляем свои уникальные функции.</div>
-        </div>
-    </section>
-
-    <section id="support" class="chat-section">
-        <div style="text-align: center; margin-bottom: 40px;">
-            <h2 style="font-size: 36px; font-weight: 800;">💬 Техподдержка</h2>
-            <p style="color: var(--text-muted); margin-top: 10px;">Нажмите на кнопку ниже или напишите свой вопрос.</p>
-        </div>
-        
-        <div class="chat-container">
-            <div class="chat-header">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="#4da8da" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M9 11L11 13L15 9" stroke="#4da8da" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                Секретарь-Помощник
-            </div>
-            <div class="chat-box" id="chatBox">
-                <div class="message msg-bot">Приветствую! Я цифровой помощник Secretary Defender. Выберите тему ниже или напишите свой вопрос.</div>
-            </div>
-            
-            <!-- КНОПКИ БЫСТРЫХ ОТВЕТОВ -->
-            <div class="quick-replies">
-                <button class="quick-btn" onclick="quickAsk('Не запускается')">Не запускается</button>
-                <button class="quick-btn" onclick="quickAsk('Забыл пароль')">Забыл пароль</button>
-                <button class="quick-btn" onclick="quickAsk('Как проверить файл?')">Как проверить файл?</button>
-                <button class="quick-btn" onclick="quickAsk('Где карантин?')">Где карантин?</button>
-            </div>
-
-            <div class="chat-input-area">
-                <input type="text" id="chatInput" placeholder="Напишите вопрос..." onkeypress="handleKeyPress(event)">
-                <button onclick="sendMessage()">Отправить</button>
-            </div>
-        </div>
-    </section>
+    </div>
 
     <footer>
-        <div class="footer-content">
-            <div class="footer-logo">🛡️ Secretary Defender</div>
-            <div class="footer-text">Дата основания проекта: <b>02.11.2026</b></div>
-            <div class="footer-text">© 2026 Секретарь Defender. Все права защищены.</div>
-            <div class="footer-signature">Разработано с заботой о вашей безопасности</div>
-        </div>
+        <div class="footer-text">© 2026 Секретарь Defender Project. Все права защищены.</div>
     </footer>
 
-    <script>
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) e.preventDefault();
-        });
-
-        let lastMessageTime = 0;
-        const MESSAGE_COOLDOWN = 1000; 
-
-        function randomReply(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-
-        // ФУНКЦИЯ ДЛЯ КНОПОК БЫСТРОГО ОТВЕТА
-        function quickAsk(text) {
-            document.getElementById("chatInput").value = text;
-            sendMessage();
-        }
-
-        // --- БАЗА ЗНАНИЙ ТЕХПОДДЕРЖКИ ---
-        const knowledgeBase = [
-            {
-                keywords: ["не запускается", "закрывается", "вылетает", "ошибка при запуске"],
-                answer: "Если программа не запускается или сразу закрывается: 1) Убедитесь, что ваш антивирус (Defender) не удалил файл. Проверьте 'Журнал защиты'. 2) Попробуйте запустить ярлык от имени Администратора. 3) Скачайте установщик заново с нашего сайта."
-            },
-            {
-                keywords: ["забыл пароль", "сброс пароля", "не помню пароль", "мастер-пароль"],
-                answer: "Если вы забыли Мастер-пароль: 1) Закройте программу. 2) Откройте PowerShell и введите команду: Remove-Item -Path 'HKCU:\\Software\\SecretaryDefenderCore' -Recurse -Force. 3) Запустите Секретаря заново — он попросит придумать новый пароль."
-            },
-            {
-                keywords: ["как проверить", "проверить файл", "сканировать"],
-                answer: "Чтобы проверить конкретный файл: Откройте Секретаря, перейдите на вкладку 'Главная' и нажмите кнопку 'Проверить файл'. Выберите подозрительный файл, и программа просканирует его через Защитник Windows."
-            },
-            {
-                keywords: ["карантин", "где карантин", "удаленный файл", "восстановить"],
-                answer: "Все изолированные файлы находятся во вкладке 'Карантин' внутри программы. Там вы можете выбрать файл и нажать 'Удалить навсегда' или 'Восстановить' (если это было ложное срабатывание)."
-            },
-            {
-                keywords: ["удалить программу", "деинсталляция", "как удалить"],
-                answer: "Чтобы удалить Секретаря: Зайдите в 'Параметры Windows' -> 'Приложения' -> 'Установленные приложения'. Найдите 'Secretary Defender' и нажмите 'Удалить'."
-            },
-            {
-                keywords: ["система", "виндовс", "совместимость", "пойдет ли"],
-                answer: "Секретарь работает на Windows 10 и Windows 11 (только 64-bit). На Windows 7, 8 или Linux/MacOS программа не запустится."
-            },
-            {
-                keywords: ["обновление", "как обновить", "версия"],
-                answer: "Секретарь сам проверяет обновления при запуске. Если вышла новая версия, он предложит ее установить. Вы также можете скачать новую версию с нашего сайта."
-            }
-        ];
-
-        function getAIResponse(text) {
-            const t = text.toLowerCase();
-            
-            // 1. Сначала ищем в базе знаний техподдержки (приоритет)
-            for (let item of knowledgeBase) {
-                if (item.keywords.some(kw => t.includes(kw))) {
-                    return item.answer;
-                }
-            }
-
-            // 2. Общие вопросы
-            if (t.includes("привет") || t.includes("здравствуй") || t.includes("хай")) 
-                return randomReply(["Приветствую! Задайте вопрос или выберите тему из кнопок.", "Здравствуйте! Чем помочь?"]);
-            if (t.includes("спасибо") || t.includes("благодарю")) 
-                return "Всегда рад помочь! 🛡️";
-            if (t.includes("модель") || t.includes("gpt") || t.includes("нейросет")) 
-                return "Я — локальный JavaScript-бот, созданный специально для помощи с Secretary Defender. Я не трачу трафик и работаю мгновенно!";
-            if (t.includes("дата") || t.includes("создан")) 
-                return "Проект основан 2 ноября 2026 года.";
-            if (t.includes("это вирус") || t.includes("сам вирус")) 
-                return "Нет, это не вирус. Наш код открыт, а Defender может ругаться только из-за отсутствия платной подписи.";
-            
-            // 3. Если ничего не нашли
-            return randomReply([
-                "Я не совсем понял вопрос. Попробуйте нажать на кнопки быстрого ответа ниже или опишите проблему другими словами.",
-                "Моя база знаний пока не знает ответа на этот вопрос. Вы можете написать разработчику в GitHub Issues (ссылка внизу).",
-                "Уточните вопрос, пожалуйста. Я лучше всего разбираюсь в защите, карантине и установке."
-            ]);
-        }
-
-        function sendMessage() {
-            const input = document.getElementById("chatInput");
-            const text = input.value.trim();
-            if (!text) return;
-            const now = Date.now();
-            if (now - lastMessageTime < MESSAGE_COOLDOWN) return;
-            lastMessageTime = now;
-
-            const chatBox = document.getElementById("chatBox");
-            const userMsg = document.createElement("div");
-            userMsg.className = "message msg-user";
-            userMsg.textContent = text;
-            chatBox.appendChild(userMsg);
-            
-            input.value = "";
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            setTimeout(() => {
-                const botMsg = document.createElement("div");
-                botMsg.className = "message msg-bot";
-                botMsg.textContent = getAIResponse(text);
-                chatBox.appendChild(botMsg);
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }, 600);
-        }
-
-        function handleKeyPress(event) { if (event.key === "Enter") sendMessage(); }
-    </script>
 </body>
 </html>
