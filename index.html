@@ -18,7 +18,7 @@
         .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 20px; font-size: 15px; transition: 0.3s; }
         .nav-links a:hover { color: var(--accent); }
 
-        .hero { padding: 180px 20px 80px; text-align: center; }
+        .hero { padding: 180px 20px 40px; text-align: center; }
         .hero h1 { font-size: 56px; font-weight: 700; margin-bottom: 20px; }
         .hero h1 span { color: var(--accent); }
         .hero p { font-size: 20px; color: var(--text-muted); max-width: 600px; margin: 0 auto 40px; }
@@ -26,19 +26,29 @@
         .btn-download { background-color: var(--success); color: white; padding: 18px 45px; font-size: 18px; font-weight: 600; border-radius: 12px; text-decoration: none; transition: 0.3s; display: inline-block; }
         .btn-download:hover { transform: translateY(-3px); background-color: #388e3c; }
 
+        /* СТИЛИ ИНСТРУКЦИИ */
+        .guide-container { max-width: 800px; margin: 40px auto; background-color: var(--surface); border-radius: 12px; padding: 30px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .guide-title { font-size: 24px; font-weight: bold; color: var(--accent); margin-bottom: 20px; text-align: center; }
+        .step { margin-bottom: 15px; font-size: 15px; display: flex; align-items: flex-start; gap: 10px; }
+        .step-num { background-color: var(--accent); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 12px; flex-shrink: 0; margin-top: 2px; }
+        
+        .warning-box { background-color: rgba(230, 126, 34, 0.1); border-left: 4px solid #e67e22; padding: 15px 20px; border-radius: 6px; margin-top: 25px; }
+        .warning-box h4 { color: #e67e22; margin-bottom: 5px; font-size: 16px; }
+        .warning-box p { color: #ccc; font-size: 14px; }
+        .highlight { color: #fff; font-weight: bold; background-color: #333; padding: 2px 6px; border-radius: 4px; }
+
         .features { padding: 60px 20px; background-color: #161616; }
         .container { max-width: 1000px; margin: 0 auto; }
         .section-title { text-align: center; font-size: 36px; margin-bottom: 40px; }
         
+        /* ЧАТ */
         .chat-container { background-color: var(--surface); border-radius: 12px; border: 1px solid #333; overflow: hidden; max-width: 700px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .chat-header { background-color: #252526; padding: 15px 20px; font-weight: bold; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 12px; color: #fff; }
         .chat-box { height: 350px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background-color: #0f0f0f; scroll-behavior: smooth; }
         .message { max-width: 85%; padding: 12px 16px; border-radius: 12px; font-size: 14.5px; line-height: 1.5; animation: fadeIn 0.3s ease; }
         .msg-bot { background-color: #252526; color: var(--text); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #333; }
         .msg-user { background-color: var(--accent); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
-        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
         .chat-input-area { display: flex; padding: 15px; background-color: var(--surface); border-top: 1px solid #333; }
         .chat-input-area input { flex: 1; padding: 12px 15px; border: none; border-radius: 8px; background-color: #1a1a1a; color: white; outline: none; font-family: 'Inter', sans-serif; font-size: 14px; }
         .chat-input-area button { background-color: var(--accent); color: white; border: none; padding: 12px 25px; margin-left: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
@@ -66,6 +76,33 @@
         <h1>Твой ПК под защитой <br><span>умного антивируса</span></h1>
         <p>Легкий, адаптивный и защищенный от взлома. Секретарь позаботится о твоем железе, пока ты играешь или работаешь.</p>
         <a href="SecretarySetup.exe" class="btn-download">⬇ Скачать для Windows</a>
+
+        <!-- ИНСТРУКЦИЯ ПО УСТАНОВКЕ -->
+        <div class="guide-container">
+            <div class="guide-title">📥 Инструкция по установке</div>
+            
+            <div class="step">
+                <div class="step-num">1</div>
+                <div>Нажмите зеленую кнопку <b>«Скачать для Windows»</b> выше и дождитесь загрузки файла <code>SecretarySetup.exe</code>.</div>
+            </div>
+            
+            <div class="step">
+                <div class="step-num">2</div>
+                <div>Откройте скачанный файл (двойным кликом). Запустится наш темный установщик. Нажмите <b>«УСТАНОВИТЬ»</b>.</div>
+            </div>
+            
+            <div class="step">
+                <div class="step-num">3</div>
+                <div>После завершения на вашем Рабочем столе появится ярлык <b>«Secretary Defender»</b>. Двойной клик по нему запустит антивирус.</div>
+            </div>
+
+            <!-- ПРЕДУПРЕЖДЕНИЕ О DEFENDER -->
+            <div class="warning-box">
+                <h4>⚠️ Важно: Что делать, если Windows выдаст предупреждение?</h4>
+                <p>Так как программа вышла недавно, у нас пока нет платного сертификата Microsoft (стоит несколько тысяч долларов). Поэтому при запуске установщика Windows SmartScreen может показать <b>синее окно</b> с надписью <i>«Windows защитила ваш компьютер»</i>.</p>
+                <p style="margin-top: 10px;">Это <b>не вирус</b>. Чтобы установить программу, нажмите на синем окне <span class="highlight">Подробнее (More info)</span>, а затем появившуюся кнопку <span class="highlight">Выполнить в любом случае (Run anyway)</span>.</p>
+            </div>
+        </div>
     </section>
 
     <section class="features" id="support">
@@ -101,14 +138,12 @@
     </footer>
 
     <script>
-        // Защита от F12 и просмотра кода
         document.addEventListener('keydown', function(e) {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) {
                 e.preventDefault();
             }
         });
 
-        // Анти-Спам для чата (задержка между сообщениями)
         let lastMessageTime = 0;
         const MESSAGE_COOLDOWN = 1500; 
 
@@ -119,9 +154,10 @@
             if (t.includes("привет") || t.includes("здравствуй") || t.includes("хай")) return randomReply(["Приветствую! Я на связи.", "Здравствуйте! Готов помочь.", "Привет! Задавайте вопрос."]);
             if (t.includes("дата") || t.includes("создан")) return "Проект основан 2 ноября 2026 года.";
             if (t.includes("доверять") || t.includes("безопасно ли")) return "Абсолютно безопасно. Мы не собираем данные.";
-            if (t.includes("скачать") || t.includes("установить")) return "Нажмите зеленую кнопку вверху страницы.";
+            if (t.includes("скачать") || t.includes("установить")) return "Нажмите зеленую кнопку вверху страницы, затем запустите установщик.";
             if (t.includes("вирус") || t.includes("защит")) return "Используется эвристический анализ и Защитник Windows.";
             if (t.includes("тормоз") || t.includes("нагруз")) return "Работает в Эко-режиме, потребляет около 30 МБ.";
+            if (t.includes("синий экран") || t.includes("smart") || t.includes("предупрежд")) return "Если Windows показывает синее окно, нажмите 'Подробнее' и 'Выполнить в любом случае'. Программа безопасна.";
             if (t.includes("спасибо")) return "Всегда рад помочь! 🛡️";
             return "Я бот-помощник. Спросите про 'вирусы', 'установку' или 'безопасность'.";
         }
@@ -132,9 +168,7 @@
             if (!text) return;
 
             const now = Date.now();
-            if (now - lastMessageTime < MESSAGE_COOLDOWN) {
-                return; // Молча игнорируем спам
-            }
+            if (now - lastMessageTime < MESSAGE_COOLDOWN) return;
             lastMessageTime = now;
 
             const chatBox = document.getElementById("chatBox");
