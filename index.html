@@ -13,19 +13,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
         
-        /* ЭКРАН ЗАЩИТЫ */
-        #security-shield {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #0a0a0a; z-index: 99999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.5s ease;
-        }
-        .shield-icon { font-size: 60px; animation: pulse 1.5s infinite; }
-        .shield-text { margin-top: 20px; font-size: 18px; color: var(--accent); font-weight: bold; }
-        .shield-sub { margin-top: 10px; font-size: 14px; color: #666; }
-        
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
-
         header { padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background-color: rgba(18,18,18,0.8); backdrop-filter: blur(10px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .logo { font-size: 24px; font-weight: 700; color: var(--accent); }
         .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 20px; font-size: 15px; transition: 0.3s; }
@@ -64,14 +51,7 @@
         .footer-signature { color: #555; font-size: 12px; margin-top: 10px; text-transform: uppercase; }
     </style>
 </head>
-<body oncontextmenu="return false;"> <!-- Блокировка правой кнопки мыши -->
-
-    <!-- ЭКРАН ПРОВЕРКИ БЕЗОПАСНОСТИ (Anti-Bot) -->
-    <div id="security-shield">
-        <div class="shield-icon">🛡️</div>
-        <div class="shield-text">Проверка безопасности соединения...</div>
-        <div class="shield-sub">Защита от DDoS и ботов</div>
-    </div>
+<body oncontextmenu="return false;">
 
     <header>
         <div class="logo">🛡️ СЕКРЕТАРЬ</div>
@@ -121,28 +101,17 @@
     </footer>
 
     <script>
-        // --- 1. СИСТЕМА ANTI-BOT (Защита от DDoS) ---
-        document.addEventListener("DOMContentLoaded", () => {
-            // Бот не двигает мышкой. Мы ждем 2 секунды.
-            setTimeout(() => {
-                const shield = document.getElementById("security-shield");
-                shield.style.opacity = "0";
-                setTimeout(() => shield.style.display = "none", 500); // Убираем после анимации
-            }, 2000); 
-        });
-
-        // --- 2. ЗАЩИТА ОТ СПАМА (Rate Limiting) ---
-        let lastMessageTime = 0;
-        const MESSAGE_COOLDOWN = 2000; // 2 секунды между сообщениями
-
-        // --- 3. ЗАЩИТА ОТ F12 И КОДА ---
+        // Защита от F12 и просмотра кода
         document.addEventListener('keydown', function(e) {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) {
                 e.preventDefault();
             }
         });
 
-        // --- МОЗГ ИИ ---
+        // Анти-Спам для чата (задержка между сообщениями)
+        let lastMessageTime = 0;
+        const MESSAGE_COOLDOWN = 1500; 
+
         function randomReply(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
         function getAIResponse(text) {
@@ -162,11 +131,9 @@
             const text = input.value.trim();
             if (!text) return;
 
-            // Проверка на спам (Rate Limiting)
             const now = Date.now();
             if (now - lastMessageTime < MESSAGE_COOLDOWN) {
-                alert("Пожалуйста, подождите. Защита от спама активна.");
-                return;
+                return; // Молча игнорируем спам
             }
             lastMessageTime = now;
 
