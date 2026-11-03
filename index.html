@@ -20,98 +20,51 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg); 
-            color: var(--text); 
-            line-height: 1.6; 
-            overflow-x: hidden; 
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(77, 168, 218, 0.08), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(46, 125, 50, 0.05), transparent 25%);
+            font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; 
+            background-image: radial-gradient(circle at 15% 50%, rgba(77, 168, 218, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(46, 125, 50, 0.05), transparent 25%);
             background-attachment: fixed;
         }
 
-        /* --- ШАПКА --- */
-        header { 
-            padding: 20px 50px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            background: rgba(8, 10, 15, 0.7); 
-            backdrop-filter: blur(16px); 
-            position: fixed; 
-            width: 100%; 
-            top: 0; 
-            z-index: 1000; 
-            border-bottom: 1px solid var(--border); 
-        }
+        header { padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 10, 15, 0.7); backdrop-filter: blur(16px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); }
         .logo { font-size: 24px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 10px; }
         .logo span { color: var(--accent); }
         .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 30px; font-size: 15px; font-weight: 600; transition: 0.3s; }
         .nav-links a:hover { color: var(--text); text-shadow: 0 0 10px var(--accent-glow); }
 
-        /* --- ГЛАВНЫЙ ЭКРАН --- */
         .hero { padding: 180px 20px 60px; text-align: center; position: relative; }
-        .hero h1 { 
-            font-size: 64px; font-weight: 800; margin-bottom: 20px; line-height: 1.1;
-            background: linear-gradient(180deg, #fff 0%, #a0a0a0 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .hero h1 span { 
-            background: linear-gradient(90deg, #4da8da, #2e7d32);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
+        .hero h1 { font-size: 64px; font-weight: 800; margin-bottom: 20px; line-height: 1.1; background: linear-gradient(180deg, #fff 0%, #a0a0a0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero h1 span { background: linear-gradient(90deg, #4da8da, #2e7d32); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero p { font-size: 20px; color: var(--text-muted); max-width: 650px; margin: 0 auto 40px; }
         
-        .btn-download { 
-            background: linear-gradient(135deg, #2e7d32, #1b5e20); color: white; 
-            padding: 20px 50px; font-size: 18px; font-weight: 800; 
-            border-radius: 16px; text-decoration: none; display: inline-block; 
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            box-shadow: 0 8px 25px var(--success-glow); border: 1px solid rgba(255,255,255,0.1);
-        }
+        .btn-download { background: linear-gradient(135deg, #2e7d32, #1b5e20); color: white; padding: 20px 50px; font-size: 18px; font-weight: 800; border-radius: 16px; text-decoration: none; display: inline-block; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 25px var(--success-glow); border: 1px solid rgba(255,255,255,0.1); }
         .btn-download:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 35px var(--success-glow); }
-        
         .sys-req { margin-top: 15px; font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; gap: 15px; }
 
-        /* --- МОКАП ПРОГРАММЫ --- */
         .mockup-container { max-width: 900px; margin: 60px auto 0; padding: 0 20px; perspective: 1000px; }
-        .mockup-window {
-            background: #1e1e1e; border-radius: 12px; border: 1px solid #333;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(77, 168, 218, 0.1);
-            overflow: hidden; transform: rotateX(5deg); transition: transform 0.5s ease;
-        }
+        .mockup-window { background: #1e1e1e; border-radius: 12px; border: 1px solid #333; box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(77, 168, 218, 0.1); overflow: hidden; transform: rotateX(5deg); transition: transform 0.5s ease; }
         .mockup-window:hover { transform: rotateX(0deg); }
         .mockup-header { background: #121212; padding: 12px 20px; display: flex; gap: 8px; border-bottom: 1px solid #333; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
-        .dot.r { background: #ff5f56; } .dot.y { background: #ffbd2e; } .dot.g { background: #27c93f; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; } .dot.r { background: #ff5f56; } .dot.y { background: #ffbd2e; } .dot.g { background: #27c93f; }
         .mockup-body { padding: 30px; display: flex; gap: 20px; background: #151515; }
         .mockup-sidebar { width: 200px; display: flex; flex-direction: column; gap: 10px; }
         .mockup-tab { padding: 12px; background: #252526; border-radius: 8px; color: #888; font-size: 14px; font-weight: 600; border-left: 3px solid transparent; }
         .mockup-tab.active { background: #2b2b2b; color: #fff; border-left-color: var(--accent); }
         .mockup-content { flex: 1; background: #0f0f0f; border-radius: 8px; padding: 20px; border: 1px solid #222; font-family: monospace; font-size: 14px; color: #a5d6a7; }
         
-        /* --- БЛОК ДОВЕРИЯ --- */
         .trust-section { max-width: 1000px; margin: 80px auto; padding: 0 20px; text-align: center; }
         .trust-badges { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 30px; }
         .badge { background: var(--surface); border: 1px solid var(--border); padding: 15px 30px; border-radius: 50px; display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; transition: 0.3s; }
         .badge:hover { border-color: var(--accent); background: var(--surface-hover); }
         .badge span { color: var(--success); font-size: 18px; }
 
-        /* --- КАРТОЧКИ ВОЗМОЖНОСТЕЙ --- */
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1000px; margin: 60px auto; padding: 0 20px; }
-        .feature-card {
-            background: var(--surface); backdrop-filter: blur(12px); border: 1px solid var(--border);
-            border-radius: 20px; padding: 30px; text-align: left; transition: all 0.3s ease;
-        }
+        .feature-card { background: var(--surface); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: 20px; padding: 30px; text-align: left; transition: all 0.3s ease; }
         .feature-card:hover { background: var(--surface-hover); transform: translateY(-5px); border-color: rgba(77, 168, 218, 0.4); }
         .feature-icon { font-size: 32px; margin-bottom: 15px; }
         .feature-card h3 { font-size: 18px; margin-bottom: 10px; color: #fff; }
         .feature-card p { font-size: 14px; color: var(--text-muted); }
 
-        /* --- ИСТОРИЯ ОБНОВЛЕНИЙ --- */
         .changelog-section { max-width: 800px; margin: 80px auto; padding: 0 20px; }
         .changelog-title { font-size: 32px; font-weight: 800; margin-bottom: 30px; text-align: center; }
         .version-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 25px; margin-bottom: 20px; border-left: 4px solid var(--accent); }
@@ -122,20 +75,16 @@
         .version-list li { margin-bottom: 5px; }
         .version-list li::before { content: "•"; color: var(--success); margin-right: 8px; }
 
-        /* --- ИНСТРУКЦИЯ --- */
         .guide-wrapper { max-width: 900px; margin: 80px auto; padding: 0 20px; }
         .guide-container { background: var(--surface); backdrop-filter: blur(12px); border-radius: 24px; padding: 50px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .guide-title { font-size: 32px; font-weight: 800; color: #fff; margin-bottom: 40px; text-align: center; }
-        
         .step-block { display: flex; gap: 25px; margin-bottom: 30px; align-items: flex-start; }
         .step-icon { font-size: 24px; background: rgba(255,255,255,0.05); width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; border-radius: 16px; border: 1px solid var(--border); flex-shrink: 0; }
         .step-content h3 { font-size: 18px; color: var(--accent); margin-bottom: 8px; }
         .step-content p { font-size: 15px; color: var(--text-muted); margin-bottom: 10px; }
-        
         .highlight { color: #fff; font-weight: 600; background: rgba(77, 168, 218, 0.2); padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(77, 168, 218, 0.3); }
         .warning-text { color: #e67e22; font-weight: 600; font-size: 14px; }
 
-        /* --- СТАТИЧНЫЙ FAQ --- */
         .faq-section { max-width: 800px; margin: 80px auto; padding: 0 20px; }
         .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 15px; padding: 20px; }
         .faq-question { font-weight: 700; font-size: 16px; color: #fff; margin-bottom: 10px; }
@@ -151,13 +100,17 @@
         .msg-user { background: var(--accent); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; box-shadow: 0 4px 15px var(--accent-glow); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
+        /* КНОПКИ БЫСТРЫХ ОТВЕТОВ */
+        .quick-replies { display: flex; gap: 10px; padding: 0 20px 15px 20px; flex-wrap: wrap; background: rgba(0,0,0,0.2); }
+        .quick-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-muted); padding: 8px 15px; border-radius: 20px; font-size: 13px; cursor: pointer; transition: 0.3s; }
+        .quick-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
         .chat-input-area { display: flex; padding: 20px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--border); }
         .chat-input-area input { flex: 1; padding: 15px 20px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.3); color: white; outline: none; font-family: 'Inter', sans-serif; font-size: 15px; transition: 0.3s; }
         .chat-input-area input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
         .chat-input-area button { background: var(--accent); color: white; border: none; padding: 15px 30px; margin-left: 15px; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.3s; }
         .chat-input-area button:hover { background: #3a8bb8; box-shadow: 0 0 20px var(--accent-glow); }
 
-        /* --- ПОДВАЛ --- */
         footer { padding: 50px 20px; background: #05070a; text-align: center; border-top: 1px solid var(--border); }
         .footer-content { display: flex; flex-direction: column; align-items: center; gap: 12px; }
         .footer-logo { font-size: 24px; font-weight: 800; color: var(--text); }
@@ -251,28 +204,18 @@
 
     <section class="changelog-section">
         <div class="changelog-title">🔄 Что нового</div>
-        
         <div class="version-card">
-            <div class="version-header">
-                <div class="version-num">v9.5 (Текущая)</div>
-                <div class="version-date">10.11.2026</div>
-            </div>
+            <div class="version-header"><div class="version-num">v9.5 (Текущая)</div><div class="version-date">10.11.2026</div></div>
             <ul class="version-list">
                 <li>Добавлен «Кибер-щит» (защита от сетевых атак)</li>
                 <li>Внедрен ИИ-ассистент для общения с пользователем</li>
                 <li>Оптимизация потребления ОЗУ (Эко-режим)</li>
-                <li>Добавлена защита от подмены кода (Anti-Tamper)</li>
             </ul>
         </div>
-        
         <div class="version-card" style="border-left-color: #555;">
-            <div class="version-header">
-                <div class="version-num">v1.0 (Релиз)</div>
-                <div class="version-date">02.11.2026</div>
-            </div>
+            <div class="version-header"><div class="version-num">v1.0 (Релиз)</div><div class="version-date">02.11.2026</div></div>
             <ul class="version-list">
                 <li>Первый официальный релиз Secretary Defender</li>
-                <li>Базовое сканирование системы и Загрузок</li>
             </ul>
         </div>
     </section>
@@ -280,7 +223,6 @@
     <section id="guide" class="guide-wrapper">
         <div class="guide-container">
             <div class="guide-title">📖 Инструкция по установке</div>
-            
             <div class="step-block">
                 <div class="step-icon">📥</div>
                 <div class="step-content">
@@ -288,7 +230,6 @@
                     <p>Нажмите зеленую кнопку скачивания выше. Дождитесь загрузки файла <b>SecretarySetup.exe</b>.</p>
                 </div>
             </div>
-            
             <div class="step-block">
                 <div class="step-icon">⚠️</div>
                 <div class="step-content">
@@ -299,12 +240,11 @@
                     <p class="warning-text">* Это нормально! Windows пока не знает о новой программе.</p>
                 </div>
             </div>
-
             <div class="step-block">
                 <div class="step-icon">🚀</div>
                 <div class="step-content">
                     <h3>Шаг 3: Запуск и пароль</h3>
-                    <p>После установки запустите ярлык. При первом запуске придумайте <b>Мастер-пароль</b> (он нужен для защиты ядра программы). Запишите его!</p>
+                    <p>После установки запустите ярлык. При первом запуске придумайте <b>Мастер-пароль</b>. Запишите его!</p>
                 </div>
             </div>
         </div>
@@ -312,32 +252,24 @@
 
     <section id="faq" class="faq-section">
         <div class="changelog-title">❓ Частые вопросы</div>
-        
         <div class="faq-item">
             <div class="faq-question">Это вирус?</div>
             <div class="faq-answer">Нет. Наш код полностью открыт на GitHub. Windows может ругаться из-за отсутствия платной подписи Microsoft, но это стандартное поведение для новых программ.</div>
         </div>
-        
         <div class="faq-item">
             <div class="faq-question">Вы собираете мои данные?</div>
             <div class="faq-answer">Абсолютно нет. Секретарь работает локально на вашем ПК и не отправляет никакую информацию в интернет.</div>
         </div>
-        
         <div class="faq-item">
             <div class="faq-question">Заменяет ли Секретарь Windows Defender?</div>
-            <div class="faq-answer">Нет, он дополняет его. Мы используем базы Defender для проверки файлов, но добавляем свои уникальные функции (например, монитор процессов и веб-щит).</div>
-        </div>
-        
-        <div class="faq-item">
-            <div class="faq-question">Как удалить программу?</div>
-            <div class="faq-answer">Зайдите в «Параметры Windows» -> «Приложения» -> «Установленные приложения», найдите Secretary Defender и нажмите «Удалить». Программа удалится полностью, не оставляя мусора.</div>
+            <div class="faq-answer">Нет, он дополняет его. Мы используем базы Defender для проверки файлов, но добавляем свои уникальные функции.</div>
         </div>
     </section>
 
     <section id="support" class="chat-section">
         <div style="text-align: center; margin-bottom: 40px;">
-            <h2 style="font-size: 36px; font-weight: 800;">💬 ИИ-Ассистент</h2>
-            <p style="color: var(--text-muted); margin-top: 10px;">Остались вопросы? Наш бот всегда на связи.</p>
+            <h2 style="font-size: 36px; font-weight: 800;">💬 Техподдержка</h2>
+            <p style="color: var(--text-muted); margin-top: 10px;">Нажмите на кнопку ниже или напишите свой вопрос.</p>
         </div>
         
         <div class="chat-container">
@@ -349,8 +281,17 @@
                 Секретарь-Помощник
             </div>
             <div class="chat-box" id="chatBox">
-                <div class="message msg-bot">Приветствую! Я цифровой помощник Secretary Defender. Задайте мне любой вопрос.</div>
+                <div class="message msg-bot">Приветствую! Я цифровой помощник Secretary Defender. Выберите тему ниже или напишите свой вопрос.</div>
             </div>
+            
+            <!-- КНОПКИ БЫСТРЫХ ОТВЕТОВ -->
+            <div class="quick-replies">
+                <button class="quick-btn" onclick="quickAsk('Не запускается')">Не запускается</button>
+                <button class="quick-btn" onclick="quickAsk('Забыл пароль')">Забыл пароль</button>
+                <button class="quick-btn" onclick="quickAsk('Как проверить файл?')">Как проверить файл?</button>
+                <button class="quick-btn" onclick="quickAsk('Где карантин?')">Где карантин?</button>
+            </div>
+
             <div class="chat-input-area">
                 <input type="text" id="chatInput" placeholder="Напишите вопрос..." onkeypress="handleKeyPress(event)">
                 <button onclick="sendMessage()">Отправить</button>
@@ -369,83 +310,79 @@
 
     <script>
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) {
-                e.preventDefault();
-            }
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) e.preventDefault();
         });
 
         let lastMessageTime = 0;
-        const MESSAGE_COOLDOWN = 1500; 
+        const MESSAGE_COOLDOWN = 1000; 
 
         function randomReply(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+        // ФУНКЦИЯ ДЛЯ КНОПОК БЫСТРОГО ОТВЕТА
+        function quickAsk(text) {
+            document.getElementById("chatInput").value = text;
+            sendMessage();
+        }
+
+        // --- БАЗА ЗНАНИЙ ТЕХПОДДЕРЖКИ ---
+        const knowledgeBase = [
+            {
+                keywords: ["не запускается", "закрывается", "вылетает", "ошибка при запуске"],
+                answer: "Если программа не запускается или сразу закрывается: 1) Убедитесь, что ваш антивирус (Defender) не удалил файл. Проверьте 'Журнал защиты'. 2) Попробуйте запустить ярлык от имени Администратора. 3) Скачайте установщик заново с нашего сайта."
+            },
+            {
+                keywords: ["забыл пароль", "сброс пароля", "не помню пароль", "мастер-пароль"],
+                answer: "Если вы забыли Мастер-пароль: 1) Закройте программу. 2) Откройте PowerShell и введите команду: Remove-Item -Path 'HKCU:\\Software\\SecretaryDefenderCore' -Recurse -Force. 3) Запустите Секретаря заново — он попросит придумать новый пароль."
+            },
+            {
+                keywords: ["как проверить", "проверить файл", "сканировать"],
+                answer: "Чтобы проверить конкретный файл: Откройте Секретаря, перейдите на вкладку 'Главная' и нажмите кнопку 'Проверить файл'. Выберите подозрительный файл, и программа просканирует его через Защитник Windows."
+            },
+            {
+                keywords: ["карантин", "где карантин", "удаленный файл", "восстановить"],
+                answer: "Все изолированные файлы находятся во вкладке 'Карантин' внутри программы. Там вы можете выбрать файл и нажать 'Удалить навсегда' или 'Восстановить' (если это было ложное срабатывание)."
+            },
+            {
+                keywords: ["удалить программу", "деинсталляция", "как удалить"],
+                answer: "Чтобы удалить Секретаря: Зайдите в 'Параметры Windows' -> 'Приложения' -> 'Установленные приложения'. Найдите 'Secretary Defender' и нажмите 'Удалить'."
+            },
+            {
+                keywords: ["система", "виндовс", "совместимость", "пойдет ли"],
+                answer: "Секретарь работает на Windows 10 и Windows 11 (только 64-bit). На Windows 7, 8 или Linux/MacOS программа не запустится."
+            },
+            {
+                keywords: ["обновление", "как обновить", "версия"],
+                answer: "Секретарь сам проверяет обновления при запуске. Если вышла новая версия, он предложит ее установить. Вы также можете скачать новую версию с нашего сайта."
+            }
+        ];
 
         function getAIResponse(text) {
             const t = text.toLowerCase();
             
-            // Приветствия и благодарности
-            if (t.includes("привет") || t.includes("здравствуй") || t.includes("хай") || t.includes("добрый")) 
-                return randomReply(["Приветствую! Я на связи.", "Здравствуйте! Готов ответить на ваши вопросы.", "Привет! Задавайте вопрос о безопасности."]);
+            // 1. Сначала ищем в базе знаний техподдержки (приоритет)
+            for (let item of knowledgeBase) {
+                if (item.keywords.some(kw => t.includes(kw))) {
+                    return item.answer;
+                }
+            }
+
+            // 2. Общие вопросы
+            if (t.includes("привет") || t.includes("здравствуй") || t.includes("хай")) 
+                return randomReply(["Приветствую! Задайте вопрос или выберите тему из кнопок.", "Здравствуйте! Чем помочь?"]);
             if (t.includes("спасибо") || t.includes("благодарю")) 
-                return randomReply(["Всегда рад помочь! 🛡️", "Пожалуйста! Безопасность превыше всего."]);
-
-            // О программе
-            if (t.includes("что это") || t.includes("что за") || t.includes("секретарь")) 
-                return "Secretary Defender — это легкий антивирус для Windows, созданный для защиты от вирусов, сетевых атак и оптимизации системы без нагрузки на процессор.";
-            if (t.includes("дата") || t.includes("создан") || t.includes("основан") || t.includes("когда")) 
-                return "Проект был официально основан 2 ноября 2026 года.";
-            if (t.includes("кто создал") || t.includes("разработчик") || t.includes("автор")) 
-                return "Меня создал независимый разработчик. Проект является открытым и не преследует коммерческой выгоды.";
+                return "Всегда рад помочь! 🛡️";
+            if (t.includes("модель") || t.includes("gpt") || t.includes("нейросет")) 
+                return "Я — локальный JavaScript-бот, созданный специально для помощи с Secretary Defender. Я не трачу трафик и работаю мгновенно!";
+            if (t.includes("дата") || t.includes("создан")) 
+                return "Проект основан 2 ноября 2026 года.";
+            if (t.includes("это вирус") || t.includes("сам вирус")) 
+                return "Нет, это не вирус. Наш код открыт, а Defender может ругаться только из-за отсутствия платной подписи.";
             
-            // ВОТ ЗДЕСЬ ТОТ САМЫЙ ОТВЕТ ПРО МОДЕЛЬ
-            if (t.includes("модель") || t.includes("gpt") || t.includes("нейросет") || t.includes("искусственн") || t.includes("кто ты")) 
-                return randomReply([
-                    "Да, это не совсем по теме нашего антивируса, но пусть будет. Я — Custom JS Bot v1.0. Мой «мозг» — это чистый JavaScript на этой странице. Я работаю моментально и не трачу ваш интернет-трафик!",
-                    "Хоть это и не о защите ПК, отвечу: я — скрипт-помощник на JavaScript. Я не ChatGPT, но всегда онлайн и знаю всё о нашем антивирусе!",
-                    "Вопрос не по теме безопасности, но раз вы спросили: моя модель — локальный JS-бот. Я не общаюсь с серверами и работаю прямо в вашем браузере."
-                ]);
-
-            if (t.includes("цена") || t.includes("стоит") || t.includes("деньги") || t.includes("купить") || t.includes("платно")) 
-                return "Программа абсолютно бесплатна. Мы не берем денег за защиту.";
-
-            // Безопасность и доверие
-            if (t.includes("вирус") && (t.includes("это") || t.includes("сам"))) 
-                return "Нет, это не вирус. Наш код открыт на GitHub, а программа использует официальные API Windows. Защитник может ругаться из-за отсутствия платной подписи, но это ложное срабатывание.";
-            if (t.includes("доверять") || t.includes("доверие") || t.includes("безопасно ли")) 
-                return "Да. Мы не собираем ваши пароли или личные данные. Вся проверка происходит локально через Защитник Windows.";
-            if (t.includes("крад") || t.includes("данные") || t.includes("шпион")) 
-                return "Мы не собираем никакие данные. Программа работает автономно. Вы можете проверить это через Монитор ресурсов Windows.";
-
-            // Установка и удаление
-            if (t.includes("скачать") || t.includes("где взять") || t.includes("установить")) 
-                return "Нажмите зеленую кнопку «Скачать для Windows» в самом верху страницы.";
-            if (t.includes("синий") || t.includes("smart") || t.includes("предупрежд") || t.includes("защитила")) 
-                return "Если Windows показывает синее окно, нажмите «Подробнее» и «Выполнить в любом случае». Это стандартная защита для новых программ.";
-            if (t.includes("удалить") || t.includes("деинсталл")) 
-                return "Зайдите в «Параметры Windows» -> «Приложения» -> «Установленные приложения», найдите Secretary Defender и нажмите «Удалить».";
-            if (t.includes("пароль") || t.includes("мастер-пароль")) 
-                return "При первом запуске программа просит придумать пароль. Он нужен для защиты ядра от взлома. Запишите его!";
-
-            // Функции и возможности
-            if (t.includes("умеет") || t.includes("функции") || t.includes("возможности") || t.includes("что делает")) 
-                return "Я умею: 1. Проверять процессы на майнеры. 2. Сканировать Загрузки. 3. Проверять открытые порты (Кибер-щит). 4. Чистить систему от мусора. 5. Отвечать в этом чате.";
-            if (t.includes("нагруз") || t.includes("тормоз") || t.includes("память") || t.includes("жрет") || t.includes("озу")) 
-                return "Я работаю в Эко-режиме. Потребляю около 30-50 МБ ОЗУ. Ваши игры и браузер будут работать на полную мощность.";
-            if (t.includes("defender") || t.includes("защитник windows")) 
-                return "Я не заменяю Защитник Windows, а дополняю его. Я использую его базы для проверки файлов и добавляю свои функции.";
-            if (t.includes("карантин")) 
-                return "Если я найду вирус, я не удалю его сразу, а отправлю в Карантин. Там его можно проверить и удалить, либо восстановить.";
-
-            // О сайте и поддержке
-            if (t.includes("сайт") || t.includes("github") || t.includes("исходный код")) 
-                return "Наш исходный код и файлы доступны на GitHub. Ссылка на профиль разработчика указана в подвале сайта (внизу).";
-            if (t.includes("windows") || t.includes("виндовс") || t.includes("совместим") || t.includes("ос")) 
-                return "Программа работает на Windows 10 и Windows 11 (64-bit). На Linux или MacOS она не запустится.";
-
-            // Неизвестный вопрос
+            // 3. Если ничего не нашли
             return randomReply([
-                "Интересный вопрос! Попробуйте спросить про 'установку', 'вирусы' или 'нагрузку на ПК'.",
-                "Я не совсем понял вопрос. Спросите меня о функциях защиты!",
-                "Мои знания ограничены безопасностью ПК. Задайте вопрос про Секретаря."
+                "Я не совсем понял вопрос. Попробуйте нажать на кнопки быстрого ответа ниже или опишите проблему другими словами.",
+                "Моя база знаний пока не знает ответа на этот вопрос. Вы можете написать разработчику в GitHub Issues (ссылка внизу).",
+                "Уточните вопрос, пожалуйста. Я лучше всего разбираюсь в защите, карантине и установке."
             ]);
         }
 
