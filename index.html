@@ -32,14 +32,17 @@
         
         /* Стили для ИИ-чата */
         .chat-container { background-color: var(--surface); border-radius: 12px; border: 1px solid #333; overflow: hidden; max-width: 700px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .chat-header { background-color: #252526; padding: 15px 20px; font-weight: bold; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 10px; }
-        .chat-box { height: 300px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background-color: #0f0f0f; }
-        .message { max-width: 80%; padding: 10px 15px; border-radius: 10px; font-size: 14px; }
-        .msg-bot { background-color: #252526; color: var(--text); align-self: flex-start; border-bottom-left-radius: 2px; }
+        .chat-header { background-color: #252526; padding: 15px 20px; font-weight: bold; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 12px; color: #fff; }
+        .chat-box { height: 350px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background-color: #0f0f0f; scroll-behavior: smooth; }
+        .message { max-width: 85%; padding: 12px 16px; border-radius: 12px; font-size: 14.5px; line-height: 1.5; animation: fadeIn 0.3s ease; }
+        .msg-bot { background-color: #252526; color: var(--text); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #333; }
         .msg-user { background-color: var(--accent); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
         .chat-input-area { display: flex; padding: 15px; background-color: var(--surface); border-top: 1px solid #333; }
-        .chat-input-area input { flex: 1; padding: 10px 15px; border: none; border-radius: 8px; background-color: #1a1a1a; color: white; outline: none; font-family: 'Inter', sans-serif; }
-        .chat-input-area button { background-color: var(--accent); color: white; border: none; padding: 10px 20px; margin-left: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .chat-input-area input { flex: 1; padding: 12px 15px; border: none; border-radius: 8px; background-color: #1a1a1a; color: white; outline: none; font-family: 'Inter', sans-serif; font-size: 14px; }
+        .chat-input-area button { background-color: var(--accent); color: white; border: none; padding: 12px 25px; margin-left: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .chat-input-area button:hover { background-color: #3a8bb8; }
 
         footer { padding: 40px 20px; background-color: #0a0a0a; text-align: center; border-top: 1px solid #222; }
@@ -71,10 +74,15 @@
             
             <div class="chat-container">
                 <div class="chat-header">
-                    <span>🤖</span> Секретарь-Помощник
+                    <!-- КАСТОМНАЯ SVG ИКОНКА ЩИТА -->
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="#4da8da" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 11L11 13L15 9" stroke="#4da8da" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Секретарь-Помощник
                 </div>
                 <div class="chat-box" id="chatBox">
-                    <div class="message msg-bot">Приветствую! Я виртуальный помощник Secretary Defender. Задайте мне любой вопрос о программе, установке или защите.</div>
+                    <div class="message msg-bot">Приветствую! Я цифровой помощник Secretary Defender. Задайте мне любой вопрос о программе, установке или защите.</div>
                 </div>
                 <div class="chat-input-area">
                     <input type="text" id="chatInput" placeholder="Напишите вопрос..." onkeypress="handleKeyPress(event)">
@@ -94,37 +102,82 @@
     </footer>
 
     <script>
-        // МОЗГ ИИ-АССИСТЕНТА (Локальная база знаний)
+        // Утилита для выбора случайного ответа из массива
+        function randomReply(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
         function getAIResponse(text) {
             const t = text.toLowerCase();
             
-            if (t.includes("привет") || t.includes("здравствуй") || t.includes("хай")) {
-                return "Приветствую! Чем я могу помочь? Спросите меня об установке, вирусах или возможностях программы.";
-            }
-            if (t.includes("скачать") || t.includes("установить") || t.includes("ссылка")) {
-                return "Вы можете скачать программу, нажав на зеленую кнопку «Скачать для Windows» в самом верху страницы. Файл весит всего около 5 МБ.";
-            }
-            if (t.includes("вирус") || t.includes("защит") || t.includes("безопасн")) {
-                return "Секретарь использует эвристический анализ и встроенный Защитник Windows для поиска угроз. Он проверяет процессы, открытые порты и папку Загрузки.";
-            }
-            if (t.includes("цена") || t.includes("стоит") || t.includes("деньги")) {
-                return "Программа абсолютно бесплатна. Мы создаем ее для защиты пользователей, а не для заработка.";
-            }
-            if (t.includes("создал") || t.includes("разработчик") || t.includes("автор")) {
-                return "Меня создал независимый разработчик 02.11.2026. Я — его цифровой страж.";
-            }
-            if (t.includes("тормоз") || t.includes("нагруз") || t.includes("требован")) {
-                return "Секретарь работает в Эко-режиме с приоритетом IDLE. Он потребляет минимум ОЗУ и не нагружает процессор, чтобы не мешать играм.";
-            }
-            if (t.includes("хакер") || t.includes("взлом")) {
-                return "Наше ядро защищено цифровой подписью и привязкой к Windows. Если вирус попытается убить процесс, сторожевой модуль перезапустит его.";
-            }
-            if (t.includes("спасибо") || t.includes("благодарю")) {
-                return "Всегда рад помочь! Безопасность превыше всего. 🛡️";
+            // 1. Приветствия (несколько вариантов)
+            if (t.includes("привет") || t.includes("здравствуй") || t.includes("хай") || t.includes("добрый")) {
+                return randomReply([
+                    "Приветствую! Я на связи. Чем могу помочь?",
+                    "Здравствуйте! Готов ответить на ваши вопросы о безопасности.",
+                    "Привет! Секретарь Defender к вашим услугам. Что вас интересует?"
+                ]);
             }
             
-            // Если вопрос неизвестен
-            return "Интересный вопрос! Я пока только учусь. Попробуйте спросить про 'скачивание', 'вирусы' или 'нагрузку на ПК'. Либо напишите нам на GitHub.";
+            // 2. Дата создания (та самая, которую вы просили)
+            if (t.includes("дата") || t.includes("создан") || t.includes("основан") || t.includes("когда")) {
+                return "Проект Secretary Defender был официально основан 2 ноября 2026 года. С тех пор мы постоянно улучшаем защиту.";
+            }
+
+            // 3. Доверие
+            if (t.includes("доверять") || t.includes("доверие") || t.includes("безопасно ли") || t.includes("легально")) {
+                return "Абсолютно безопасно. Программа использует официальный API Защитника Windows, не собирает личные данные и не отправляет их на сервера. Код открыт на GitHub.";
+            }
+
+            // 4. Скачивание и установка
+            if (t.includes("скачать") || t.includes("установить") || t.includes("где взять")) {
+                return "Нажмите на зеленую кнопку «Скачать для Windows» в самом верху страницы. Файл весит около 5 МБ и не требует установки.";
+            }
+
+            // 5. Защита и вирусы
+            if (t.includes("вирус") || t.includes("защит") || t.includes("троян") || t.includes("майнер")) {
+                return randomReply([
+                    "Секретарь использует эвристический анализ. Он проверяет запущенные процессы, ищет маскировку в папке Temp и анализирует сетевые порты.",
+                    "Для проверки файлов используется встроенный Защитник Windows. Если находим угрозу — изолируем в карантин.",
+                    "Мы защищаем от сетевых атак: проверяем открытые порты, статус брандмауэра и подозрительные подключения."
+                ]);
+            }
+
+            // 6. Нагрузка на ПК
+            if (t.includes("тормоз") || t.includes("нагруз") || t.includes("требован") || t.includes("жрет") || t.includes("память")) {
+                return "Секретарь работает в Эко-режиме с приоритетом IDLE. Он потребляет минимум ОЗУ (около 30 МБ) и не нагружает процессор, чтобы не мешать играм.";
+            }
+
+            // 7. Функции / Что умеет
+            if (t.includes("умеет") || t.includes("функции") || t.includes("что делает") || t.includes("возможности")) {
+                return "Мои возможности: Мониторинг процессов, Веб-Щит (проверка ссылок и портов), Защита Загрузок в реальном времени и Живой чат с пользователем.";
+            }
+
+            // 8. Цена
+            if (t.includes("цена") || t.includes("стоит") || t.includes("деньги") || t.includes("купить")) {
+                return "Программа абсолютно бесплатна. Мы создаем ее для защиты пользователей, а не для заработка. Скачивайте и пользуйтесь!";
+            }
+
+            // 9. ОС / Совместимость
+            if (t.includes("windows") || t.includes("виндовс") || t.includes("ос") || t.includes("линукс")) {
+                return "Программа разработана специально для Windows 10 и Windows 11 (64-bit). На Linux или Mac она работать не будет.";
+            }
+
+            // 10. Благодарность
+            if (t.includes("спасибо") || t.includes("благодарю") || t.includes("круто")) {
+                return randomReply([
+                    "Всегда рад помочь! Безопасность превыше всего. 🛡️",
+                    "Пожалуйста! Если возникнут вопросы — я всегда на связи.",
+                    "Спасибо за отзыв! Мы стараемся для вас."
+                ]);
+            }
+            
+            // 11. Неизвестный вопрос
+            return randomReply([
+                "Интересный вопрос! Я пока только учусь. Попробуйте спросить про 'вирусы', 'установку' или 'нагрузку на ПК'.",
+                "Я не совсем понял вопрос. Я — бот-помощник антивируса. Спросите меня о функциях защиты!",
+                "Мои знания ограничены безопасностью ПК. Задайте вопрос про Секретаря или его возможности."
+            ]);
         }
 
         function sendMessage() {
@@ -150,7 +203,7 @@
                 botMsg.textContent = getAIResponse(text);
                 chatBox.appendChild(botMsg);
                 chatBox.scrollTop = chatBox.scrollHeight;
-            }, 600);
+            }, 600); // 0.6 секунды задержки
         }
 
         function handleKeyPress(event) {
