@@ -36,7 +36,12 @@
         .btn-support { background-color: #1565c0; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block; transition: 0.3s; }
         .btn-support:hover { background-color: #0d47a1; }
 
-        footer { padding: 40px 20px; text-align: center; color: var(--text-muted); border-top: 1px solid #222; }
+        /* ОФИЦИАЛЬНЫЙ ФУТЕР */
+        footer { padding: 40px 20px; background-color: #0a0a0a; text-align: center; border-top: 1px solid #222; }
+        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .footer-logo { font-size: 20px; font-weight: bold; color: var(--accent); }
+        .footer-text { color: var(--text-muted); font-size: 14px; }
+        .footer-signature { color: #555; font-size: 12px; margin-top: 10px; letter-spacing: 1px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -72,14 +77,19 @@
             <div class="support-box">
                 <h3>💬 Техническая поддержка</h3>
                 <p>Нашли вирус, ошибку или у вас есть идея по улучшению? Напишите нам, мы всегда на связи!</p>
-                <!-- Если у вас есть Телеграм, замените ссылку ниже -->
                 <a href="https://github.com/utuberzdef186-arch/secretary-site/issues" class="btn-support" target="_blank">Создать тикет (GitHub)</a>
             </div>
         </div>
     </section>
 
+    <!-- НОВЫЙ ОФИЦИАЛЬНЫЙ ФУТЕР -->
     <footer>
-        <p>© 2024 Секретарь Defender. Все права защищены.</p>
+        <div class="footer-content">
+            <div class="footer-logo">🛡️ Secretary Defender</div>
+            <div class="footer-text">Дата основания проекта: <b>2024 год</b></div>
+            <div class="footer-text">© 2024 Секретарь Defender. Все права защищены.</div>
+            <div class="footer-signature">Официальная подпись: Разработано с заботой о вашей безопасности</div>
+        </div>
     </footer>
 </body>
 </html>
