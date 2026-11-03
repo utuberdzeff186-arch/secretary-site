@@ -18,7 +18,7 @@
         .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 20px; font-size: 15px; transition: 0.3s; }
         .nav-links a:hover { color: var(--accent); }
 
-        .hero { padding: 180px 20px 100px; text-align: center; }
+        .hero { padding: 180px 20px 80px; text-align: center; }
         .hero h1 { font-size: 56px; font-weight: 700; margin-bottom: 20px; }
         .hero h1 span { color: var(--accent); }
         .hero p { font-size: 20px; color: var(--text-muted); max-width: 600px; margin: 0 auto 40px; }
@@ -26,21 +26,27 @@
         .btn-download { background-color: var(--success); color: white; padding: 18px 45px; font-size: 18px; font-weight: 600; border-radius: 12px; text-decoration: none; transition: 0.3s; display: inline-block; }
         .btn-download:hover { transform: translateY(-3px); background-color: #388e3c; }
 
-        .features { padding: 80px 20px; background-color: #161616; }
+        .features { padding: 60px 20px; background-color: #161616; }
         .container { max-width: 1000px; margin: 0 auto; }
         .section-title { text-align: center; font-size: 36px; margin-bottom: 40px; }
         
-        .support-box { background-color: var(--surface); border-left: 5px solid var(--accent); padding: 40px; border-radius: 12px; text-align: center; margin-top: 40px; }
-        .support-box h3 { font-size: 24px; margin-bottom: 15px; }
-        .support-box p { color: var(--text-muted); margin-bottom: 20px; }
-        .btn-support { background-color: #1565c0; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block; transition: 0.3s; }
-        .btn-support:hover { background-color: #0d47a1; }
+        /* Стили для ИИ-чата */
+        .chat-container { background-color: var(--surface); border-radius: 12px; border: 1px solid #333; overflow: hidden; max-width: 700px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .chat-header { background-color: #252526; padding: 15px 20px; font-weight: bold; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 10px; }
+        .chat-box { height: 300px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background-color: #0f0f0f; }
+        .message { max-width: 80%; padding: 10px 15px; border-radius: 10px; font-size: 14px; }
+        .msg-bot { background-color: #252526; color: var(--text); align-self: flex-start; border-bottom-left-radius: 2px; }
+        .msg-user { background-color: var(--accent); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .chat-input-area { display: flex; padding: 15px; background-color: var(--surface); border-top: 1px solid #333; }
+        .chat-input-area input { flex: 1; padding: 10px 15px; border: none; border-radius: 8px; background-color: #1a1a1a; color: white; outline: none; font-family: 'Inter', sans-serif; }
+        .chat-input-area button { background-color: var(--accent); color: white; border: none; padding: 10px 20px; margin-left: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .chat-input-area button:hover { background-color: #3a8bb8; }
 
         footer { padding: 40px 20px; background-color: #0a0a0a; text-align: center; border-top: 1px solid #222; }
         .footer-content { display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .footer-logo { font-size: 20px; font-weight: bold; color: var(--accent); }
         .footer-text { color: var(--text-muted); font-size: 14px; }
-        .footer-signature { color: #555; font-size: 12px; margin-top: 10px; letter-spacing: 1px; text-transform: uppercase; }
+        .footer-signature { color: #555; font-size: 12px; margin-top: 10px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -59,24 +65,21 @@
         <a href="Secretary.exe" class="btn-download">⬇ Скачать для Windows</a>
     </section>
 
-    <section class="features" id="features">
+    <section class="features" id="support">
         <div class="container">
-            <h2 class="section-title">Почему мы лучше?</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div style="background: #1e1e1e; padding: 20px; border-radius: 10px;">🪶 <b>Невидимая работа</b><br><span style="color: #888;">Приоритет IDLE, не грузит процессор.</span></div>
-                <div style="background: #1e1e1e; padding: 20px; border-radius: 10px;">🔒 <b>Защита от подмены</b><br><span style="color: #888;">Код привязан к вашему SID.</span></div>
-                <div style="background: #1e1e1e; padding: 20px; border-radius: 10px;">🌐 <b>Веб-Щит</b><br><span style="color: #888;">Проверка ссылок и портов.</span></div>
-                <div style="background: #1e1e1e; padding: 20px; border-radius: 10px;">💬 <b>Живой чат</b><br><span style="color: #888;">Общение прямо в программе.</span></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="features" id="support" style="background-color: var(--bg);">
-        <div class="container">
-            <div class="support-box">
-                <h3>💬 Техническая поддержка</h3>
-                <p>Нашли вирус, ошибку или у вас есть идея по улучшению? Напишите нам, мы всегда на связи!</p>
-                <a href="https://github.com/utuberzdef186-arch/secretary-site/issues" class="btn-support" target="_blank">Создать тикет (GitHub)</a>
+            <h2 class="section-title">💬 Задайте вопрос ИИ-Ассистенту</h2>
+            
+            <div class="chat-container">
+                <div class="chat-header">
+                    <span>🤖</span> Секретарь-Помощник
+                </div>
+                <div class="chat-box" id="chatBox">
+                    <div class="message msg-bot">Приветствую! Я виртуальный помощник Secretary Defender. Задайте мне любой вопрос о программе, установке или защите.</div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" placeholder="Напишите вопрос..." onkeypress="handleKeyPress(event)">
+                    <button onclick="sendMessage()">Отправить</button>
+                </div>
             </div>
         </div>
     </section>
@@ -84,11 +87,77 @@
     <footer>
         <div class="footer-content">
             <div class="footer-logo">🛡️ Secretary Defender</div>
-            <!-- ЧЕСТНАЯ ДАТА -->
             <div class="footer-text">Дата основания проекта: <b>02.11.2026</b></div>
             <div class="footer-text">© 2026 Секретарь Defender. Все права защищены.</div>
-            <div class="footer-signature">Официальная подпись: Разработано с заботой о вашей безопасности</div>
+            <div class="footer-signature">Разработано с заботой о вашей безопасности</div>
         </div>
     </footer>
+
+    <script>
+        // МОЗГ ИИ-АССИСТЕНТА (Локальная база знаний)
+        function getAIResponse(text) {
+            const t = text.toLowerCase();
+            
+            if (t.includes("привет") || t.includes("здравствуй") || t.includes("хай")) {
+                return "Приветствую! Чем я могу помочь? Спросите меня об установке, вирусах или возможностях программы.";
+            }
+            if (t.includes("скачать") || t.includes("установить") || t.includes("ссылка")) {
+                return "Вы можете скачать программу, нажав на зеленую кнопку «Скачать для Windows» в самом верху страницы. Файл весит всего около 5 МБ.";
+            }
+            if (t.includes("вирус") || t.includes("защит") || t.includes("безопасн")) {
+                return "Секретарь использует эвристический анализ и встроенный Защитник Windows для поиска угроз. Он проверяет процессы, открытые порты и папку Загрузки.";
+            }
+            if (t.includes("цена") || t.includes("стоит") || t.includes("деньги")) {
+                return "Программа абсолютно бесплатна. Мы создаем ее для защиты пользователей, а не для заработка.";
+            }
+            if (t.includes("создал") || t.includes("разработчик") || t.includes("автор")) {
+                return "Меня создал независимый разработчик 02.11.2026. Я — его цифровой страж.";
+            }
+            if (t.includes("тормоз") || t.includes("нагруз") || t.includes("требован")) {
+                return "Секретарь работает в Эко-режиме с приоритетом IDLE. Он потребляет минимум ОЗУ и не нагружает процессор, чтобы не мешать играм.";
+            }
+            if (t.includes("хакер") || t.includes("взлом")) {
+                return "Наше ядро защищено цифровой подписью и привязкой к Windows. Если вирус попытается убить процесс, сторожевой модуль перезапустит его.";
+            }
+            if (t.includes("спасибо") || t.includes("благодарю")) {
+                return "Всегда рад помочь! Безопасность превыше всего. 🛡️";
+            }
+            
+            // Если вопрос неизвестен
+            return "Интересный вопрос! Я пока только учусь. Попробуйте спросить про 'скачивание', 'вирусы' или 'нагрузку на ПК'. Либо напишите нам на GitHub.";
+        }
+
+        function sendMessage() {
+            const input = document.getElementById("chatInput");
+            const text = input.value.trim();
+            if (!text) return;
+
+            const chatBox = document.getElementById("chatBox");
+            
+            // Добавляем сообщение пользователя
+            const userMsg = document.createElement("div");
+            userMsg.className = "message msg-user";
+            userMsg.textContent = text;
+            chatBox.appendChild(userMsg);
+            
+            input.value = ""; // Очищаем поле
+            chatBox.scrollTop = chatBox.scrollHeight; // Прокрутка вниз
+
+            // Имитация "раздумий" ИИ
+            setTimeout(() => {
+                const botMsg = document.createElement("div");
+                botMsg.className = "message msg-bot";
+                botMsg.textContent = getAIResponse(text);
+                chatBox.appendChild(botMsg);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 600);
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+    </script>
 </body>
 </html>
