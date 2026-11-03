@@ -76,7 +76,7 @@
         
         .sys-req { margin-top: 15px; font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; gap: 15px; }
 
-        /* --- МОКАП ПРОГРАММЫ (Визуализация) --- */
+        /* --- МОКАП ПРОГРАММЫ --- */
         .mockup-container { max-width: 900px; margin: 60px auto 0; padding: 0 20px; perspective: 1000px; }
         .mockup-window {
             background: #1e1e1e; border-radius: 12px; border: 1px solid #333;
@@ -194,7 +194,6 @@
             <span>Windows 10 / 11 (64-bit)</span> | <span>~12 МБ</span> | <span>Бесплатно</span>
         </div>
 
-        <!-- ВИЗУАЛИЗАЦИЯ ПРОГРАММЫ -->
         <div class="mockup-container">
             <div class="mockup-window">
                 <div class="mockup-header">
@@ -219,7 +218,6 @@
         </div>
     </section>
 
-    <!-- БЛОК ДОВЕРИЯ -->
     <section class="trust-section">
         <div class="trust-badges">
             <div class="badge"><span>✔</span> Безопасно на VirusTotal</div>
@@ -228,7 +226,6 @@
         </div>
     </section>
 
-    <!-- ВОЗМОЖНОСТИ -->
     <section id="features" class="features-grid">
         <div class="feature-card">
             <div class="feature-icon">🪶</div>
@@ -252,7 +249,6 @@
         </div>
     </section>
 
-    <!-- ИСТОРИЯ ОБНОВЛЕНИЙ -->
     <section class="changelog-section">
         <div class="changelog-title">🔄 Что нового</div>
         
@@ -281,7 +277,6 @@
         </div>
     </section>
 
-    <!-- ИНСТРУКЦИЯ -->
     <section id="guide" class="guide-wrapper">
         <div class="guide-container">
             <div class="guide-title">📖 Инструкция по установке</div>
@@ -315,7 +310,6 @@
         </div>
     </section>
 
-    <!-- СТАТИЧНЫЙ FAQ -->
     <section id="faq" class="faq-section">
         <div class="changelog-title">❓ Частые вопросы</div>
         
@@ -340,7 +334,6 @@
         </div>
     </section>
 
-    <!-- ЧАТ -->
     <section id="support" class="chat-section">
         <div style="text-align: center; margin-bottom: 40px;">
             <h2 style="font-size: 36px; font-weight: 800;">💬 ИИ-Ассистент</h2>
@@ -403,12 +396,12 @@
             if (t.includes("кто создал") || t.includes("разработчик") || t.includes("автор")) 
                 return "Меня создал независимый разработчик. Проект является открытым и не преследует коммерческой выгоды.";
             
-            // ВОТ ЗДЕСЬ НОВЫЕ ОТВЕТЫ ПРО МОДЕЛЬ
+            // ВОТ ЗДЕСЬ ТОТ САМЫЙ ОТВЕТ ПРО МОДЕЛЬ
             if (t.includes("модель") || t.includes("gpt") || t.includes("нейросет") || t.includes("искусственн") || t.includes("кто ты")) 
                 return randomReply([
-                    "Я — не огромная нейросеть вроде ChatGPT. Мой «мозг» — это чистый JavaScript, встроенный прямо в этот сайт. Я работаю молниеносно и создан специально для помощи с Секретарем!",
-                    "Я — цифровой дух Secretary Defender! Моя модель — Custom JS Bot v1.0. Я не такой всезнающий, как GPT-4, но зато я всегда на связи и знаю всё о нашем антивирусе.",
-                    "Моя модель — это скрипт на JavaScript. Я не общаюсь с серверами и не трачу ваш интернет-трафик. Вся моя база знаний хранится прямо в коде этой страницы!"
+                    "Да, это не совсем по теме нашего антивируса, но пусть будет. Я — Custom JS Bot v1.0. Мой «мозг» — это чистый JavaScript на этой странице. Я работаю моментально и не трачу ваш интернет-трафик!",
+                    "Хоть это и не о защите ПК, отвечу: я — скрипт-помощник на JavaScript. Я не ChatGPT, но всегда онлайн и знаю всё о нашем антивирусе!",
+                    "Вопрос не по теме безопасности, но раз вы спросили: моя модель — локальный JS-бот. Я не общаюсь с серверами и работаю прямо в вашем браузере."
                 ]);
 
             if (t.includes("цена") || t.includes("стоит") || t.includes("деньги") || t.includes("купить") || t.includes("платно")) 
