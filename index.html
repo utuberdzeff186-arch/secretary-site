@@ -11,8 +11,21 @@
             --text-muted: #888888; --accent: #4da8da; --success: #2e7d32;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
         
+        /* ЭКРАН ЗАЩИТЫ */
+        #security-shield {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #0a0a0a; z-index: 99999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease;
+        }
+        .shield-icon { font-size: 60px; animation: pulse 1.5s infinite; }
+        .shield-text { margin-top: 20px; font-size: 18px; color: var(--accent); font-weight: bold; }
+        .shield-sub { margin-top: 10px; font-size: 14px; color: #666; }
+        
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
+
         header { padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background-color: rgba(18,18,18,0.8); backdrop-filter: blur(10px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .logo { font-size: 24px; font-weight: 700; color: var(--accent); }
         .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 20px; font-size: 15px; transition: 0.3s; }
@@ -30,7 +43,6 @@
         .container { max-width: 1000px; margin: 0 auto; }
         .section-title { text-align: center; font-size: 36px; margin-bottom: 40px; }
         
-        /* Стили для ИИ-чата */
         .chat-container { background-color: var(--surface); border-radius: 12px; border: 1px solid #333; overflow: hidden; max-width: 700px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .chat-header { background-color: #252526; padding: 15px 20px; font-weight: bold; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 12px; color: #fff; }
         .chat-box { height: 350px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background-color: #0f0f0f; scroll-behavior: smooth; }
@@ -52,7 +64,15 @@
         .footer-signature { color: #555; font-size: 12px; margin-top: 10px; text-transform: uppercase; }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;"> <!-- Блокировка правой кнопки мыши -->
+
+    <!-- ЭКРАН ПРОВЕРКИ БЕЗОПАСНОСТИ (Anti-Bot) -->
+    <div id="security-shield">
+        <div class="shield-icon">🛡️</div>
+        <div class="shield-text">Проверка безопасности соединения...</div>
+        <div class="shield-sub">Защита от DDoS и ботов</div>
+    </div>
+
     <header>
         <div class="logo">🛡️ СЕКРЕТАРЬ</div>
         <div class="nav-links">
@@ -74,7 +94,6 @@
             
             <div class="chat-container">
                 <div class="chat-header">
-                    <!-- КАСТОМНАЯ SVG ИКОНКА ЩИТА -->
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="#4da8da" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M9 11L11 13L15 9" stroke="#4da8da" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -82,7 +101,7 @@
                     Секретарь-Помощник
                 </div>
                 <div class="chat-box" id="chatBox">
-                    <div class="message msg-bot">Приветствую! Я цифровой помощник Secretary Defender. Задайте мне любой вопрос о программе, установке или защите.</div>
+                    <div class="message msg-bot">Приветствую! Я цифровой помощник Secretary Defender. Задайте мне любой вопрос.</div>
                 </div>
                 <div class="chat-input-area">
                     <input type="text" id="chatInput" placeholder="Напишите вопрос..." onkeypress="handleKeyPress(event)">
@@ -102,82 +121,40 @@
     </footer>
 
     <script>
-        // Утилита для выбора случайного ответа из массива
-        function randomReply(arr) {
-            return arr[Math.floor(Math.random() * arr.length)];
-        }
+        // --- 1. СИСТЕМА ANTI-BOT (Защита от DDoS) ---
+        document.addEventListener("DOMContentLoaded", () => {
+            // Бот не двигает мышкой. Мы ждем 2 секунды.
+            setTimeout(() => {
+                const shield = document.getElementById("security-shield");
+                shield.style.opacity = "0";
+                setTimeout(() => shield.style.display = "none", 500); // Убираем после анимации
+            }, 2000); 
+        });
+
+        // --- 2. ЗАЩИТА ОТ СПАМА (Rate Limiting) ---
+        let lastMessageTime = 0;
+        const MESSAGE_COOLDOWN = 2000; // 2 секунды между сообщениями
+
+        // --- 3. ЗАЩИТА ОТ F12 И КОДА ---
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) {
+                e.preventDefault();
+            }
+        });
+
+        // --- МОЗГ ИИ ---
+        function randomReply(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
         function getAIResponse(text) {
             const t = text.toLowerCase();
-            
-            // 1. Приветствия (несколько вариантов)
-            if (t.includes("привет") || t.includes("здравствуй") || t.includes("хай") || t.includes("добрый")) {
-                return randomReply([
-                    "Приветствую! Я на связи. Чем могу помочь?",
-                    "Здравствуйте! Готов ответить на ваши вопросы о безопасности.",
-                    "Привет! Секретарь Defender к вашим услугам. Что вас интересует?"
-                ]);
-            }
-            
-            // 2. Дата создания (та самая, которую вы просили)
-            if (t.includes("дата") || t.includes("создан") || t.includes("основан") || t.includes("когда")) {
-                return "Проект Secretary Defender был официально основан 2 ноября 2026 года. С тех пор мы постоянно улучшаем защиту.";
-            }
-
-            // 3. Доверие
-            if (t.includes("доверять") || t.includes("доверие") || t.includes("безопасно ли") || t.includes("легально")) {
-                return "Абсолютно безопасно. Программа использует официальный API Защитника Windows, не собирает личные данные и не отправляет их на сервера. Код открыт на GitHub.";
-            }
-
-            // 4. Скачивание и установка
-            if (t.includes("скачать") || t.includes("установить") || t.includes("где взять")) {
-                return "Нажмите на зеленую кнопку «Скачать для Windows» в самом верху страницы. Файл весит около 5 МБ и не требует установки.";
-            }
-
-            // 5. Защита и вирусы
-            if (t.includes("вирус") || t.includes("защит") || t.includes("троян") || t.includes("майнер")) {
-                return randomReply([
-                    "Секретарь использует эвристический анализ. Он проверяет запущенные процессы, ищет маскировку в папке Temp и анализирует сетевые порты.",
-                    "Для проверки файлов используется встроенный Защитник Windows. Если находим угрозу — изолируем в карантин.",
-                    "Мы защищаем от сетевых атак: проверяем открытые порты, статус брандмауэра и подозрительные подключения."
-                ]);
-            }
-
-            // 6. Нагрузка на ПК
-            if (t.includes("тормоз") || t.includes("нагруз") || t.includes("требован") || t.includes("жрет") || t.includes("память")) {
-                return "Секретарь работает в Эко-режиме с приоритетом IDLE. Он потребляет минимум ОЗУ (около 30 МБ) и не нагружает процессор, чтобы не мешать играм.";
-            }
-
-            // 7. Функции / Что умеет
-            if (t.includes("умеет") || t.includes("функции") || t.includes("что делает") || t.includes("возможности")) {
-                return "Мои возможности: Мониторинг процессов, Веб-Щит (проверка ссылок и портов), Защита Загрузок в реальном времени и Живой чат с пользователем.";
-            }
-
-            // 8. Цена
-            if (t.includes("цена") || t.includes("стоит") || t.includes("деньги") || t.includes("купить")) {
-                return "Программа абсолютно бесплатна. Мы создаем ее для защиты пользователей, а не для заработка. Скачивайте и пользуйтесь!";
-            }
-
-            // 9. ОС / Совместимость
-            if (t.includes("windows") || t.includes("виндовс") || t.includes("ос") || t.includes("линукс")) {
-                return "Программа разработана специально для Windows 10 и Windows 11 (64-bit). На Linux или Mac она работать не будет.";
-            }
-
-            // 10. Благодарность
-            if (t.includes("спасибо") || t.includes("благодарю") || t.includes("круто")) {
-                return randomReply([
-                    "Всегда рад помочь! Безопасность превыше всего. 🛡️",
-                    "Пожалуйста! Если возникнут вопросы — я всегда на связи.",
-                    "Спасибо за отзыв! Мы стараемся для вас."
-                ]);
-            }
-            
-            // 11. Неизвестный вопрос
-            return randomReply([
-                "Интересный вопрос! Я пока только учусь. Попробуйте спросить про 'вирусы', 'установку' или 'нагрузку на ПК'.",
-                "Я не совсем понял вопрос. Я — бот-помощник антивируса. Спросите меня о функциях защиты!",
-                "Мои знания ограничены безопасностью ПК. Задайте вопрос про Секретаря или его возможности."
-            ]);
+            if (t.includes("привет") || t.includes("здравствуй") || t.includes("хай")) return randomReply(["Приветствую! Я на связи.", "Здравствуйте! Готов помочь.", "Привет! Задавайте вопрос."]);
+            if (t.includes("дата") || t.includes("создан")) return "Проект основан 2 ноября 2026 года.";
+            if (t.includes("доверять") || t.includes("безопасно ли")) return "Абсолютно безопасно. Мы не собираем данные.";
+            if (t.includes("скачать") || t.includes("установить")) return "Нажмите зеленую кнопку вверху страницы.";
+            if (t.includes("вирус") || t.includes("защит")) return "Используется эвристический анализ и Защитник Windows.";
+            if (t.includes("тормоз") || t.includes("нагруз")) return "Работает в Эко-режиме, потребляет около 30 МБ.";
+            if (t.includes("спасибо")) return "Всегда рад помочь! 🛡️";
+            return "Я бот-помощник. Спросите про 'вирусы', 'установку' или 'безопасность'.";
         }
 
         function sendMessage() {
@@ -185,32 +162,33 @@
             const text = input.value.trim();
             if (!text) return;
 
+            // Проверка на спам (Rate Limiting)
+            const now = Date.now();
+            if (now - lastMessageTime < MESSAGE_COOLDOWN) {
+                alert("Пожалуйста, подождите. Защита от спама активна.");
+                return;
+            }
+            lastMessageTime = now;
+
             const chatBox = document.getElementById("chatBox");
-            
-            // Добавляем сообщение пользователя
             const userMsg = document.createElement("div");
             userMsg.className = "message msg-user";
             userMsg.textContent = text;
             chatBox.appendChild(userMsg);
             
-            input.value = ""; // Очищаем поле
-            chatBox.scrollTop = chatBox.scrollHeight; // Прокрутка вниз
+            input.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Имитация "раздумий" ИИ
             setTimeout(() => {
                 const botMsg = document.createElement("div");
                 botMsg.className = "message msg-bot";
                 botMsg.textContent = getAIResponse(text);
                 chatBox.appendChild(botMsg);
                 chatBox.scrollTop = chatBox.scrollHeight;
-            }, 600); // 0.6 секунды задержки
+            }, 600);
         }
 
-        function handleKeyPress(event) {
-            if (event.key === "Enter") {
-                sendMessage();
-            }
-        }
+        function handleKeyPress(event) { if (event.key === "Enter") sendMessage(); }
     </script>
 </body>
 </html>
