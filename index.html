@@ -26,22 +26,27 @@
         .btn-download { background-color: var(--success); color: white; padding: 18px 45px; font-size: 18px; font-weight: 600; border-radius: 12px; text-decoration: none; transition: 0.3s; display: inline-block; }
         .btn-download:hover { transform: translateY(-3px); background-color: #388e3c; }
 
-        /* СТИЛИ ИНСТРУКЦИИ */
-        .guide-container { max-width: 800px; margin: 40px auto; background-color: var(--surface); border-radius: 12px; padding: 30px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .guide-title { font-size: 24px; font-weight: bold; color: var(--accent); margin-bottom: 20px; text-align: center; }
-        .step { margin-bottom: 15px; font-size: 15px; display: flex; align-items: flex-start; gap: 10px; }
-        .step-num { background-color: var(--accent); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 12px; flex-shrink: 0; margin-top: 2px; }
+        /* СТИЛИ ПОДРОБНОЙ ИНСТРУКЦИИ */
+        .guide-container { max-width: 800px; margin: 50px auto; background-color: var(--surface); border-radius: 12px; padding: 40px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: left; }
+        .guide-title { font-size: 28px; font-weight: bold; color: var(--accent); margin-bottom: 30px; text-align: center; border-bottom: 1px solid #333; padding-bottom: 20px; }
         
-        .warning-box { background-color: rgba(230, 126, 34, 0.1); border-left: 4px solid #e67e22; padding: 15px 20px; border-radius: 6px; margin-top: 25px; }
-        .warning-box h4 { color: #e67e22; margin-bottom: 5px; font-size: 16px; }
-        .warning-box p { color: #ccc; font-size: 14px; }
-        .highlight { color: #fff; font-weight: bold; background-color: #333; padding: 2px 6px; border-radius: 4px; }
+        .step-block { display: flex; gap: 20px; margin-bottom: 25px; }
+        .step-icon { font-size: 28px; background-color: #252526; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; border-radius: 12px; border: 1px solid #444; flex-shrink: 0; }
+        .step-content h3 { font-size: 18px; color: white; margin-bottom: 5px; }
+        .step-content p { font-size: 15px; color: #aaa; margin-bottom: 8px; }
+        
+        .highlight { color: #fff; font-weight: bold; background-color: #333; padding: 2px 8px; border-radius: 4px; border: 1px solid #555; }
+        .warning-text { color: #e67e22; font-weight: bold; }
+        
+        .faq-box { background-color: rgba(77, 168, 218, 0.1); border-left: 4px solid var(--accent); padding: 20px; border-radius: 8px; margin-top: 30px; }
+        .faq-box h4 { color: var(--accent); margin-bottom: 10px; font-size: 16px; }
+        .faq-box p { color: #ccc; font-size: 14px; margin-bottom: 10px; }
 
+        /* ОСТАЛЬНЫЕ СТИЛИ */
         .features { padding: 60px 20px; background-color: #161616; }
         .container { max-width: 1000px; margin: 0 auto; }
         .section-title { text-align: center; font-size: 36px; margin-bottom: 40px; }
         
-        /* ЧАТ */
         .chat-container { background-color: var(--surface); border-radius: 12px; border: 1px solid #333; overflow: hidden; max-width: 700px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .chat-header { background-color: #252526; padding: 15px 20px; font-weight: bold; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 12px; color: #fff; }
         .chat-box { height: 350px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background-color: #0f0f0f; scroll-behavior: smooth; }
@@ -77,30 +82,58 @@
         <p>Легкий, адаптивный и защищенный от взлома. Секретарь позаботится о твоем железе, пока ты играешь или работаешь.</p>
         <a href="SecretarySetup.exe" class="btn-download">⬇ Скачать для Windows</a>
 
-        <!-- ИНСТРУКЦИЯ ПО УСТАНОВКЕ -->
+        <!-- ПОДРОБНАЯ ИНСТРУКЦИЯ -->
         <div class="guide-container">
-            <div class="guide-title">📥 Инструкция по установке</div>
+            <div class="guide-title">📖 Полная инструкция по установке</div>
             
-            <div class="step">
-                <div class="step-num">1</div>
-                <div>Нажмите зеленую кнопку <b>«Скачать для Windows»</b> выше и дождитесь загрузки файла <code>SecretarySetup.exe</code>.</div>
+            <div class="step-block">
+                <div class="step-icon">📥</div>
+                <div class="step-content">
+                    <h3>Шаг 1: Скачивание</h3>
+                    <p>Нажмите зеленую кнопку <b>«Скачать для Windows»</b> выше. Браузер начнет загрузку файла <b>SecretarySetup.exe</b> (весом около 12 МБ). Дождитесь окончания загрузки.</p>
+                </div>
             </div>
             
-            <div class="step">
-                <div class="step-num">2</div>
-                <div>Откройте скачанный файл (двойным кликом). Запустится наш темный установщик. Нажмите <b>«УСТАНОВИТЬ»</b>.</div>
-            </div>
-            
-            <div class="step">
-                <div class="step-num">3</div>
-                <div>После завершения на вашем Рабочем столе появится ярлык <b>«Secretary Defender»</b>. Двойной клик по нему запустит антивирус.</div>
+            <div class="step-block">
+                <div class="step-icon">⚠️</div>
+                <div class="step-content">
+                    <h3>Шаг 2: Обход защиты Windows (SmartScreen)</h3>
+                    <p>Откройте скачанный файл. Если Windows покажет <b>синее окно</b> с надписью «Windows защитила ваш компьютер», сделайте следующее:</p>
+                    <p>1. Нажмите на мелкий текст <span class="highlight">«Подробнее» (More info)</span>.</p>
+                    <p>2. Внизу появится кнопка <span class="highlight">«Выполнить в любом случае» (Run anyway)</span>. Нажмите на нее.</p>
+                    <p class="warning-text">* Это нормально! Windows пока не знает о нашей новой программе, поэтому перестраховывается.</p>
+                </div>
             </div>
 
-            <!-- ПРЕДУПРЕЖДЕНИЕ О DEFENDER -->
-            <div class="warning-box">
-                <h4>⚠️ Важно: Что делать, если Windows выдаст предупреждение?</h4>
-                <p>Так как программа вышла недавно, у нас пока нет платного сертификата Microsoft (стоит несколько тысяч долларов). Поэтому при запуске установщика Windows SmartScreen может показать <b>синее окно</b> с надписью <i>«Windows защитила ваш компьютер»</i>.</p>
-                <p style="margin-top: 10px;">Это <b>не вирус</b>. Чтобы установить программу, нажмите на синем окне <span class="highlight">Подробнее (More info)</span>, а затем появившуюся кнопку <span class="highlight">Выполнить в любом случае (Run anyway)</span>.</p>
+            <div class="step-block">
+                <div class="step-icon">🛡️</div>
+                <div class="step-content">
+                    <h3>Шаг 3: Права Администратора (UAC)</h3>
+                    <p>Windows спросит: <i>«Разрешить этому приложению вносить изменения на вашем устройстве?»</i>. Нажмите <b>«Да»</b>.</p>
+                    <p>Это необходимо, чтобы установщик создал ярлык на рабочем столе и добавил программу в исключения Защитника Windows (чтобы он не удалил Секретаря).</p>
+                </div>
+            </div>
+
+            <div class="step-block">
+                <div class="step-icon">⚙️</div>
+                <div class="step-content">
+                    <h3>Шаг 4: Установка</h3>
+                    <p>Появится темное окно нашего установщика. Нажмите кнопку <b>«УСТАНОВИТЬ»</b> и подождите пару секунд, пока полоска прогресса не заполнится.</p>
+                </div>
+            </div>
+
+            <div class="step-block">
+                <div class="step-icon">🚀</div>
+                <div class="step-content">
+                    <h3>Шаг 5: Первый запуск</h3>
+                    <p>На вашем Рабочем столе появится ярлык <b>«Secretary Defender»</b>. Запустите его.</p>
+                    <p>При первом запуске программа попросит вас придумать <b>Мастер-пароль</b>. Он нужен для защиты ядра программы от хакеров и вирусов. Придумайте и запишите его (он понадобится, если вы захотите обновить код программы).</p>
+                </div>
+            </div>
+
+            <div class="faq-box">
+                <h4>❓ Что делать, если антивирус удалил файл?</h4>
+                <p>Если Windows Defender удалил установщик сразу после скачивания, откройте «Безопасность Windows» -> «Защита от вирусов и угроз» -> «Журнал защиты». Найдите там <b>SecretarySetup.exe</b> и нажмите «Восстановить» (или «Разрешить»).</p>
             </div>
         </div>
     </section>
