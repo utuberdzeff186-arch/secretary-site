@@ -27,7 +27,6 @@
             color: var(--text); 
             line-height: 1.6; 
             overflow-x: hidden; 
-            /* Создаем неоновое свечение на фоне */
             background-image: 
                 radial-gradient(circle at 15% 50%, rgba(77, 168, 218, 0.08), transparent 25%),
                 radial-gradient(circle at 85% 30%, rgba(46, 125, 50, 0.05), transparent 25%);
@@ -160,8 +159,8 @@
             backdrop-filter: blur(12px);
         }
         .chat-header { background: rgba(255,255,255,0.02); padding: 20px; font-weight: 600; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 15px; color: #fff; font-size: 16px; }
-        .chat-box { height: 380px; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
-        .message { max-width: 80%; padding: 14px 20px; border-radius: 16px; font-size: 15px; line-height: 1.5; animation: fadeIn 0.3s ease; }
+        .chat-box { height: 400px; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
+        .message { max-width: 85%; padding: 14px 20px; border-radius: 16px; font-size: 15px; line-height: 1.5; animation: fadeIn 0.3s ease; }
         .msg-bot { background: rgba(255,255,255,0.05); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid var(--border); }
         .msg-user { background: var(--accent); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; box-shadow: 0 4px 15px var(--accent-glow); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -179,7 +178,6 @@
         .footer-text { color: var(--text-muted); font-size: 14px; }
         .footer-signature { color: #555; font-size: 12px; margin-top: 15px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
 
-        /* Адаптивность для телефонов */
         @media (max-width: 768px) {
             .hero h1 { font-size: 40px; }
             .guide-container { padding: 30px 20px; }
@@ -206,7 +204,6 @@
         <a href="SecretarySetup.exe" class="btn-download">⬇ Скачать для Windows</a>
     </section>
 
-    <!-- БЛОК ВОЗМОЖНОСТЕЙ -->
     <section id="features" class="features-grid">
         <div class="feature-card">
             <div class="feature-icon">🪶</div>
@@ -230,7 +227,6 @@
         </div>
     </section>
 
-    <!-- ИНСТРУКЦИЯ -->
     <section id="guide" class="guide-wrapper">
         <div class="guide-container">
             <div class="guide-title">📖 Инструкция по установке</div>
@@ -277,7 +273,6 @@
         </div>
     </section>
 
-    <!-- ЧАТ -->
     <section id="support" class="chat-section">
         <div style="text-align: center; margin-bottom: 40px;">
             <h2 style="font-size: 36px; font-weight: 800;">💬 ИИ-Ассистент</h2>
@@ -293,7 +288,7 @@
                 Секретарь-Помощник
             </div>
             <div class="chat-box" id="chatBox">
-                <div class="message msg-bot">Приветствую! Я цифровой помощник Secretary Defender. Задайте мне любой вопрос.</div>
+                <div class="message msg-bot">Приветствую! Я цифровой помощник Secretary Defender. Задайте мне любой вопрос о программе, установке или защите.</div>
             </div>
             <div class="chat-input-area">
                 <input type="text" id="chatInput" placeholder="Напишите вопрос..." onkeypress="handleKeyPress(event)">
@@ -312,14 +307,12 @@
     </footer>
 
     <script>
-        // Защита от F12
         document.addEventListener('keydown', function(e) {
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) {
                 e.preventDefault();
             }
         });
 
-        // Анти-спам
         let lastMessageTime = 0;
         const MESSAGE_COOLDOWN = 1500; 
 
@@ -327,15 +320,65 @@
 
         function getAIResponse(text) {
             const t = text.toLowerCase();
-            if (t.includes("привет") || t.includes("здравствуй") || t.includes("хай")) return randomReply(["Приветствую! Я на связи.", "Здравствуйте! Готов помочь.", "Привет! Задавайте вопрос."]);
-            if (t.includes("дата") || t.includes("создан")) return "Проект основан 2 ноября 2026 года.";
-            if (t.includes("доверять") || t.includes("безопасно ли")) return "Абсолютно безопасно. Мы не собираем данные.";
-            if (t.includes("скачать") || t.includes("установить")) return "Нажмите зеленую кнопку вверху страницы, затем запустите установщик.";
-            if (t.includes("вирус") || t.includes("защит")) return "Используется эвристический анализ и Защитник Windows.";
-            if (t.includes("тормоз") || t.includes("нагруз")) return "Работает в Эко-режиме, потребляет около 30 МБ.";
-            if (t.includes("синий экран") || t.includes("smart") || t.includes("предупрежд")) return "Если Windows показывает синее окно, нажмите 'Подробнее' и 'Выполнить в любом случае'. Программа безопасна.";
-            if (t.includes("спасибо")) return "Всегда рад помочь! 🛡️";
-            return "Я бот-помощник. Спросите про 'вирусы', 'установку' или 'безопасность'.";
+            
+            // Приветствия и благодарности
+            if (t.includes("привет") || t.includes("здравствуй") || t.includes("хай") || t.includes("добрый")) 
+                return randomReply(["Приветствую! Я на связи.", "Здравствуйте! Готов ответить на ваши вопросы.", "Привет! Задавайте вопрос о безопасности."]);
+            if (t.includes("спасибо") || t.includes("благодарю")) 
+                return randomReply(["Всегда рад помочь! 🛡️", "Пожалуйста! Безопасность превыше всего."]);
+
+            // О программе
+            if (t.includes("что это") || t.includes("что за") || t.includes("секретарь")) 
+                return "Secretary Defender — это легкий антивирус для Windows, созданный для защиты от вирусов, сетевых атак и оптимизации системы без нагрузки на процессор.";
+            if (t.includes("дата") || t.includes("создан") || t.includes("основан") || t.includes("когда")) 
+                return "Проект был официально основан 2 ноября 2026 года.";
+            if (t.includes("кто создал") || t.includes("разработчик") || t.includes("автор")) 
+                return "Меня создал независимый разработчик. Проект является открытым и не преследует коммерческой выгоды.";
+            if (t.includes("цена") || t.includes("стоит") || t.includes("деньги") || t.includes("купить") || t.includes("платно")) 
+                return "Программа абсолютно бесплатна. Мы не берем денег за защиту и не собираем донаты.";
+
+            // Безопасность и доверие
+            if (t.includes("вирус") && (t.includes("это") || t.includes("сам"))) 
+                return "Нет, это не вирус. Наш код открыт на GitHub, а программа использует официальные API Windows. Защитник может ругаться из-за отсутствия платной подписи, но это ложное срабатывание.";
+            if (t.includes("доверять") || t.includes("доверие") || t.includes("безопасно ли")) 
+                return "Да. Мы не собираем ваши пароли или личные данные. Вся проверка происходит локально через Защитник Windows.";
+            if (t.includes("крад") || t.includes("данные") || t.includes("шпион")) 
+                return "Мы не собираем никакие данные. Программа работает автономно. Вы можете проверить это через Монитор ресурсов Windows.";
+
+            // Установка и удаление
+            if (t.includes("скачать") || t.includes("где взять") || t.includes("установить")) 
+                return "Нажмите зеленую кнопку «Скачать для Windows» в самом верху страницы. Затем запустите скачанный файл.";
+            if (t.includes("синий") || t.includes("smart") || t.includes("предупрежд") || t.includes("защитила")) 
+                return "Если Windows показывает синее окно, нажмите «Подробнее» и «Выполнить в любом случае». Это стандартная защита для новых программ без сертификата.";
+            if (t.includes("удалить") || t.includes("деинсталл")) 
+                return "Зайдите в «Параметры Windows» -> «Приложения» -> «Установленные приложения», найдите Secretary Defender и нажмите «Удалить». Либо используйте ярлык удаления в папке программы.";
+            if (t.includes("пароль") || t.includes("мастер-пароль")) 
+                return "При первом запуске программа просит придумать пароль. Он нужен для защиты ядра от взлома (чтобы вирусы не могли изменить код). Запишите его!";
+
+            // Функции и возможности
+            if (t.includes("умеет") || t.includes("функции") || t.includes("возможности") || t.includes("что делает")) 
+                return "Я умею: 1. Проверять процессы на майнеры. 2. Сканировать Загрузки. 3. Проверять открытые порты (Кибер-щит). 4. Чистить систему от мусора. 5. Отвечать в этом чате.";
+            if (t.includes("нагруз") || t.includes("тормоз") || t.includes("память") || t.includes("жрет") || t.includes("озу")) 
+                return "Я работаю в Эко-режиме с приоритетом IDLE. Потребляю около 30-50 МБ ОЗУ. Ваши игры и браузер будут работать на полную мощность.";
+            if (t.includes("defender") || t.includes("защитник windows") || t.includes("заменяет")) 
+                return "Я не заменяю Защитник Windows, а дополняю его. Я использую его базы для проверки файлов и добавляю свои функции (например, Монитор процессов).";
+            if (t.includes("карантин")) 
+                return "Если я найду вирус, я не удалю его сразу, а отправлю в Карантин. Там его можно проверить и либо удалить навсегда, либо восстановить, если это ложное срабатывание.";
+
+            // О сайте и поддержке
+            if (t.includes("сайт") || t.includes("github") || t.includes("исходный код")) 
+                return "Наш исходный код и файлы доступны на GitHub. Ссылка на профиль разработчика указана в подвале сайта (внизу).";
+            if (t.includes("связ") || t.includes("поддержк") || t.includes("вопрос") || t.includes("помощь")) 
+                return "Если у вас возникла проблема, вы можете создать тикет (запрос) в разделе Issues на нашем GitHub. Или спросить меня здесь!";
+            if (t.includes("windows") || t.includes("виндовс") || t.includes("совместим") || t.includes("ос")) 
+                return "Программа работает на Windows 10 и Windows 11 (64-bit). На Linux, MacOS или Windows 7 она не запустится.";
+
+            // Неизвестный вопрос
+            return randomReply([
+                "Интересный вопрос! Я пока только учусь. Попробуйте спросить про 'установку', 'вирусы' или 'нагрузку на ПК'.",
+                "Я не совсем понял вопрос. Я — бот-помощник антивируса. Спросите меня о функциях защиты!",
+                "Мои знания ограничены безопасностью ПК. Задайте вопрос про Секретаря или его возможности."
+            ]);
         }
 
         function sendMessage() {
