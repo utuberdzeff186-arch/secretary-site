@@ -52,7 +52,7 @@
         .highlight-card { border-color: rgba(230, 126, 34, 0.4); background: rgba(230, 126, 34, 0.05); }
         .highlight-card:hover { border-color: #e67e22; }
         
-        /* Стили для картинок */
+        /* Стили для картинок (с эффектом увеличения) */
         .step-img { 
             width: 100%; 
             height: auto; 
@@ -62,7 +62,27 @@
             margin-top: auto; 
             display: block; 
             object-fit: cover; 
+            cursor: zoom-in; /* Показывает, что на картинку можно нажать */
+            transition: transform 0.2s ease;
         }
+        .step-img:hover { transform: scale(1.02); border-color: #4da8da; }
+
+        /* Модальное окно (Лайтбокс) для просмотра картинки */
+        .modal {
+            display: none; position: fixed; z-index: 9999; padding-top: 5vh; left: 0; top: 0; width: 100%; height: 100%;
+            overflow: auto; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            margin: auto; display: block; max-width: 95%; max-height: 90vh;
+            border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 30px rgba(0,0,0,0.8); animation: zoomIn 0.3s;
+        }
+        @keyframes zoomIn { from {transform: scale(0.8); opacity: 0;} to {transform: scale(1); opacity: 1;} }
+        .close {
+            position: absolute; top: 15px; right: 35px; color: #fff; font-size: 40px;
+            font-weight: bold; cursor: pointer; transition: 0.3s; z-index: 10000;
+        }
+        .close:hover { color: var(--accent); }
 
         /* --- ЧАТ --- */
         .chat-section { padding: 80px 20px; background: #0a0d13; margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -124,46 +144,55 @@
             </div>
         </div>
 
-        <!-- ИНСТРУКЦИЯ С ВАШИМИ КАРТИНКАМИ -->
+        <!-- ИНСТРУКЦИЯ С УВЕЛИЧЕНИЕМ КАРТИНОК -->
         <div class="guide-box" id="guide">
             <div style="text-align: center; margin-bottom: 20px;">
                 <h3 style="font-size: 28px; color: var(--text);">📖 Как установить Секретаря</h3>
-                <p style="color: var(--text-muted); margin-top: 10px;">Займет всего 1 минуту</p>
+                <p style="color: var(--text-muted); margin-top: 10px;">Нажмите на картинку, чтобы увеличить её</p>
             </div>
 
-                                                                                                            <div class="steps-grid">
+            <div class="steps-grid">
                 <!-- Шаг 1 -->
                 <div class="step-card">
                     <div class="step-num">1</div>
                     <h4>Скачивание файла</h4>
-                    <p>Нажмите зеленую кнопку <b>«Скачать для Windows»</b> в самом верху страницы. Браузер начнет загрузку файла <b>SecretarySetup.exe</b>.</p>
-                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step1.png.png?raw=true" class="step-img" alt="Шаг 1: Скачивание">
+                    <p>Нажмите зеленую кнопку <b>«Скачать для Windows»</b>. Браузер начнет загрузку файла <b>SecretarySetup.exe</b>.</p>
+                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step1.png.png?raw=true" class="step-img" onclick="openModal(this.src)" alt="Шаг 1">
                 </div>
 
                 <!-- Шаг 2 -->
                 <div class="step-card">
                     <div class="step-num">2</div>
                     <h4>Запуск установщика</h4>
-                    <p>Откройте папку <b>«Загрузки»</b> на компьютере и запустите скачанный файл. Появится темное окно установки, нажмите кнопку <b>«УСТАНОВИТЬ»</b>.</p>
-                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step2.png.png?raw=true" class="step-img" alt="Шаг 2: Запуск установщика">
+                    <p>Откройте папку <b>«Загрузки»</b> и запустите файл. В темном окне нажмите <b>«УСТАНОВИТЬ»</b>.</p>
+                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step2.png.png?raw=true" class="step-img" onclick="openModal(this.src)" alt="Шаг 2">
                 </div>
 
                 <!-- Шаг 3 -->
                 <div class="step-card highlight-card">
                     <div class="step-num" style="background:#e67e22;">3</div>
                     <h4 style="color:#e67e22;">Обход защиты Windows</h4>
-                    <p>Windows может выдать фиолетовое окно. Нажмите на текст <b>«Подробнее»</b>, чтобы развернуть его (как показано на картинке).</p>
-                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step3.png.png?raw=true" class="step-img" alt="Шаг 3: Подробнее">
+                    <p>Windows может выдать фиолетовое окно. Нажмите на текст <b>«Подробнее»</b>, чтобы развернуть его.</p>
+                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step3.png.png?raw=true" class="step-img" onclick="openModal(this.src)" alt="Шаг 3">
                 </div>
 
                 <!-- Шаг 4 -->
                 <div class="step-card highlight-card">
                     <div class="step-num" style="background:#e67e22;">4</div>
                     <h4 style="color:#e67e22;">Подтверждение</h4>
-                    <p>После нажатия «Подробнее» внизу появится кнопка <b>«Выполнить в любом случае»</b>. Смело нажимайте на неё, чтобы завершить установку.</p>
-                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step4.png.png?raw=true" class="step-img" alt="Шаг 4: Выполнить в любом случае">
+                    <p>Внизу появится кнопка <b>«Выполнить в любом случае»</b>. Смело нажимайте на неё, чтобы завершить установку.</p>
+                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step4.png.png?raw=true" class="step-img" onclick="openModal(this.src)" alt="Шаг 4">
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ДЛЯ КАРТИНОК (Скрыто по умолчанию) -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="expandedImg">
+    </div>
+
     <!-- БЛОК ТЕХПОДДЕРЖКИ -->
     <section id="support" class="chat-section">
         <div style="text-align: center; margin-bottom: 40px;">
@@ -208,6 +237,24 @@
             }
         });
 
+        // --- ЛОГИКА ДЛЯ УВЕЛИЧЕНИЯ КАРТИНОК ---
+        function openModal(src) {
+            document.getElementById("imageModal").style.display = "block";
+            document.getElementById("expandedImg").src = src;
+        }
+
+        function closeModal() {
+            document.getElementById("imageModal").style.display = "none";
+        }
+
+        // Закрыть окно, если кликнуть мимо картинки
+        document.getElementById("imageModal").addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // --- ЛОГИКА ЧАТА ---
         let lastMessageTime = 0;
         const MESSAGE_COOLDOWN = 1500; 
 
@@ -232,36 +279,26 @@
             for (let item of knowledgeBase) {
                 if (item.keywords.some(kw => t.includes(kw))) return item.answer;
             }
-
             if (t.includes("привет") || t.includes("здравствуй")) return randomReply(["Приветствую! Задайте вопрос.", "Здравствуйте! Чем помочь?"]);
             if (t.includes("спасибо") || t.includes("благодарю")) return "Всегда рад помочь! 🛡️";
             if (t.includes("модель") || t.includes("gpt")) return "Я — локальный JavaScript-бот, созданный специально для помощи с Secretary Defender!";
-            
-            return randomReply([
-                "Я не совсем понял вопрос. Попробуйте нажать на кнопки быстрого ответа.",
-                "Моя база знаний пока не знает ответа. Опишите проблему другими словами.",
-                "Уточните вопрос, пожалуйста. Я лучше всего разбираюсь в установке и защите."
-            ]);
+            return randomReply(["Я не совсем понял вопрос. Попробуйте нажать на кнопки быстрого ответа.", "Моя база знаний пока не знает ответа. Опишите проблему другими словами.", "Уточните вопрос, пожалуйста. Я лучше всего разбираюсь в установке и защите."]);
         }
 
         function sendMessage() {
             const input = document.getElementById("chatInput");
             const text = input.value.trim();
             if (!text) return;
-
             const now = Date.now();
             if (now - lastMessageTime < MESSAGE_COOLDOWN) return;
             lastMessageTime = now;
-
             const chatBox = document.getElementById("chatBox");
             const userMsg = document.createElement("div");
             userMsg.className = "message msg-user";
             userMsg.textContent = text;
             chatBox.appendChild(userMsg);
-            
             input.value = "";
             chatBox.scrollTop = chatBox.scrollHeight;
-
             setTimeout(() => {
                 const botMsg = document.createElement("div");
                 botMsg.className = "message msg-bot";
