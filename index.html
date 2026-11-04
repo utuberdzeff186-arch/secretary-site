@@ -254,18 +254,38 @@
         const pupil = document.getElementById('pupil');
         const eyeBg = document.getElementById('eye-bg');
 
-        // 1. Зрачок следит за мышкой
+        // 1. Зрачок следит за мышкой (с ограничением по эллипсу)
         document.addEventListener('mousemove', (e) => {
             const rect = mascot.getBoundingClientRect();
             const mascotX = rect.left + rect.width / 2;
             const mascotY = rect.top + rect.height / 2;
 
-            const angle = Math.atan2(e.clientY - mascotY, e.clientX - mascotX);
-            const distance = Math.min(Math.hypot(e.clientX - mascotX, e.clientY - mascotY) / 15, 12); // Ограничиваем движение зрачка (макс 12 пикселей)
+            // Направление от центра маскота к мышке
+            const dx = e.clientX - mascotX;
+            const dy = e.clientY - mascotY;
+            const angle = Math.atan2(dy, dx);
 
-            // Базовая позиция глаза (100, 95)
-            const x = 100 + Math.cos(angle) * distance;
-            const y = 95 + Math.sin(angle) * distance;
+            // Размеры глаза и зрачка в SVG
+            const pupilRadius = 8;
+            const eyeRadiusX = 30;
+            const eyeRadiusY = 15;
+
+            // Максимально допустимое смещение зрачка от центра (чтобы он не вылезал)
+            const maxOffsetX = eyeRadiusX - pupilRadius; // 22
+            const maxOffsetY = eyeRadiusY - pupilRadius; // 7
+
+            // Формула эллипса для вычисления максимального расстояния в заданном угле
+            const cos = Math.cos(angle);
+            const sin = Math.sin(angle);
+            const maxDist = (maxOffsetX * maxOffsetY) / Math.sqrt(Math.pow(maxOffsetY * cos, 2) + Math.pow(maxOffsetX * sin, 2));
+
+            // Вычисляем расстояние до мышки и ограничиваем его
+            const rawDist = Math.hypot(dx, dy);
+            const moveDist = Math.min(rawDist / 10, maxDist); // Делим на 10, чтобы зрачок двигался плавно
+
+            // Новые координаты зрачка
+            const x = 100 + cos * moveDist;
+            const y = 95 + sin * moveDist;
 
             pupil.setAttribute('cx', x);
             pupil.setAttribute('cy', y);
@@ -273,24 +293,21 @@
 
         // 2. Случайное моргание
         setInterval(() => {
-            if (Math.random() > 0.6) { // 40% шанс моргнуть
-                eyeBg.setAttribute('ry', '2'); // Закрываем глаз
-                setTimeout(() => eyeBg.setAttribute('ry', '15'), 150); // Открываем
+            if (Math.random() > 0.6) {
+                eyeBg.setAttribute('ry', '2');
+                setTimeout(() => eyeBg.setAttribute('ry', '15'), 150);
             }
         }, 4000);
 
         // 3. Анимация сканирования при клике на кнопку "Скачать"
         function triggerScan() {
             mascot.classList.add('scanning');
-            
-            // Меняем рот на букву "О"
             document.getElementById('mouth').setAttribute('d', 'M90 120 Q100 135 110 120');
             document.getElementById('mouth').setAttribute('fill', 'none');
 
-            // Через 3 секунды возвращаем в обычное состояние
             setTimeout(() => {
                 mascot.classList.remove('scanning');
-                document.getElementById('mouth').setAttribute('d', 'M80 120 Q100 140 120 120'); // Улыбка
+                document.getElementById('mouth').setAttribute('d', 'M80 120 Q100 140 120 120');
             }, 3500);
         }
 
