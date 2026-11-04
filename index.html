@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 🛡️ ЗАЩИТА ОТ XSS-АТАК (Content Security Policy) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://github.com https://raw.githubusercontent.com;">
+    
     <title>Секретарь — Умный антивирус</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -40,11 +44,9 @@
         @keyframes pulseGlow { 0% { opacity: 1; r: 8; } 50% { opacity: 0.5; r: 10; fill: #2e7d32; } 100% { opacity: 1; r: 8; } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Состояние сканирования */
         .scanning #shield { fill: #e67e22; }
         .scanning #eye-bg { stroke: #e67e22; }
         .scanning #pupil { fill: #e67e22; animation: spinEye 0.3s infinite linear; transform-origin: 100px 95px; }
-        .scanning #mouth { stroke: #e67e22; }
         @keyframes spinEye { 100% { transform: rotate(360deg); } }
 
         .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
@@ -54,6 +56,11 @@
         .card:hover { background: var(--surface-hover); transform: translateY(-5px); border-color: rgba(77, 168, 218, 0.4); }
         .card h3 { font-size: 18px; margin-bottom: 10px; color: #fff; }
         .card p { font-size: 14px; color: var(--text-muted); }
+
+        /* Блок SHA-256 */
+        .hash-box { margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); max-width: 650px; margin-left: auto; margin-right: auto; text-align: left; }
+        .hash-box p { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; }
+        .hash-code { display: block; background: #000; padding: 12px; border-radius: 6px; color: #2ecc71; font-size: 12px; word-break: break-all; user-select: all; font-family: monospace; }
 
         /* --- ИНСТРУКЦИЯ --- */
         .guide-box { background: var(--surface); border-radius: 24px; padding: 40px; border: 1px solid rgba(255,255,255,0.08); margin-top: 40px; text-align: left; }
@@ -115,7 +122,6 @@
     </header>
 
     <section class="hero">
-        <!-- ЖИВОЙ МАСКОТ -->
         <div class="mascot-container">
             <svg id="mascot" class="mascot-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <defs>
@@ -132,12 +138,9 @@
                         <feComposite in="SourceGraphic" in2="blur" operator="over" />
                     </filter>
                 </defs>
-                
                 <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(77, 168, 218, 0.2)" stroke-width="2" stroke-dasharray="10 5" class="spin-slow"/>
-                
                 <path id="shield" d="M100 20 L160 45 L160 110 C160 150 100 180 100 180 C100 180 40 150 40 110 L40 45 Z" fill="url(#shieldGrad)" filter="url(#glow)" opacity="0.9"/>
                 <path d="M100 35 L145 55 L145 110 C145 140 100 165 100 165 C100 165 55 140 55 110 L55 55 Z" fill="none" stroke="#080a0f" stroke-width="3"/>
-                
                 <g id="eye-group">
                     <ellipse id="eye-bg" cx="100" cy="95" rx="30" ry="15" fill="#080a0f" stroke="url(#eyeGrad)" stroke-width="3"/>
                     <circle id="pupil" cx="100" cy="95" r="8" fill="#4da8da" filter="url(#glow)"/>
@@ -152,9 +155,15 @@
         <div class="sys-req">
             <span>Windows 10 / 11 (64-bit)</span> | <span>~35 МБ</span> | <span>Бесплатно</span>
         </div>
+
+        <!-- 🛡️ ПРОВЕРКА SHA-256 (защита от подмены файла) -->
+        <div class="hash-box">
+            <p>🛡️ <b>Проверка подлинности файла:</b> Убедитесь, что хэш скачанного файла совпадает с этим:</p>
+            <!-- ВСТАВЬТЕ СЮДА SHA-256 ОТ ВАШЕГО EXE -->
+            <code class="hash-code">0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b</code>
+        </div>
     </section>
 
-    <!-- БЛОК ВОЗМОЖНОСТЕЙ -->
     <div class="container" id="features">
         <div class="grid">
             <div class="card">
@@ -180,27 +189,27 @@
             <div class="steps-grid">
                 <div class="step-card">
                     <div class="step-num">1</div>
-                    <h4>Скачивание файла</h4>
-                    <p>Нажмите зеленую кнопку <b>«Скачать для Windows»</b>. Браузер начнет загрузку файла.</p>
-                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step1.png.png?raw=true" class="step-img" onclick="openModal(this.src)" alt="Шаг 1">
+                    <h4>Скачивание</h4>
+                    <p>Нажмите зеленую кнопку выше. Скачается файл <b>SecretarySetup.exe</b>.</p>
+                    <img src="step1.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 1: Скачивание">
                 </div>
                 <div class="step-card">
                     <div class="step-num">2</div>
-                    <h4>Запуск установщика</h4>
-                    <p>Откройте папку <b>«Загрузки»</b> и запустите файл. В темном окне нажмите <b>«УСТАНОВИТЬ»</b>.</p>
-                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step2.png.png?raw=true" class="step-img" onclick="openModal(this.src)" alt="Шаг 2">
+                    <h4>Запуск</h4>
+                    <p>Откройте папку «Загрузки» и запустите скачанный файл двойным кликом.</p>
+                    <img src="step2.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 2: Запуск">
                 </div>
                 <div class="step-card highlight-card">
                     <div class="step-num" style="background:#e67e22;">3</div>
-                    <h4 style="color:#e67e22;">Обход защиты Windows</h4>
-                    <p>Windows может выдать фиолетовое окно. Нажмите на текст <b>«Подробнее»</b>, чтобы развернуть его.</p>
-                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step3.png.png?raw=true" class="step-img" onclick="openModal(this.src)" alt="Шаг 3">
+                    <h4 style="color:#e67e22;">SmartScreen</h4>
+                    <p>Windows выдаст синее окно. Нажмите <b>«Подробнее»</b>, а затем <b>«Выполнить в любом случае»</b>.</p>
+                    <img src="step3.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 3: SmartScreen">
                 </div>
-                <div class="step-card highlight-card">
-                    <div class="step-num" style="background:#e67e22;">4</div>
-                    <h4 style="color:#e67e22;">Подтверждение</h4>
-                    <p>Внизу появится кнопка <b>«Выполнить в любом случае»</b>. Смело нажимайте на неё.</p>
-                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step4.png.png?raw=true" class="step-img" onclick="openModal(this.src)" alt="Шаг 4">
+                <div class="step-card">
+                    <div class="step-num">4</div>
+                    <h4>Готово!</h4>
+                    <p>Появится окно установки. Следуйте инструкциям. Ярлык появится на рабочем столе.</p>
+                    <img src="step4.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 4: Установка">
                 </div>
             </div>
         </div>
@@ -249,41 +258,33 @@
     </footer>
 
     <script>
-        // --- ЛОГИКА ЖИВОГО МАСКОТА ---
+        // --- ЖИВОЙ МАСКОТ ---
         const mascot = document.getElementById('mascot');
         const pupil = document.getElementById('pupil');
         const eyeBg = document.getElementById('eye-bg');
 
-        // 1. Зрачок следит за мышкой (с ограничением по эллипсу)
         document.addEventListener('mousemove', (e) => {
             const rect = mascot.getBoundingClientRect();
             const mascotX = rect.left + rect.width / 2;
             const mascotY = rect.top + rect.height / 2;
 
-            // Направление от центра маскота к мышке
             const dx = e.clientX - mascotX;
             const dy = e.clientY - mascotY;
             const angle = Math.atan2(dy, dx);
 
-            // Размеры глаза и зрачка в SVG
             const pupilRadius = 8;
             const eyeRadiusX = 30;
             const eyeRadiusY = 15;
+            const maxOffsetX = eyeRadiusX - pupilRadius;
+            const maxOffsetY = eyeRadiusY - pupilRadius;
 
-            // Максимально допустимое смещение зрачка от центра (чтобы он не вылезал)
-            const maxOffsetX = eyeRadiusX - pupilRadius; // 22
-            const maxOffsetY = eyeRadiusY - pupilRadius; // 7
-
-            // Формула эллипса для вычисления максимального расстояния в заданном угле
             const cos = Math.cos(angle);
             const sin = Math.sin(angle);
             const maxDist = (maxOffsetX * maxOffsetY) / Math.sqrt(Math.pow(maxOffsetY * cos, 2) + Math.pow(maxOffsetX * sin, 2));
 
-            // Вычисляем расстояние до мышки и ограничиваем его
             const rawDist = Math.hypot(dx, dy);
-            const moveDist = Math.min(rawDist / 10, maxDist); // Делим на 10, чтобы зрачок двигался плавно
+            const moveDist = Math.min(rawDist / 10, maxDist);
 
-            // Новые координаты зрачка
             const x = 100 + cos * moveDist;
             const y = 95 + sin * moveDist;
 
@@ -291,7 +292,6 @@
             pupil.setAttribute('cy', y);
         });
 
-        // 2. Случайное моргание
         setInterval(() => {
             if (Math.random() > 0.6) {
                 eyeBg.setAttribute('ry', '2');
@@ -299,7 +299,6 @@
             }
         }, 4000);
 
-        // 3. Анимация сканирования при клике на кнопку "Скачать"
         function triggerScan() {
             mascot.classList.add('scanning');
             document.getElementById('mouth').setAttribute('d', 'M90 120 Q100 135 110 120');
@@ -340,7 +339,8 @@
             { keywords: ["как проверить", "проверить файл", "сканировать"], answer: "Откройте Секретаря, перейдите на вкладку 'Главная' и нажмите 'Проверить файл'. Выберите файл, и он будет просканирован." },
             { keywords: ["карантин", "где карантин", "восстановить"], answer: "Все вирусы находятся во вкладке 'Карантин'. Там вы можете выбрать файл и нажать 'Удалить' или 'Восстановить'." },
             { keywords: ["удалить программу", "как удалить"], answer: "Зайдите в 'Параметры Windows' -> 'Приложения' -> 'Установленные приложения'. Найдите Secretary Defender и нажмите 'Удалить'." },
-            { keywords: ["windows", "система", "совместимость"], answer: "Секретарь работает на Windows 10 и Windows 11 (64-bit). На старых системах или Linux он не запустится." }
+            { keywords: ["windows", "система", "совместимость"], answer: "Секретарь работает на Windows 10 и Windows 11 (64-bit). На старых системах или Linux он не запустится." },
+            { keywords: ["virustotal", "хэш"], answer: "Сайт VirusTotal может быть заблокирован в РФ. Используйте VPN или другие сервисы для проверки хэша." }
         ];
 
         function getAIResponse(text) {
@@ -351,23 +351,31 @@
             if (t.includes("привет") || t.includes("здравствуй")) return randomReply(["Приветствую! Задайте вопрос.", "Здравствуйте! Чем помочь?"]);
             if (t.includes("спасибо") || t.includes("благодарю")) return "Всегда рад помочь! 🛡️";
             if (t.includes("модель") || t.includes("gpt")) return "Я — локальный JavaScript-бот, созданный специально для помощи с Secretary Defender!";
-            return randomReply(["Я не совсем понял вопрос. Попробуйте нажать на кнопки быстрого ответа.", "Моя база знаний пока не знает ответа. Опишите проблему другими словами.", "Уточните вопрос, пожалуйста. Я лучше всего разбираюсь в установке и защите."]);
+            return randomReply([
+                "Я не совсем понял вопрос. Попробуйте нажать на кнопки быстрого ответа.",
+                "Моя база знаний пока не знает ответа. Опишите проблему другими словами.",
+                "Уточните вопрос, пожалуйста. Я лучше всего разбираюсь в установке и защите."
+            ]);
         }
 
         function sendMessage() {
             const input = document.getElementById("chatInput");
             const text = input.value.trim();
             if (!text) return;
+
             const now = Date.now();
             if (now - lastMessageTime < MESSAGE_COOLDOWN) return;
             lastMessageTime = now;
+
             const chatBox = document.getElementById("chatBox");
             const userMsg = document.createElement("div");
             userMsg.className = "message msg-user";
             userMsg.textContent = text;
             chatBox.appendChild(userMsg);
+            
             input.value = "";
             chatBox.scrollTop = chatBox.scrollHeight;
+
             setTimeout(() => {
                 const botMsg = document.createElement("div");
                 botMsg.className = "message msg-bot";
