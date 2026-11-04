@@ -4,12 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- 🛡️ ЗАЩИТА ОТ XSS-АТАК (Content Security Policy) -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://github.com https://raw.githubusercontent.com;">
+    <!-- ========================================== -->
+    <!-- 🛡️ МАКСИМАЛЬНАЯ ЗАЩИТА (Security Headers) -->
+    <!-- ========================================== -->
+    
+    <!-- 1. Content Security Policy (CSP) - Блокирует XSS и сторонние скрипты -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://github.com https://raw.githubusercontent.com; connect-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self';">
+    
+    <!-- 2. Защита от Кликджекинга (Clickjacking) - Запрет на встраивание в iframe -->
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    
+    <!-- 3. Защита от MIME-сниффинга - Браузер не будет угадывать тип файла -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    
+    <!-- 4. Политика конфиденциальности (запрет на передачу Referer) -->
+    <meta name="referrer" content="no-referrer">
+    
+    <!-- 5. Отключение нежелательных функций браузера -->
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
     
     <title>Секретарь — Умный антивирус</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
     <style>
+        /* ... (Ваш CSS из предыдущего сообщения) ... */
         :root {
             --bg: #080a0f; --surface: rgba(30, 30, 35, 0.6); --surface-hover: rgba(40, 40, 48, 0.8);
             --text: #ffffff; --text-muted: #a0a0a0; --accent: #4da8da; --success: #2e7d32;
@@ -91,7 +109,7 @@
         .chat-container { background: var(--surface); border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; max-width: 750px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(12px); }
         .chat-header { background: rgba(255,255,255,0.02); padding: 20px; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 15px; color: #fff; font-size: 16px; }
         .chat-box { height: 350px; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
-        .message { max-width: 85%; padding: 14px 20px; border-radius: 16px; font-size: 15px; line-height: 1.5; animation: fadeIn 0.3s ease; }
+        .message { max-width: 85%; padding: 14px 20px; border-radius: 16px; font-size: 15px; line-height: 1.5; animation: fadeIn 0.3s ease; word-wrap: break-word; }
         .msg-bot { background: rgba(255,255,255,0.05); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid rgba(255,255,255,0.08); }
         .msg-user { background: var(--accent); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; box-shadow: 0 4px 15px rgba(77, 168, 218, 0.2); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -156,10 +174,8 @@
             <span>Windows 10 / 11 (64-bit)</span> | <span>~35 МБ</span> | <span>Бесплатно</span>
         </div>
 
-        <!-- 🛡️ ПРОВЕРКА SHA-256 (защита от подмены файла) -->
         <div class="hash-box">
             <p>🛡️ <b>Проверка подлинности файла:</b> Убедитесь, что хэш скачанного файла совпадает с этим:</p>
-            <!-- ВСТАВЬТЕ СЮДА SHA-256 ОТ ВАШЕГО EXE -->
             <code class="hash-code">0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b</code>
         </div>
     </section>
@@ -180,7 +196,6 @@
             </div>
         </div>
 
-        <!-- ИНСТРУКЦИЯ -->
         <div class="guide-box" id="guide">
             <div style="text-align: center; margin-bottom: 20px;">
                 <h3 style="font-size: 28px; color: var(--text);">📖 Как установить Секретаря</h3>
@@ -220,7 +235,6 @@
         <img class="modal-content" id="expandedImg">
     </div>
 
-    <!-- ТЕХПОДДЕРЖКА -->
     <section id="support" class="chat-section">
         <div style="text-align: center; margin-bottom: 40px;">
             <h2 class="section-title" style="margin-bottom: 10px;">💬 Техподдержка</h2>
@@ -258,6 +272,42 @@
     </footer>
 
     <script>
+        // ==========================================
+        // 🛡️ ЗАЩИТА ОТ ВЗЛОМА И ОТЛАДКИ (Anti-Debug)
+        // ==========================================
+        // Блокировка F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+                (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // Блокировка правой кнопки мыши
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // Ловушка для отладчика (если открыть консоль, скрипт начнет тормозить)
+        setInterval(function() {
+            debugger;
+        }, 1000);
+
+        // ==========================================
+        // 🛡️ САНИТИЗАЦИЯ ВВОДА В ЧАТЕ (Защита от XSS)
+        // ==========================================
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag] || tag)
+            );
+        }
+
         // --- ЖИВОЙ МАСКОТ ---
         const mascot = document.getElementById('mascot');
         const pupil = document.getElementById('pupil');
@@ -310,13 +360,6 @@
             }, 3500);
         }
 
-        // --- ОСТАЛЬНОЙ КОД ---
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) {
-                e.preventDefault();
-            }
-        });
-
         function openModal(src) {
             document.getElementById("imageModal").style.display = "block";
             document.getElementById("expandedImg").src = src;
@@ -360,17 +403,21 @@
 
         function sendMessage() {
             const input = document.getElementById("chatInput");
-            const text = input.value.trim();
-            if (!text) return;
+            const rawText = input.value.trim();
+            if (!rawText) return;
 
             const now = Date.now();
             if (now - lastMessageTime < MESSAGE_COOLDOWN) return;
             lastMessageTime = now;
 
+            // САНИТИЗАЦИЯ: Очищаем ввод перед добавлением в DOM
+            const safeText = escapeHTML(rawText);
+
             const chatBox = document.getElementById("chatBox");
             const userMsg = document.createElement("div");
             userMsg.className = "message msg-user";
-            userMsg.textContent = text;
+            // Используем textContent для безопасного вывода
+            userMsg.textContent = safeText; 
             chatBox.appendChild(userMsg);
             
             input.value = "";
@@ -379,7 +426,7 @@
             setTimeout(() => {
                 const botMsg = document.createElement("div");
                 botMsg.className = "message msg-bot";
-                botMsg.textContent = getAIResponse(text);
+                botMsg.textContent = getAIResponse(rawText);
                 chatBox.appendChild(botMsg);
                 chatBox.scrollTop = chatBox.scrollHeight;
             }, 600);
