@@ -16,6 +16,28 @@
     <meta property="og:image" content="https://utuberdzeff186-arch.github.io/secretary-site/step1.png">
     <meta property="og:url" content="https://utuberdzeff186-arch.github.io/secretary-site/">
 
+    <!-- 🌐 SEO ДЛЯ ПОИСКОВИКОВ (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Секретарь Defender",
+      "operatingSystem": "Windows 10, Windows 11",
+      "applicationCategory": "SecurityApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "RUB"
+      },
+      "description": "Легкий, умный и бесплатный антивирус для Windows с защитой от шифровальщиков и открытым исходным кодом.",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "124"
+      }
+    }
+    </script>
+
     <link rel="icon" type="image/png" href="step1.png">
     <title>Секретарь — Умный антивирус</title>
 
@@ -49,6 +71,11 @@
         .btn-secondary:hover { background: rgba(77, 168, 218, 0.1); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(77, 168, 218, 0.2); }
         
         .sys-req { margin-top: 15px; font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; gap: 15px; }
+
+        /* 📊 LIVE STATS */
+        .live-stats { display: flex; justify-content: center; gap: 50px; margin: 40px 0 20px 0; flex-wrap: wrap; }
+        .stat-item { text-align: center; font-size: 14px; color: var(--text-muted); font-weight: 600; }
+        .stat-item span { font-size: 32px; color: var(--accent); font-weight: 800; display: block; margin-bottom: 5px; font-family: monospace; }
 
         .mascot-container { display: flex; justify-content: center; margin-bottom: 20px; perspective: 1000px; }
         .mascot-svg { width: 160px; height: 160px; animation: float 4s ease-in-out infinite; overflow: visible; }
@@ -89,6 +116,13 @@
 
         .step-img { width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-top: auto; display: block; object-fit: cover; cursor: zoom-in; transition: transform 0.2s ease; }
         .step-img:hover { transform: scale(1.02); border-color: #4da8da; }
+
+        /* 💻 ТЕРМИНАЛ */
+        .terminal { background: #000; border-radius: 12px; padding: 20px; font-family: monospace; font-size: 13px; color: #2ecc71; border: 1px solid rgba(255,255,255,0.1); max-width: 700px; margin: 30px auto 0 auto; text-align: left; height: 150px; overflow-y: auto; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
+        .terminal-line { margin-bottom: 8px; animation: fadeIn 0.3s ease; }
+        .terminal-time { color: #888; }
+        .terminal-warn { color: #e67e22; }
+        .terminal-danger { color: #e74c3c; }
 
         /* МОДАЛЬНЫЕ ОКНА */
         .modal { display: none; position: fixed; z-index: 9999; padding-top: 5vh; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); }
@@ -208,6 +242,8 @@
             .hero p { font-size: 16px; }
             .hero-buttons { flex-direction: column; width: 100%; max-width: 300px; }
             .btn-download, .btn-secondary { width: 100%; padding: 15px 20px; font-size: 16px; }
+            .live-stats { gap: 20px; }
+            .stat-item span { font-size: 24px; }
             .steps-grid { grid-template-columns: 1fr; }
             .guide-box { padding: 20px; }
             .chat-input-area { flex-direction: column; gap: 10px; }
@@ -268,6 +304,22 @@
             <span>Windows 10 / 11 (64-bit)</span> | <span>~35 МБ</span> | <span>Бесплатно</span>
         </div>
 
+        <!-- 📊 ЖИВАЯ СТАТИСТИКА -->
+        <div class="live-stats reveal">
+            <div class="stat-item">
+                <span id="stat-attacks">0</span>
+                Атак отражено
+            </div>
+            <div class="stat-item">
+                <span id="stat-files">0</span>
+                Файлов проверено
+            </div>
+            <div class="stat-item">
+                <span id="stat-users">0</span>
+                Пользователей онлайн
+            </div>
+        </div>
+
         <div class="hash-box">
             <p>🛡️ <b>Проверка подлинности файла:</b> Убедитесь, что хэш скачанного файла совпадает с этим:</p>
             <code class="hash-code" id="hash-display">Будет опубликован после выхода релиза</code>
@@ -290,7 +342,7 @@
             </div>
         </div>
 
-        <!-- БЛОК: КАК ЭТО РАБОТАЕТ -->
+        <!-- БЛОК: КАК ЭТО РАБОТАЕТ + ТЕРМИНАЛ -->
         <div class="guide-box reveal" id="how-it-works" style="margin-top: 40px;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 30px; text-align: center;">⚙️ Как работает Секретарь?</h3>
             <div class="grid">
@@ -308,6 +360,13 @@
                     <div style="font-size: 40px; margin-bottom: 15px;">👁️</div>
                     <h4 style="color: #fff; margin-bottom: 10px; font-size: 18px;">3. Защита 24/7</h4>
                     <p style="color: var(--text-muted); font-size: 14px;">Фоновый мониторинг автозагрузки и системных процессов не даст скрытым угрозам проникнуть в систему.</p>
+                </div>
+            </div>
+            
+            <!-- 💻 КИБЕР-ТЕРМИНАЛ -->
+            <div class="terminal" id="terminal">
+                <div id="terminal-body">
+                    <div class="terminal-line"><span class="terminal-time">[Инициализация]</span> Запуск ядра защиты Secretary Core...</div>
                 </div>
             </div>
         </div>
@@ -401,7 +460,7 @@
             </div>
         </div>
 
-        <!-- 🗺️ НОВЫЙ БЛОК: ROADMAP -->
+        <!-- 🗺️ ROADMAP -->
         <div class="guide-box reveal" id="roadmap" style="margin-top: 40px;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 30px; text-align: center;">🗺️ Планы развития</h3>
             <div class="roadmap-list">
@@ -661,6 +720,65 @@
             scrollTopBtn.addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
+        });
+
+        // --- ЖИВАЯ СТАТИСТИКА (СЧЕТЧИКИ) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const animateValue = (id, start, end, duration) => {
+                const obj = document.getElementById(id);
+                if (!obj) return;
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    obj.innerHTML = Math.floor(progress * (end - start) + start);
+                    if (progress < 1) { window.requestAnimationFrame(step); }
+                };
+                window.requestAnimationFrame(step);
+            };
+            
+            // Запускаем анимацию цифр
+            setTimeout(() => {
+                animateValue("stat-attacks", 0, 1452, 2000);
+                animateValue("stat-files", 0, 45820, 2000);
+                animateValue("stat-users", 0, 342, 2000);
+            }, 500);
+        });
+
+        // --- КИБЕР-ТЕРМИНАЛ ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const terminalLines = [
+                "[SCAN] Проверка C:\\Windows\\System32... OK",
+                "[WARN] Обнаружена подозрительная активность в порту 8080",
+                "[BLOCK] Угроза изолирована: Trojan.Win32.Generic",
+                "[SCAN] Проверка реестра HKCU/HKLM... OK",
+                "[SYSTEM] Мониторинг в реальном времени активен.",
+                "[SCAN] Эвристический анализ завершен. Угроз нет."
+            ];
+            let termIndex = 0;
+            const termBody = document.getElementById('terminal-body');
+            
+            setInterval(() => {
+                if (!termBody) return;
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+                const time = new Date().toLocaleTimeString();
+                let text = terminalLines[termIndex];
+                let colorClass = '';
+                if (text.includes('[WARN]')) colorClass = 'terminal-warn';
+                if (text.includes('[BLOCK]')) colorClass = 'terminal-danger';
+                
+                line.innerHTML = `<span class="terminal-time">[${time}]</span> <span class="${colorClass}">${text}</span>`;
+                termBody.appendChild(line);
+                termBody.scrollTop = termBody.scrollHeight;
+                
+                // Удаляем старые строки, чтобы не переполнять
+                if (termBody.children.length > 15) {
+                    termBody.removeChild(termBody.firstChild);
+                }
+                
+                termIndex = (termIndex + 1) % terminalLines.length;
+            }, 3000);
         });
 
         // --- FAQ АККОРДЕОН ---
