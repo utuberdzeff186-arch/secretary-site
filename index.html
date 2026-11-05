@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- 🛡️ ЗАЩИТА (CSP) -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://raw.githubusercontent.com https://*.githubusercontent.com; connect-src 'self' https://api.github.com https://api.pwnedpasswords.com https://api.ipify.org https://ipapi.co; frame-ancestors 'none'; form-action 'self'; base-uri 'self';">
+    <!-- 🛡️ ЗАЩИТА (CSP обновлен для QR-кодов) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://raw.githubusercontent.com https://*.githubusercontent.com https://api.qrserver.com; connect-src 'self' https://api.github.com https://api.pwnedpasswords.com https://api.ipify.org https://ipapi.co; frame-ancestors 'none'; form-action 'self'; base-uri 'self';">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="no-referrer">
@@ -124,6 +124,7 @@
 
         /* 🎉 ПАСХАЛКА (ВРАЩЕНИЕ) */
         .easter-egg .mascot-svg { animation: spinFast 0.5s linear infinite; }
+        @keyframes spinFast { 100% { transform: rotate(360deg); } }
 
         .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 10; }
         .section-title { text-align: center; font-size: 36px; margin-bottom: 40px; font-weight: 800; }
@@ -152,11 +153,16 @@
         .step-img:hover { transform: scale(1.02); border-color: #4da8da; }
 
         /* 💻 ТЕРМИНАЛ */
-        .terminal { background: #000; border-radius: 12px; padding: 20px; font-family: monospace; font-size: 13px; color: #2ecc71; border: 1px solid rgba(255,255,255,0.1); max-width: 700px; margin: 30px auto 0 auto; text-align: left; height: 150px; overflow-y: auto; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
+        .terminal { background: #000; border-radius: 12px; padding: 20px; font-family: monospace; font-size: 13px; color: #2ecc71; border: 1px solid rgba(255,255,255,0.1); max-width: 700px; margin: 30px auto 0 auto; text-align: left; height: 250px; overflow-y: auto; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); display: flex; flex-direction: column; }
+        .terminal-body { flex: 1; overflow-y: auto; }
         .terminal-line { margin-bottom: 8px; animation: fadeIn 0.3s ease; }
         .terminal-time { color: #888; }
         .terminal-warn { color: #e67e22; }
         .terminal-danger { color: #e74c3c; }
+        
+        .terminal-input-line { display: flex; align-items: center; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; }
+        .terminal-prompt { color: #4da8da; margin-right: 10px; font-weight: bold; }
+        .terminal-input { background: transparent; border: none; color: #fff; font-family: monospace; font-size: 13px; outline: none; flex: 1; padding: 0; }
 
         /* 🖥️ UI PREVIEW (МАКЕТ ПРОГРАММЫ) */
         .app-window {
@@ -520,6 +526,32 @@
                     </div>
                     <div class="url-result" id="urlResult"></div>
                 </div>
+
+                <!-- Шифрование текста (AES) -->
+                <div class="tool-card">
+                    <h4>🔒 Шифрование (AES-256)</h4>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Зашифруйте сообщение паролем. Без пароля прочитать невозможно.</p>
+                    <textarea id="cryptoInput" class="url-input" style="width: 100%; height: 60px; resize: none; margin-bottom: 10px; font-family: monospace;" placeholder="Введите текст..."></textarea>
+                    <div class="url-box">
+                        <input type="password" id="cryptoKey" class="url-input" placeholder="Пароль">
+                        <button class="btn-url" onclick="encryptTextBtn()">Зашифровать</button>
+                        <button class="btn-url" onclick="decryptTextBtn()">Расшифровать</button>
+                    </div>
+                    <div class="url-result" id="cryptoResult" style="font-family: monospace; word-break: break-all;"></div>
+                </div>
+
+                <!-- QR Генератор -->
+                <div class="tool-card">
+                    <h4>📱 QR-Генератор</h4>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Создайте QR-код для любой ссылки, чтобы открыть её на телефоне.</p>
+                    <div class="url-box">
+                        <input type="text" id="qrInput" class="url-input" placeholder="https://example.com">
+                        <button class="btn-url" onclick="generateQR()">Создать</button>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <img id="qrImage" src="" alt="QR Code" style="display: none; width: 120px; height: 120px; border-radius: 8px; border: 2px solid var(--accent);">
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -559,9 +591,15 @@
                 </div>
             </div>
             
+            <!-- ТЕРМИНАЛ С ВВОДОМ КОМАНД -->
             <div class="terminal" id="terminal">
-                <div id="terminal-body">
+                <div class="terminal-body" id="terminal-body">
                     <div class="terminal-line"><span class="terminal-time">[Инициализация]</span> Запуск ядра защиты Secretary Core...</div>
+                    <div class="terminal-line"><span class="terminal-time">[SYSTEM]</span> Введите 'help' для списка команд.</div>
+                </div>
+                <div class="terminal-input-line">
+                    <span class="terminal-prompt">guest@secretary:~$</span>
+                    <input type="text" id="terminalInput" class="terminal-input" autocomplete="off" spellcheck="false" autofocus>
                 </div>
             </div>
         </div>
@@ -1009,7 +1047,7 @@
         });
 
         // ==========================================
-        // 4. 🛠️ КИБЕР-ИНСТРУМЕНТЫ (Генератор, IP, Privacy, URL)
+        // 4. 🛠️ КИБЕР-ИНСТРУМЕНТЫ (Генератор, IP, Privacy, URL, Crypto, QR)
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             // Генератор
@@ -1080,6 +1118,65 @@
                     urlResult.innerHTML = `✅ <b>Ссылка выглядит безопасной.</b><br><span style="font-size:12px; font-weight:normal;">Явных признаков фишинга не найдено.</span>`;
                 }
             };
+
+            // Crypto (AES)
+            async function getKeyMaterial(password) {
+                const enc = new TextEncoder();
+                return window.crypto.subtle.importKey("raw", enc.encode(password), {name: "PBKDF2"}, false, ["deriveBits", "deriveKey"]);
+            }
+            async function getKey(keyMaterial, salt) {
+                return window.crypto.subtle.deriveKey(
+                    { name: "PBKDF2", salt: salt, iterations: 100000, hash: "SHA-256" },
+                    keyMaterial, { name: "AES-GCM", length: 256 }, true, [ "encrypt", "decrypt" ]
+                );
+            }
+            window.encryptTextBtn = async () => {
+                const text = document.getElementById('cryptoInput').value;
+                const keyPass = document.getElementById('cryptoKey').value;
+                const resDiv = document.getElementById('cryptoResult');
+                if (!text || !keyPass) { resDiv.style.display = 'block'; resDiv.className = 'url-result pass-warning'; resDiv.textContent = 'Введите текст и пароль.'; return; }
+                try {
+                    const salt = window.crypto.getRandomValues(new Uint8Array(16));
+                    const iv = window.crypto.getRandomValues(new Uint8Array(12));
+                    const keyMaterial = await getKeyMaterial(keyPass);
+                    const key = await getKey(keyMaterial, salt);
+                    const enc = new TextEncoder();
+                    const ciphertext = await window.crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, enc.encode(text));
+                    const combined = new Uint8Array(salt.length + iv.length + ciphertext.byteLength);
+                    combined.set(salt, 0); combined.set(iv, salt.length); combined.set(new Uint8Array(ciphertext), salt.length + iv.length);
+                    resDiv.style.display = 'block'; resDiv.className = 'url-result pass-safe';
+                    resDiv.textContent = btoa(String.fromCharCode(...combined));
+                    document.getElementById('cryptoInput').value = resDiv.textContent;
+                    addTerminalLog("Текст зашифрован AES-256.", '');
+                } catch (e) { resDiv.style.display = 'block'; resDiv.className = 'url-result pass-danger'; resDiv.textContent = 'Ошибка шифрования.'; }
+            };
+            window.decryptTextBtn = async () => {
+                const text = document.getElementById('cryptoInput').value;
+                const keyPass = document.getElementById('cryptoKey').value;
+                const resDiv = document.getElementById('cryptoResult');
+                if (!text || !keyPass) { resDiv.style.display = 'block'; resDiv.className = 'url-result pass-warning'; resDiv.textContent = 'Введите шифр и пароль.'; return; }
+                try {
+                    const combined = new Uint8Array(atob(text).split('').map(c => c.charCodeAt(0)));
+                    const salt = combined.slice(0, 16), iv = combined.slice(16, 28), ciphertext = combined.slice(28);
+                    const keyMaterial = await getKeyMaterial(keyPass);
+                    const key = await getKey(keyMaterial, salt);
+                    const decrypted = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, ciphertext);
+                    resDiv.style.display = 'block'; resDiv.className = 'url-result pass-safe';
+                    resDiv.textContent = new TextDecoder().decode(decrypted);
+                    document.getElementById('cryptoInput').value = resDiv.textContent;
+                    addTerminalLog("Текст успешно расшифрован.", '');
+                } catch (e) { resDiv.style.display = 'block'; resDiv.className = 'url-result pass-danger'; resDiv.textContent = 'Ошибка: Неверный пароль.'; }
+            };
+
+            // QR
+            window.generateQR = () => {
+                const url = document.getElementById('qrInput').value;
+                const img = document.getElementById('qrImage');
+                if (!url) return;
+                img.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}`;
+                img.style.display = 'inline-block';
+                addTerminalLog("QR-код сгенерирован.", '');
+            };
         });
 
         // ==========================================
@@ -1091,9 +1188,7 @@
             let originalHref = downloadBtn ? downloadBtn.getAttribute('href') : null;
             let isBreached = false;
 
-            if (window.top !== window.self) {
-                document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:20vh;'>⚠️ Обнаружена попытка кликджекинга!</h1>"; return;
-            }
+            if (window.top !== window.self) { document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:20vh;'>⚠️ Обнаружена попытка кликджекинга!</h1>"; return; }
 
             if (downloadBtn) {
                 const observer = new MutationObserver((mutations) => {
@@ -1135,14 +1230,12 @@
         document.addEventListener('DOMContentLoaded', () => {
             const mascot = document.getElementById('mascot');
 
-            // F12
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
                     addTerminalLog("🔍 Обнаружено открытие консоли разработчика.", "warn");
                 }
             });
 
-            // AFK (Sleep)
             let afkTimer;
             const resetAfk = () => {
                 if (mascot) mascot.classList.remove('sleeping');
@@ -1150,21 +1243,16 @@
                 afkTimer = setTimeout(() => {
                     if (mascot) mascot.classList.add('sleeping');
                     addTerminalLog("💤 Режим ожидания. Мониторинг продолжается.", "");
-                }, 180000); // 3 мин
+                }, 180000);
             };
             ['mousemove', 'keydown', 'scroll', 'click'].forEach(ev => window.addEventListener(ev, resetAfk));
             resetAfk();
 
-            // Tab Visibility
             document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    addTerminalLog("👁️ Пользователь покинул вкладку. Фоновый мониторинг активен.", "warn");
-                } else {
-                    addTerminalLog("✅ Пользователь вернулся. С возвращением!", "");
-                }
+                if (document.hidden) { addTerminalLog("👁️ Пользователь покинул вкладку. Фоновый мониторинг активен.", "warn"); }
+                else { addTerminalLog("✅ Пользователь вернулся. С возвращением!", ""); }
             });
 
-            // Konami Code (Easter Egg)
             const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
             let konamiIndex = 0;
             document.addEventListener('keydown', (e) => {
@@ -1172,18 +1260,42 @@
                     konamiIndex++;
                     if (konamiIndex === konamiCode.length) {
                         konamiIndex = 0;
-                        // Активация пасхалки
                         document.body.classList.add('easter-egg');
                         addTerminalLog("🚀 СЕКРЕТНЫЙ РЕЖИМ АКТИВИРОВАН! Hacker Mode: ON", "danger");
-                        setTimeout(() => {
-                            document.body.classList.remove('easter-egg');
-                            addTerminalLog("Система возвращена в штатный режим.", "");
-                        }, 5000);
+                        setTimeout(() => { document.body.classList.remove('easter-egg'); addTerminalLog("Система возвращена в штатный режим.", ""); }, 5000);
                     }
-                } else {
-                    konamiIndex = 0;
-                }
+                } else { konamiIndex = 0; }
             });
+
+            // Терминал Ввод
+            const terminalInput = document.getElementById('terminalInput');
+            if (terminalInput) {
+                terminalInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        const cmd = terminalInput.value.trim().toLowerCase();
+                        terminalInput.value = '';
+                        addTerminalLog(`guest@secretary:~$ ${cmd}`, '');
+                        if (cmd === 'help') {
+                            addTerminalLog("Доступные команды: help, scan, clear, version, whoami, hack", '');
+                        } else if (cmd === 'scan') {
+                            addTerminalLog("Запуск быстрого сканирования...", 'warn');
+                            setTimeout(() => addTerminalLog("Сканирование завершено. Угроз не обнаружено.", ''), 1500);
+                        } else if (cmd === 'clear') {
+                            document.getElementById('terminal-body').innerHTML = '';
+                        } else if (cmd === 'version') {
+                            addTerminalLog("Секретарь Core v9.3 (Build 2026)", '');
+                        } else if (cmd === 'whoami') {
+                            addTerminalLog("Вы: Гость (guest). Права: ограничены.", '');
+                        } else if (cmd === 'hack') {
+                            addTerminalLog("ДОСТУП ЗАПРЕЩЕН. Попытка зафиксирована в журнале безопасности.", 'danger');
+                            document.body.classList.add('breach-active');
+                            setTimeout(() => document.body.classList.remove('breach-active'), 2000);
+                        } else if (cmd !== '') {
+                            addTerminalLog(`Команда не найдена: ${cmd}`, 'warn');
+                        }
+                    }
+                });
+            }
         });
 
         // ==========================================
