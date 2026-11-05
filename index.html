@@ -147,6 +147,14 @@
         .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; padding: 0 20px; }
         .faq-answer p { padding-bottom: 20px; font-size: 14px; color: var(--text-muted); margin: 0; }
 
+        /* 🤝 КНОПКИ СООБЩЕСТВА */
+        .community-btn {
+            display: inline-block; padding: 12px 25px; color: white; text-decoration: none;
+            border-radius: 10px; font-weight: 700; font-size: 15px; transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer;
+        }
+        .community-btn:hover { transform: translateY(-3px); opacity: 0.9; box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
+
         /* 📱 МОБИЛЬНАЯ АДАПТАЦИЯ */
         @media (max-width: 768px) {
             header { padding: 15px 20px; justify-content: space-between; }
@@ -309,6 +317,30 @@
             </div>
         </div>
 
+        <!-- НОВЫЙ БЛОК: СООБЩЕСТВО И ПОДДЕРЖКА (БЕЗ TELEGRAM) -->
+        <div class="guide-box reveal" id="community" style="margin-top: 40px;">
+            <h3 style="font-size: 28px; color: var(--text); margin-bottom: 20px; text-align: center;">🤝 Сообщество и поддержка</h3>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Проект активно развивается. Присоединяйтесь, чтобы первыми узнавать новости и помогать делать «Секретаря» лучше.</p>
+            
+            <div class="grid">
+                <!-- GitHub Issues -->
+                <div class="card" style="text-align: center; display: flex; flex-direction: column;">
+                    <div style="font-size: 40px; margin-bottom: 15px;">🐞</div>
+                    <h4 style="color: #fff; margin-bottom: 10px; font-size: 18px;">Нашли баг?</h4>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px; flex-grow: 1;">Помогите сделать «Секретаря» лучше. Сообщите об ошибке или предложите новую идею на GitHub.</p>
+                    <a href="https://github.com/utuberdzeff186-arch/secretary-site/issues" target="_blank" class="community-btn" style="background: #2ea44f;">Сообщить</a>
+                </div>
+                
+                <!-- GitHub Repo -->
+                <div class="card" style="text-align: center; display: flex; flex-direction: column;">
+                    <div style="font-size: 40px; margin-bottom: 15px;">⭐</div>
+                    <h4 style="color: #fff; margin-bottom: 10px; font-size: 18px;">Open Source</h4>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px; flex-grow: 1;">Весь код проекта открыт. Поставьте звезду репозиторию, чтобы поддержать разработку.</p>
+                    <a href="https://github.com/utuberdzeff186-arch/secretary-site" target="_blank" class="community-btn" style="background: #333; border: 1px solid rgba(255,255,255,0.2);">Поставить ⭐</a>
+                </div>
+            </div>
+        </div>
+
         <div class="guide-box reveal" id="changelog" style="margin-top: 40px;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 20px; text-align: center;">📜 История обновлений</h3>
             <div style="border-left: 2px solid var(--accent); margin-left: 20px; padding-left: 20px; display: flex; flex-direction: column; gap: 20px;">
@@ -409,7 +441,7 @@
             </div>
         </div>
 
-        <!-- 📂 НОВЫЙ БЛОК FAQ (АККОРДЕОН) -->
+        <!-- БЛОК FAQ (АККОРДЕОН) -->
         <div class="guide-box reveal" id="faq" style="margin-top: 40px;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 30px; text-align: center;">❓ Частые вопросы</h3>
             <div style="max-width: 800px; margin: 0 auto;">
@@ -538,13 +570,11 @@
                     const answer = button.nextElementSibling;
                     const isActive = item.classList.contains('active');
 
-                    // Закрыть все остальные
                     document.querySelectorAll('.faq-item').forEach(i => {
                         i.classList.remove('active');
                         i.querySelector('.faq-answer').style.maxHeight = null;
                     });
 
-                    // Открыть текущий, если он был закрыт
                     if (!isActive) {
                         item.classList.add('active');
                         answer.style.maxHeight = answer.scrollHeight + "px";
