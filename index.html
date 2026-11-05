@@ -86,6 +86,7 @@
         .subscribe-btn { background: var(--accent); color: #fff; border: none; padding: 10px 25px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .subscribe-btn:hover { background: #3a8bb8; }
         .sub-success { color: var(--success); font-weight: bold; margin-top: 10px; display: none; }
+        .sub-note { font-size: 11px; color: var(--text-muted); margin-top: 5px; display: block; }
 
         .sys-req { margin-top: 15px; font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; gap: 15px; }
 
@@ -94,12 +95,22 @@
         .stat-item { text-align: center; font-size: 14px; color: var(--text-muted); font-weight: 600; }
         .stat-item span { font-size: 32px; color: var(--accent); font-weight: 800; display: block; margin-bottom: 5px; font-family: monospace; }
 
-        .mascot-container { display: flex; justify-content: center; margin-bottom: 20px; perspective: 1000px; position: relative; }
-        .mascot-svg { width: 160px; height: 160px; animation: float 4s ease-in-out infinite; overflow: visible; transition: all 0.3s ease; }
+        /* 🛡️ УЛУЧШЕННЫЙ МАСКОТ */
+        .mascot-container { display: flex; justify-content: center; margin-bottom: 20px; perspective: 1000px; position: relative; cursor: pointer; }
+        .mascot-svg { width: 160px; height: 160px; animation: float 4s ease-in-out infinite; overflow: visible; transition: transform 0.1s ease-out, filter 0.3s ease; }
+        
+        /* Орбитальные частицы вокруг маскота */
+        .mascot-container::before, .mascot-container::after {
+            content: ''; position: absolute; width: 8px; height: 8px; background: var(--accent); border-radius: 50%;
+            top: 50%; left: 50%; box-shadow: 0 0 10px var(--accent); animation: orbit 6s linear infinite;
+        }
+        .mascot-container::after { width: 5px; height: 5px; animation: orbit 4s linear infinite reverse; background: #fff; }
+        @keyframes orbit { 0% { transform: translate(-50%, -50%) rotate(0deg) translateX(90px); } 100% { transform: translate(-50%, -50%) rotate(360deg) translateX(90px); } }
 
         .spin-slow { transform-origin: center; animation: spin 20s linear infinite; }
         #pupil { transition: cx 0.1s ease-out, cy 0.1s ease-out; }
         .brow { transition: all 0.3s ease; }
+        #mouth { transition: all 0.3s ease; }
         .breach-text { position: absolute; top: -30px; color: var(--danger); font-weight: bold; font-size: 20px; opacity: 0; transition: 0.3s; text-shadow: 0 0 10px red; }
 
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
@@ -109,6 +120,7 @@
         .scanning #shield { fill: #e67e22; }
         .scanning #eye-bg { stroke: #e67e22; }
         .scanning #pupil { fill: #e67e22; animation: spinEye 0.3s infinite linear; transform-origin: 100px 95px; }
+        .scanning #mouth { d: path("M 85 115 Q 100 125 115 115"); stroke: #e67e22; }
         @keyframes spinEye { 100% { transform: rotate(360deg); } }
 
         /* 🚨 ВЗЛОМ (АНГРИ-МАСКОТ) */
@@ -117,6 +129,7 @@
         .compromised #eye-bg { stroke: var(--danger) !important; }
         .compromised #pupil { display: none; }
         .compromised .brow { display: none; }
+        .compromised #mouth { d: path("M 85 125 Q 100 115 115 125"); stroke: var(--danger) !important; } /* Грустный рот */
         .compromised .breach-text { opacity: 1; animation: pulseText 0.5s infinite alternate; }
         .compromised #eye-group { transform: translateY(-5px); }
         .compromised #eye-group::after {
@@ -137,7 +150,18 @@
         .sleeping .mascot-svg { animation: float 6s ease-in-out infinite; opacity: 0.5; }
         .sleeping #eye-bg { ry: 2; }
         .sleeping .brow { transform: translateY(5px); opacity: 0; }
+        .sleeping #mouth { d: path("M 90 115 L 110 115"); stroke: #555; } /* Нейтральный */
         .sleeping #shield { fill: #555; }
+        .sleeping::before, .sleeping::after { display: none; } /* Убираем орбиты */
+
+        /* 😊 РАДОСТЬ (HAPPY) */
+        .happy .mascot-svg { animation: bounce 0.5s ease infinite alternate; }
+        .happy #shield { fill: #2ecc71 !important; filter: drop-shadow(0 0 30px rgba(46, 204, 113, 0.8)) !important; }
+        .happy #eye-bg { stroke: #2ecc71 !important; }
+        .happy #pupil { fill: #2ecc71 !important; }
+        .happy .brow { transform: translateY(-3px) rotate(10deg); stroke: #2ecc71 !important; }
+        .happy #mouth { d: path("M 80 105 Q 100 130 120 105"); stroke: #2ecc71 !important; }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
 
         /* 🎉 ПАСХАЛКА (ВРАЩЕНИЕ) */
         .easter-egg .mascot-svg { animation: spinFast 0.5s linear infinite; }
@@ -399,7 +423,7 @@
     <section class="hero">
         <div class="mascot-container" id="mascotContainer">
             <div class="breach-text">ВЗЛОМ!</div>
-            <!-- 🛡️ МАСКОТ -->
+            <!-- 🛡️ УЛУЧШЕННЫЙ МАСКОТ -->
             <svg id="mascot" class="mascot-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -424,6 +448,8 @@
                     <path class="brow left" d="M75 85 L95 85" fill="none" stroke="url(#eyeGrad)" stroke-width="3" stroke-linecap="round"/>
                     <path class="brow right" d="M105 85 L125 85" fill="none" stroke="url(#eyeGrad)" stroke-width="3" stroke-linecap="round"/>
                 </g>
+                <!-- РОТ -->
+                <path id="mouth" d="M 85 115 Q 100 125 115 115" fill="none" stroke="url(#eyeGrad)" stroke-width="3" stroke-linecap="round"/>
             </svg>
         </div>
 
@@ -441,6 +467,7 @@
             <button class="subscribe-btn" onclick="subscribeEmail()">Узнать о релизе</button>
         </div>
         <div class="sub-success" id="subSuccess">✅ Вы подписаны! Мы сообщим о выходе.</div>
+        <span class="sub-note">*Email сохраняется только в вашем браузере (localStorage) и никуда не отправляется.</span>
         
         <div class="sys-req">
             <span>Windows 10 / 11 (64-bit)</span> | <span>~35 МБ</span> | <span>Бесплатно</span>
@@ -703,7 +730,7 @@
                 <div style="width: 80px; height: 80px; background: var(--accent); border-radius: 50%; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 40px;">👤</div>
                 <h4 style="color: #fff; font-size: 20px; margin-bottom: 10px;">Независимый разработчик</h4>
                 <p style="color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 15px;">Привет! Я создал «Секретаря», потому что устал от тяжелых, навязчивых и дорогих антивирусов. Моя цель — сделать легкую, умную и бесплатную защиту, которая уважает вашу приватность. Весь код открыт для проверки.</p>
-                <a href="https://github.com/utuberdzeff186-arch" target="_blank" style="display: inline-block; padding: 10px 20px; background: #333; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600; transition: 0.3s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='#333'">Мой GitHub</a>
+                <a href="https://github.com/utuberdzeff186-arch" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 10px 20px; background: #333; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600; transition: 0.3s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='#333'">Мой GitHub</a>
             </div>
         </div>
 
@@ -716,13 +743,13 @@
                     <div style="font-size: 40px; margin-bottom: 15px;">🐞</div>
                     <h4 style="color: #fff; margin-bottom: 10px; font-size: 18px;">Нашли баг?</h4>
                     <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px; flex-grow: 1;">Помогите сделать «Секретаря» лучше. Сообщите об ошибке или предложите новую идею на GitHub.</p>
-                    <a href="https://github.com/utuberdzeff186-arch/secretary-site/issues" target="_blank" class="community-btn" style="background: #2ea44f;">Сообщить</a>
+                    <a href="https://github.com/utuberdzeff186-arch/secretary-site/issues" target="_blank" rel="noopener noreferrer" class="community-btn" style="background: #2ea44f;">Сообщить</a>
                 </div>
                 <div class="card" style="text-align: center; display: flex; flex-direction: column;">
                     <div style="font-size: 40px; margin-bottom: 15px;">⭐</div>
                     <h4 style="color: #fff; margin-bottom: 10px; font-size: 18px;">Open Source</h4>
                     <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px; flex-grow: 1;">Весь код проекта открыт. Поставьте звезду репозиторию, чтобы поддержать разработку.</p>
-                    <a href="https://github.com/utuberdzeff186-arch/secretary-site" target="_blank" class="community-btn" style="background: #333; border: 1px solid rgba(255,255,255,0.2);">Поставить ⭐</a>
+                    <a href="https://github.com/utuberdzeff186-arch/secretary-site" target="_blank" rel="noopener noreferrer" class="community-btn" style="background: #333; border: 1px solid rgba(255,255,255,0.2);">Поставить ⭐</a>
                 </div>
             </div>
         </div>
@@ -965,7 +992,7 @@
         }
 
         // ==========================================
-        // 2. 📧 ПОДПИСКА НА РЕЛИЗ
+        // 2. 📧 ПОДПИСКА НА РЕЛИЗ + РАДОСТЬ МАСКОТА
         // ==========================================
         function subscribeEmail() {
             const email = document.getElementById('subEmail').value;
@@ -976,7 +1003,15 @@
             localStorage.setItem('secretary_sub_email', email);
             document.getElementById('subSuccess').style.display = 'block';
             document.getElementById('subEmail').value = '';
-            addTerminalLog(`Email ${email} добавлен в базу ожидания.`, '');
+            addTerminalLog(`Email добавлен в локальную базу ожидания.`, '');
+            triggerHappyMascot(); // Вызываем радость маскота
+        }
+
+        function triggerHappyMascot() {
+            const container = document.getElementById('mascotContainer');
+            if (!container) return;
+            container.classList.add('happy');
+            setTimeout(() => { container.classList.remove('happy'); }, 3000);
         }
 
         // ==========================================
@@ -1020,7 +1055,7 @@
         });
 
         // ==========================================
-        // 4. 🧪 ПЕСОЧНИЦА
+        // 4. 🧪 ПЕСОЧНИЦА + МАСКОТ
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const dropZone = document.getElementById('dropZone'), fileInput = document.getElementById('fileInput');
@@ -1050,13 +1085,14 @@
                         let currentScans = parseInt(localStorage.getItem('secretary_user_scans') || 0) + 1;
                         localStorage.setItem('secretary_user_scans', currentScans);
                         if(scansElement) { scansElement.innerText = currentScans; scansElement.style.color = '#2ecc71'; setTimeout(() => { scansElement.style.color = 'var(--accent)'; }, 1000); }
+                        triggerHappyMascot(); // Радость при проверке
                     }, 600);
                 } catch (error) { fileHashDisplay.textContent = "Ошибка чтения файла."; }
             }
         });
 
         // ==========================================
-        // 5. 🔐 ПРОВЕРКА ПАРОЛЕЙ + ШКАЛА
+        // 5. 🔐 ПРОВЕРКА ПАРОЛЕЙ + ШКАЛА + МАСКОТ
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const passInput = document.getElementById('passInput'), checkPassBtn = document.getElementById('checkPassBtn');
@@ -1101,7 +1137,7 @@
                         if (lineSuffix === suffix) { found = true; count = parseInt(lineCount); break; }
                     }
                     if (found) { passResult.className = 'pass-result pass-danger'; passResult.innerHTML = `⚠️ <b>Внимание!</b> Пароль найден в утечках <b>${count}</b> раз!`; }
-                    else { passResult.className = 'pass-result pass-safe'; passResult.innerHTML = `✅ <b>Отлично!</b> Пароль не найден в базах утечек.`; }
+                    else { passResult.className = 'pass-result pass-safe'; passResult.innerHTML = `✅ <b>Отлично!</b> Пароль не найден в базах утечек.`; triggerHappyMascot(); }
                 } catch (error) { passResult.className = 'pass-result pass-warning'; passResult.textContent = 'Ошибка подключения.'; }
             });
         });
@@ -1172,7 +1208,13 @@
 
                 if (score >= 30) {
                     urlResult.className = 'url-result pass-danger';
-                    urlResult.innerHTML = `⚠️ <b>Осторожно! Ссылка подозрительная.</b><br><ul style="margin-left:15px; margin-top:5px; font-size:12px;">${reasons.map(r=>`<li>${r}</li>`).join('')}</ul>`;
+                    urlResult.innerHTML = `⚠️ <b>Осторожно! Ссылка подозрительная.</b><br><ul style="margin-left:15px; margin-top:5px; font-size:12px;" id="reasonList"></ul>`;
+                    const reasonList = document.getElementById('reasonList');
+                    reasons.forEach(r => {
+                        const li = document.createElement('li');
+                        li.textContent = r; // Безопасный вывод
+                        reasonList.appendChild(li);
+                    });
                 } else {
                     urlResult.className = 'url-result pass-safe';
                     urlResult.innerHTML = `✅ <b>Ссылка выглядит безопасной.</b><br><span style="font-size:12px; font-weight:normal;">Явных признаков фишинга не найдено.</span>`;
@@ -1225,6 +1267,7 @@
                     resDiv.textContent = new TextDecoder().decode(decrypted);
                     document.getElementById('cryptoInput').value = resDiv.textContent;
                     addTerminalLog("Текст успешно расшифрован.", '');
+                    triggerHappyMascot(); // Радость при успехе
                 } catch (e) { resDiv.style.display = 'block'; resDiv.className = 'url-result pass-danger'; resDiv.textContent = 'Ошибка: Неверный пароль.'; }
             };
 
@@ -1240,11 +1283,11 @@
         });
 
         // ==========================================
-        // 7. 🚨 СИСТЕМА ЗАЩИТЫ ОТ ВЗЛОМА
+        // 7. 🚨 СИСТЕМА ЗАЩИТЫ ОТ ВЗЛОМА (БЕЗОПАСНАЯ)
         // ==========================================
         (function() {
             'use strict';
-            const downloadBtn = document.getElementById('download-btn'), mascot = document.getElementById('mascot');
+            const downloadBtn = document.getElementById('download-btn'), mascotContainer = document.getElementById('mascotContainer');
             let originalHref = downloadBtn ? downloadBtn.getAttribute('href') : null;
             let isBreached = false;
 
@@ -1269,18 +1312,30 @@
                 downloadBtn.style.pointerEvents = 'none'; downloadBtn.style.opacity = '0.5'; downloadBtn.href = '#';
                 downloadBtn.innerText = '🚨 ВЗЛОМ ПРЕДОТВРАЩЕН'; downloadBtn.style.background = '#c0392b';
                 document.body.classList.add('breach-active');
-                if (mascot) mascot.classList.add('compromised');
+                if (mascotContainer) mascotContainer.classList.add('compromised');
                 addTerminalLog("⚠️ ВНИМАНИЕ! Обнаружена подмена ссылки. Защита сработала.", "danger");
             }
 
+            // БЕЗОПАСНЫЙ ВЫВОД ЛОГОВ (XSS Protection)
             window.addTerminalLog = (text, type = '') => {
                 const termBody = document.getElementById('terminal-body');
                 if(!termBody) return;
                 const line = document.createElement('div'); line.className = 'terminal-line';
                 const time = new Date().toLocaleTimeString();
-                let colorClass = type === 'danger' ? 'terminal-danger' : (type === 'warn' ? 'terminal-warn' : '');
-                line.innerHTML = `<span class="terminal-time">[${time}]</span> <span class="${colorClass}">${text}</span>`;
-                termBody.appendChild(line); termBody.scrollTop = termBody.scrollHeight;
+                
+                const timeSpan = document.createElement('span');
+                timeSpan.className = 'terminal-time';
+                timeSpan.textContent = `[${time}] `;
+                
+                const textSpan = document.createElement('span');
+                if (type === 'danger') textSpan.className = 'terminal-danger';
+                if (type === 'warn') textSpan.className = 'terminal-warn';
+                textSpan.textContent = text; // БЕЗОПАСНО
+
+                line.appendChild(timeSpan);
+                line.appendChild(textSpan);
+                termBody.appendChild(line); 
+                termBody.scrollTop = termBody.scrollHeight;
             };
         })();
 
@@ -1288,7 +1343,7 @@
         // 8. 🧠 СОБЫТИЯ (F12, AFK, Tab Visibility, Konami Code)
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
-            const mascot = document.getElementById('mascot');
+            const mascotContainer = document.getElementById('mascotContainer');
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
@@ -1298,10 +1353,10 @@
 
             let afkTimer;
             const resetAfk = () => {
-                if (mascot) mascot.classList.remove('sleeping');
+                if (mascotContainer) mascotContainer.classList.remove('sleeping');
                 clearTimeout(afkTimer);
                 afkTimer = setTimeout(() => {
-                    if (mascot) mascot.classList.add('sleeping');
+                    if (mascotContainer) mascotContainer.classList.add('sleeping');
                     addTerminalLog("💤 Режим ожидания. Мониторинг продолжается.", "");
                 }, 180000);
             };
@@ -1327,14 +1382,22 @@
                 } else { konamiIndex = 0; }
             });
 
-            // Терминал Ввод
+            // Терминал Ввод (БЕЗОПАСНЫЙ)
             const terminalInput = document.getElementById('terminalInput');
             if (terminalInput) {
                 terminalInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') {
                         const cmd = terminalInput.value.trim().toLowerCase();
                         terminalInput.value = '';
-                        addTerminalLog(`guest@secretary:~$ ${cmd}`, '');
+                        
+                        const termBody = document.getElementById('terminal-body');
+                        const line = document.createElement('div'); line.className = 'terminal-line';
+                        const timeSpan = document.createElement('span'); timeSpan.className = 'terminal-time'; timeSpan.textContent = `[${new Date().toLocaleTimeString()}] `;
+                        const promptSpan = document.createElement('span'); promptSpan.style.color = '#4da8da'; promptSpan.textContent = 'guest@secretary:~$ ';
+                        const cmdSpan = document.createElement('span'); cmdSpan.style.color = '#fff'; cmdSpan.textContent = cmd;
+                        line.appendChild(timeSpan); line.appendChild(promptSpan); line.appendChild(cmdSpan);
+                        termBody.appendChild(line); termBody.scrollTop = termBody.scrollHeight;
+
                         if (cmd === 'help') {
                             addTerminalLog("Доступные команды: help, scan, clear, version, whoami, hack", '');
                         } else if (cmd === 'scan') {
@@ -1356,10 +1419,19 @@
                     }
                 });
             }
+
+            // Естественное моргание маскота
+            setInterval(() => {
+                const eyeBg = document.getElementById('eye-bg');
+                if (eyeBg && !mascotContainer.classList.contains('compromised') && !mascotContainer.classList.contains('sleeping')) {
+                    eyeBg.setAttribute('ry', '2');
+                    setTimeout(() => eyeBg.setAttribute('ry', '15'), 150);
+                }
+            }, 4000);
         });
 
         // ==========================================
-        // 9. ОСТАЛЬНЫЕ СКРИПТЫ
+        // 9. ОСТАЛЬНЫЕ СКРИПТЫ + 3D TILT
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const terminalLines = [
@@ -1415,14 +1487,39 @@
             if (scansElement) scansElement.innerText = localStorage.getItem('secretary_user_scans') || 0;
         });
 
+        // 3D Tilt и слежение за мышью
         document.addEventListener('mousemove', (e) => {
+            const mascotContainer = document.getElementById('mascotContainer');
             const mascot = document.getElementById('mascot'), pupil = document.getElementById('pupil');
-            if (!mascot || !pupil || mascot.classList.contains('compromised') || mascot.classList.contains('sleeping') || document.body.classList.contains('easter-egg')) return;
-            const rect = mascot.getBoundingClientRect();
-            const dx = e.clientX - (rect.left + rect.width / 2), dy = e.clientY - (rect.top + rect.height / 2);
-            const angle = Math.atan2(dy, dx), maxDist = 7;
-            pupil.setAttribute('cx', 100 + Math.cos(angle) * maxDist);
-            pupil.setAttribute('cy', 95 + Math.sin(angle) * maxDist);
+            if (!mascot || !pupil || !mascotContainer) return;
+            
+            const isBreached = mascotContainer.classList.contains('compromised');
+            const isSleeping = mascotContainer.classList.contains('sleeping');
+            const isHappy = mascotContainer.classList.contains('happy');
+
+            // 3D Tilt (Наклон)
+            if (!isBreached && !isSleeping && !isHappy) {
+                const rect = mascotContainer.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const dx = e.clientX - centerX;
+                const dy = e.clientY - centerY;
+                
+                const tiltX = (dy / window.innerHeight) * -20;
+                const tiltY = (dx / window.innerWidth) * 20;
+                mascot.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+            } else {
+                mascot.style.transform = 'none';
+            }
+
+            // Слежение зрачков
+            if (!isBreached && !isSleeping) {
+                const rect = mascot.getBoundingClientRect();
+                const dx = e.clientX - (rect.left + rect.width / 2), dy = e.clientY - (rect.top + rect.height / 2);
+                const angle = Math.atan2(dy, dx), maxDist = 7;
+                pupil.setAttribute('cx', 100 + Math.cos(angle) * maxDist);
+                pupil.setAttribute('cy', 95 + Math.sin(angle) * maxDist);
+            }
         });
 
         function openModal(src) { document.getElementById("imageModal").style.display = "block"; document.getElementById("expandedImg").src = src; }
