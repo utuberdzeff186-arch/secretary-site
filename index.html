@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- 🛡️ ЗАЩИТА -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://github.com https://raw.githubusercontent.com https://*.githubusercontent.com; connect-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://raw.githubusercontent.com https://*.githubusercontent.com; connect-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self';">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="no-referrer">
-    
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/step1.png">
+
+    <link rel="icon" type="image/png" href="step1.png">
     <title>Секретарь — Умный антивирус</title>
-    
+
     <style>
         :root {
             --bg: #080a0f; --surface: rgba(30, 30, 35, 0.6); --surface-hover: rgba(40, 40, 48, 0.8);
@@ -20,7 +20,7 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; background-image: radial-gradient(circle at 15% 50%, rgba(77, 168, 218, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(46, 125, 50, 0.05), transparent 25%); background-attachment: fixed; }
-        
+
         header { padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 10, 15, 0.7); backdrop-filter: blur(16px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .logo { font-size: 24px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 10px; }
         .logo span { color: var(--accent); }
@@ -31,17 +31,17 @@
         .hero h1 { font-size: 64px; font-weight: 800; margin-bottom: 20px; line-height: 1.1; background: linear-gradient(180deg, #fff 0%, #a0a0a0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero h1 span { background: linear-gradient(90deg, #4da8da, #2e7d32); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero p { font-size: 20px; color: var(--text-muted); max-width: 650px; margin: 0 auto 40px; }
-        
+
         .btn-download { background: linear-gradient(135deg, #2e7d32, #1b5e20); color: white; padding: 20px 50px; font-size: 18px; font-weight: 800; border-radius: 16px; text-decoration: none; display: inline-block; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 25px rgba(46, 125, 50, 0.4); border: 1px solid rgba(255,255,255,0.1); }
         .btn-download:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 35px rgba(46, 125, 50, 0.4); }
         .sys-req { margin-top: 15px; font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; gap: 15px; }
 
         .mascot-container { display: flex; justify-content: center; margin-bottom: 20px; perspective: 1000px; }
         .mascot-svg { width: 160px; height: 160px; animation: float 4s ease-in-out infinite; overflow: visible; }
-        
+
         .spin-slow { transform-origin: center; animation: spin 20s linear infinite; }
         #pupil { transition: cx 0.1s ease-out, cy 0.1s ease-out; }
-        
+
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
@@ -64,7 +64,7 @@
 
         .guide-box { background: var(--surface); border-radius: 24px; padding: 40px; border: 1px solid rgba(255,255,255,0.08); margin-top: 40px; text-align: left; }
         .steps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px; }
-        
+
         @media (max-width: 768px) { .steps-grid { grid-template-columns: 1fr; } }
 
         .step-card { background: #11141a; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 25px; position: relative; display: flex; flex-direction: column; transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; }
@@ -74,7 +74,7 @@
         .step-card p { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; flex-grow: 1; }
         .highlight-card { border-color: rgba(230, 126, 34, 0.4); background: rgba(230, 126, 34, 0.05); }
         .highlight-card:hover { border-color: #e67e22; }
-        
+
         .step-img { width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-top: auto; display: block; object-fit: cover; cursor: zoom-in; transition: transform 0.2s ease; }
         .step-img:hover { transform: scale(1.02); border-color: #4da8da; }
 
@@ -92,7 +92,7 @@
         .msg-bot { background: rgba(255,255,255,0.05); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid rgba(255,255,255,0.08); }
         .msg-user { background: var(--accent); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; box-shadow: 0 4px 15px rgba(77, 168, 218, 0.2); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
+
         .quick-replies { display: flex; gap: 10px; padding: 0 20px 15px 20px; flex-wrap: wrap; background: rgba(0,0,0,0.2); }
         .quick-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: var(--text-muted); padding: 8px 15px; border-radius: 20px; font-size: 13px; cursor: pointer; transition: 0.3s; }
         .quick-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
@@ -154,7 +154,7 @@
 
         <h1>Твой ПК под защитой <br><span>умного антивируса</span></h1>
         <p>Легкий, адаптивный и защищенный от взлома. Секретарь позаботится о твоем железе, пока ты играешь или работаешь.</p>
-        
+
         <a href="https://github.com/utuberdzeff186-arch/secretary-site/raw/main/SecretarySetup.exe" id="download-btn" class="btn-download" download onclick="triggerScan()">⬇ Скачать для Windows</a>
         <div class="sys-req">
             <span>Windows 10 / 11 (64-bit)</span> | <span>~35 МБ</span> | <span>Бесплатно</span>
@@ -193,30 +193,30 @@
                     <div class="step-num">1</div>
                     <h4>Скачивание</h4>
                     <p>Нажмите зеленую кнопку выше. Скачается файл <b>SecretarySetup.exe</b>.</p>
-                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/step1.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 1: Скачивание">
+                    <img src="step1.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 1: Скачивание">
                 </div>
                 <div class="step-card">
                     <div class="step-num">2</div>
                     <h4>Запуск</h4>
                     <p>Откройте папку «Загрузки» и запустите скачанный файл двойным кликом.</p>
-                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/step2.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 2: Запуск">
+                    <img src="step2.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 2: Запуск">
                 </div>
                 <div class="step-card highlight-card">
                     <div class="step-num" style="background:#e67e22;">3</div>
                     <h4 style="color:#e67e22;">SmartScreen</h4>
                     <p>Windows выдаст синее окно. Нажмите <b>«Подробнее»</b>, а затем <b>«Выполнить в любом случае»</b>.</p>
-                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/step3.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 3: SmartScreen">
+                    <img src="step3.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 3: SmartScreen">
                 </div>
                 <div class="step-card">
                     <div class="step-num">4</div>
                     <h4>Готово!</h4>
                     <p>Появится окно установки. Следуйте инструкциям. Ярлык появится на рабочем столе.</p>
-                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/step4.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 4: Установка">
+                    <img src="step4.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 4: Установка">
                 </div>
             </div>
         </div>
 
-        <!-- 5 БЛОКОВ -->
+        <!-- О РАЗРАБОТЧИКЕ -->
         <div class="guide-box" id="developer" style="margin-top: 40px; text-align: center;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 20px;">👨‍💻 О разработчике</h3>
             <div style="display: inline-block; background: rgba(0,0,0,0.3); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); max-width: 600px;">
@@ -350,7 +350,7 @@
 
     <div id="imageModal" class="modal">
         <span class="close" onclick="closeModal()">&times;</span>
-        <img class="modal-content" id="expandedImg">
+        <img class="modal-content" id="expandedImg" alt="Увеличенное изображение">
     </div>
 
     <section id="support" class="chat-section">
@@ -358,7 +358,7 @@
             <h2 class="section-title" style="margin-bottom: 10px;">💬 Техподдержка</h2>
             <p style="color: var(--text-muted);">Нажмите на кнопку ниже или напишите свой вопрос.</p>
         </div>
-        
+
         <div class="chat-container">
             <div class="chat-header">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -370,7 +370,7 @@
             <div class="chat-box" id="chatBox">
                 <div class="message msg-bot">Приветствую! Я цифровой помощник Secretary Defender. Задайте мне любой вопрос.</div>
             </div>
-            
+
             <div class="quick-replies">
                 <button class="quick-btn" onclick="quickAsk('Не запускается')">Не запускается</button>
                 <button class="quick-btn" onclick="quickAsk('Забыл пароль')">Забыл пароль</button>
@@ -515,7 +515,7 @@
 
         function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)); }
 
-        let lastMessageTime = 0; const MESSAGE_COOLDOWN = 1500; 
+        let lastMessageTime = 0; const MESSAGE_COOLDOWN = 1500;
         function randomReply(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
         function quickAsk(text) { const input = document.getElementById("chatInput"); if(input) { input.value = text; sendMessage(); } }
 
