@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" style="scroll-behavior: smooth;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- 🛡️ ЗАЩИТА (CSP обновлен для API IP) -->
+    <!-- 🛡️ ЗАЩИТА (CSP) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://raw.githubusercontent.com https://*.githubusercontent.com; connect-src 'self' https://api.github.com https://api.pwnedpasswords.com https://api.ipify.org https://ipapi.co; frame-ancestors 'none'; form-action 'self'; base-uri 'self';">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -287,13 +287,20 @@
             .chat-input-area { flex-direction: column; gap: 10px; }
             .chat-input-area button { margin-left: 0; }
             #scrollTopBtn { bottom: 20px; right: 20px; padding: 12px 16px; font-size: 16px; }
+            
+            /* Мобильная адаптация UI-макета */
             .app-window { flex-direction: column; height: auto; }
             .app-sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: 10px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
             .app-sidebar-item { padding: 10px; font-size: 12px; white-space: nowrap; }
             .app-sidebar-item.active { border-left: none; border-bottom: 3px solid #4da8da; }
             .app-main { padding: 20px; }
+            .app-titlebar span { display: none; } /* Прячем длинный текст в мобильном окне */
+            
+            /* Мобильная адаптация инструментов */
             .password-box { flex-direction: column; }
             .tools-grid { grid-template-columns: 1fr; }
+            .gen-box { flex-direction: column; }
+            .btn-gen { padding: 10px; }
         }
     </style>
 </head>
@@ -400,13 +407,13 @@
             <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Узнайте, был ли ваш пароль слит в базы хакеров. Ваш пароль <b>никогда не покидает браузер</b> (k-anonymity).</p>
             
             <div class="password-box">
-                <input type="password" id="passInput" class="password-input" placeholder="Введите пароль для проверки...">
+                <input type="password" id="passInput" class="password-input" placeholder="Введите пароль для проверки..." onkeypress="if(event.key === 'Enter') document.getElementById('checkPassBtn').click()">
                 <button id="checkPassBtn" class="btn-check-pass">Проверить</button>
             </div>
             <div id="passResult" class="pass-result"></div>
         </div>
 
-        <!-- 🛠️ НОВЫЙ БЛОК: НАБОР ИНСТРУМЕНТОВ -->
+        <!-- 🛠️ БЛОК: НАБОР ИНСТРУМЕНТОВ -->
         <div class="guide-box reveal" id="tools" style="margin-top: 40px;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 10px; text-align: center;">🛠️ Кибер-инструменты</h3>
             <p style="text-align: center; color: var(--text-muted); margin-bottom: 10px;">Полезные утилиты для вашей безопасности</p>
@@ -420,7 +427,7 @@
                         <input type="text" id="genOutput" class="gen-input" readonly value="Нажмите «Сгенерировать»">
                         <button class="btn-gen" onclick="generatePassword()">Сгенерировать</button>
                     </div>
-                    <button class="btn-secondary" style="width: 100%; padding: 10px; font-size: 14px; margin-top: 5px;" onclick="copyPassword()">📋 Скопировать в буфер</button>
+                    <button class="btn-secondary" style="width: 100%; padding: 10px; font-size: 14px; margin-top: 5px;" onclick="copyPassword(this)">📋 Скопировать в буфер</button>
                 </div>
 
                 <!-- Проверка IP -->
@@ -1011,10 +1018,9 @@
                 genOutput.value = password;
             };
 
-            window.copyPassword = () => {
+            window.copyPassword = (btn) => {
                 if (!genOutput.value || genOutput.value === 'Нажмите «Сгенерировать»') return;
                 navigator.clipboard.writeText(genOutput.value).then(() => {
-                    const btn = event.target;
                     const originalText = btn.innerText;
                     btn.innerText = '✅ Скопировано!';
                     btn.style.color = '#2ecc71';
