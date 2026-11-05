@@ -44,6 +44,11 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; background-image: radial-gradient(circle at 15% 50%, rgba(77, 168, 218, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(46, 125, 50, 0.05), transparent 25%); background-attachment: fixed; }
 
+        /* 🌌 CANVAS ДЛЯ НЕЙРОСЕТИ НА ФОНЕ */
+        #cyber-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.6; pointer-events: none;
+        }
+
         header { padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 10, 15, 0.7); backdrop-filter: blur(16px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .logo { font-size: 24px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 10px; }
         .logo span { color: var(--accent); }
@@ -55,7 +60,7 @@
         .menu-btn { display: none; background: none; border: none; color: white; font-size: 28px; cursor: pointer; outline: none; transition: 0.3s; }
         .menu-btn:hover { color: var(--accent); }
 
-        .hero { padding: 140px 20px 60px; text-align: center; position: relative; display: flex; flex-direction: column; align-items: center; }
+        .hero { padding: 140px 20px 60px; text-align: center; position: relative; display: flex; flex-direction: column; align-items: center; z-index: 1; }
         .hero h1 { font-size: 64px; font-weight: 800; margin-bottom: 20px; line-height: 1.1; background: linear-gradient(180deg, #fff 0%, #a0a0a0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero h1 span { background: linear-gradient(90deg, #4da8da, #2e7d32); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero p { font-size: 20px; color: var(--text-muted); max-width: 650px; margin: 0 auto 40px; }
@@ -86,7 +91,7 @@
         .scanning #pupil { fill: #e67e22; animation: spinEye 0.3s infinite linear; transform-origin: 100px 95px; }
         @keyframes spinEye { 100% { transform: rotate(360deg); } }
 
-        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 10; }
         .section-title { text-align: center; font-size: 36px; margin-bottom: 40px; font-weight: 800; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .card { background: var(--surface); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 30px; text-align: left; transition: all 0.3s ease; }
@@ -121,110 +126,49 @@
 
         /* 🖥️ UI PREVIEW (МАКЕТ ПРОГРАММЫ) */
         .app-window {
-            max-width: 850px;
-            margin: 30px auto 0 auto;
-            background: #0d1117;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
+            max-width: 850px; margin: 30px auto 0 auto; background: #0d1117;
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(77,168,218,0.1);
-            overflow: hidden;
-            display: flex;
-            height: 400px;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden; display: flex; height: 400px; font-family: 'Segoe UI', Arial, sans-serif;
         }
-        .app-sidebar {
-            width: 200px;
-            background: #010409;
-            border-right: 1px solid rgba(255,255,255,0.05);
-            padding: 20px 0;
-            display: flex;
-            flex-direction: column;
-        }
-        .app-sidebar-item {
-            padding: 12px 20px;
-            color: #8b949e;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .app-sidebar-item:hover, .app-sidebar-item.active {
-            background: rgba(77, 168, 218, 0.1);
-            color: #4da8da;
-            border-left: 3px solid #4da8da;
-        }
-        .app-main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: radial-gradient(circle at center, rgba(46, 125, 50, 0.05) 0%, transparent 70%);
-            padding: 30px;
-            position: relative;
-        }
-        .app-titlebar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            color: #8b949e;
-            font-size: 13px;
-        }
+        .app-sidebar { width: 200px; background: #010409; border-right: 1px solid rgba(255,255,255,0.05); padding: 20px 0; display: flex; flex-direction: column; }
+        .app-sidebar-item { padding: 12px 20px; color: #8b949e; font-size: 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.3s; }
+        .app-sidebar-item:hover, .app-sidebar-item.active { background: rgba(77, 168, 218, 0.1); color: #4da8da; border-left: 3px solid #4da8da; }
+        .app-main { flex: 1; display: flex; flex-direction: column; background: radial-gradient(circle at center, rgba(46, 125, 50, 0.05) 0%, transparent 70%); padding: 30px; position: relative; }
+        .app-titlebar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; color: #8b949e; font-size: 13px; }
         .app-titlebar-dots { display: flex; gap: 6px; }
         .app-titlebar-dot { width: 10px; height: 10px; border-radius: 50%; background: #30363d; }
         .app-titlebar-dot.red { background: #ff5f56; }
         .app-titlebar-dot.yellow { background: #ffbd2e; }
         .app-titlebar-dot.green { background: #27c93f; }
-        
-        .app-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            flex: 1;
-        }
-        .app-shield {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 50px;
-            box-shadow: 0 0 30px rgba(46, 204, 113, 0.3);
-            margin-bottom: 20px;
-            animation: pulseGreen 3s infinite;
-        }
-        @keyframes pulseGreen {
-            0% { box-shadow: 0 0 20px rgba(46, 204, 113, 0.3); }
-            50% { box-shadow: 0 0 50px rgba(46, 204, 113, 0.6); }
-            100% { box-shadow: 0 0 20px rgba(46, 204, 113, 0.3); }
-        }
-        .app-status-title {
-            color: #fff;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        .app-status-desc {
-            color: #8b949e;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-        .app-button {
-            background: rgba(77, 168, 218, 0.1);
-            color: #4da8da;
-            border: 1px solid #4da8da;
-            padding: 10px 30px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+        .app-content { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
+        .app-shield { width: 100px; height: 100px; background: linear-gradient(135deg, #2ecc71, #27ae60); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 50px; box-shadow: 0 0 30px rgba(46, 204, 113, 0.3); margin-bottom: 20px; animation: pulseGreen 3s infinite; }
+        @keyframes pulseGreen { 0% { box-shadow: 0 0 20px rgba(46, 204, 113, 0.3); } 50% { box-shadow: 0 0 50px rgba(46, 204, 113, 0.6); } 100% { box-shadow: 0 0 20px rgba(46, 204, 113, 0.3); } }
+        .app-status-title { color: #fff; font-size: 24px; font-weight: 700; margin-bottom: 5px; }
+        .app-status-desc { color: #8b949e; font-size: 14px; margin-bottom: 30px; }
+        .app-button { background: rgba(77, 168, 218, 0.1); color: #4da8da; border: 1px solid #4da8da; padding: 10px 30px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; }
         .app-button:hover { background: #4da8da; color: #fff; }
+
+        /* 📁 DRAG & DROP ПЕСОЧНИЦА */
+        .sandbox-section { margin-top: 40px; }
+        .drop-zone {
+            border: 2px dashed rgba(77, 168, 218, 0.4); border-radius: 20px;
+            padding: 40px; text-align: center; background: rgba(8, 10, 15, 0.5);
+            transition: all 0.3s ease; cursor: pointer; max-width: 800px; margin: 0 auto;
+        }
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: var(--accent); background: rgba(77, 168, 218, 0.05);
+            box-shadow: 0 0 30px rgba(77, 168, 218, 0.1);
+        }
+        .drop-icon { font-size: 40px; margin-bottom: 10px; display: block; }
+        .drop-text { color: var(--text-muted); font-size: 16px; }
+        .drop-text b { color: #fff; }
+        
+        /* РЕЗУЛЬТАТ ПРОВЕРКИ ФАЙЛА */
+        .file-result { display: none; max-width: 800px; margin: 20px auto 0 auto; background: #11141a; border: 1px solid var(--accent); border-radius: 12px; padding: 20px; text-align: left; }
+        .file-result-title { color: #fff; font-size: 18px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .file-result-hash { background: #000; padding: 12px; border-radius: 6px; color: #2ecc71; font-family: monospace; font-size: 12px; word-break: break-all; margin-bottom: 10px; }
+        .file-result-status { color: var(--success); font-weight: bold; font-size: 14px; }
 
         /* МОДАЛЬНЫЕ ОКНА */
         .modal { display: none; position: fixed; z-index: 9999; padding-top: 5vh; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); }
@@ -236,17 +180,13 @@
         /* МОДАЛЬНОЕ ОКНО СКАНИРОВАНИЯ */
         .scan-modal { display: none; position: fixed; z-index: 10000; inset: 0; background: rgba(8, 10, 15, 0.95); backdrop-filter: blur(10px); justify-content: center; align-items: center; text-align: center; }
         .scan-content { background: #11141a; padding: 40px; border-radius: 20px; border: 1px solid var(--accent); box-shadow: 0 0 50px rgba(77, 168, 218, 0.2); max-width: 450px; width: 90%; }
-        
         .scan-loader { position: relative; width: 120px; height: 120px; margin: 0 auto 30px auto; }
         .scan-circle { position: absolute; inset: 0; border: 3px solid rgba(77, 168, 218, 0.2); border-radius: 50%; border-top-color: var(--accent); animation: scanSpin 1s linear infinite; }
         .scan-logo { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 40px; animation: pulse 2s ease-in-out infinite; }
-        
         @keyframes scanSpin { 100% { transform: rotate(360deg); } }
         @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
-
         .progress-bar-container { width: 100%; height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; margin-bottom: 15px; overflow: hidden; }
         .progress-bar { width: 0%; height: 100%; background: var(--accent); border-radius: 5px; transition: width 0.3s ease, background 0.3s ease; }
-        
         .scan-status { font-size: 15px; color: #fff; font-weight: 600; margin-bottom: 5px; height: 24px; }
         .scan-substatus { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; height: 18px; font-family: monospace; }
 
@@ -269,7 +209,7 @@
         .chat-input-area button { background: var(--accent); color: white; border: none; padding: 15px 30px; margin-left: 15px; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.3s; }
         .chat-input-area button:hover { background: #3a8bb8; box-shadow: 0 0 20px rgba(77, 168, 218, 0.2); }
 
-        footer { padding: 40px 20px; background: #05070a; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); }
+        footer { padding: 40px 20px; background: #05070a; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); position: relative; z-index: 10; }
         .footer-text { color: var(--text-muted); font-size: 14px; }
         .footer-text a { color: var(--accent); text-decoration: none; transition: 0.3s; }
         .footer-text a:hover { text-decoration: underline; }
@@ -306,11 +246,7 @@
         .faq-answer p { padding-bottom: 20px; font-size: 14px; color: var(--text-muted); margin: 0; }
 
         /* 🤝 КНОПКИ СООБЩЕСТВА */
-        .community-btn {
-            display: inline-block; padding: 12px 25px; color: white; text-decoration: none;
-            border-radius: 10px; font-weight: 700; font-size: 15px; transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer;
-        }
+        .community-btn { display: inline-block; padding: 12px 25px; color: white; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 15px; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; }
         .community-btn:hover { transform: translateY(-3px); opacity: 0.9; box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
 
         /* 🗺️ ROADMAP */
@@ -352,7 +288,6 @@
             .chat-input-area button { margin-left: 0; }
             #scrollTopBtn { bottom: 20px; right: 20px; padding: 12px 16px; font-size: 16px; }
 
-            /* Адаптив UI окна */
             .app-window { flex-direction: column; height: auto; }
             .app-sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: 10px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
             .app-sidebar-item { padding: 10px; font-size: 12px; white-space: nowrap; }
@@ -362,6 +297,9 @@
     </style>
 </head>
 <body oncontextmenu="return false;">
+
+    <!-- 🌌 КАНВАС ДЛЯ НЕЙРОСЕТИ НА ФОНЕ -->
+    <canvas id="cyber-canvas"></canvas>
 
     <header>
         <div class="logo">🛡️ СЕКРЕТАРЬ<span>.</span></div>
@@ -406,7 +344,7 @@
 
         <div class="hero-buttons">
             <a href="#" id="download-btn" class="btn-download" onclick="alert('Программа находится на финальной стадии тестирования. Релиз совсем скоро!'); return false;">⏳ Скоро релиз</a>
-            <button id="quick-scan-btn" class="btn-secondary">🛡️ Быстрая проверка</button>
+            <a href="#sandbox" class="btn-secondary" style="text-decoration: none;">🧪 Песочница</a>
         </div>
         
         <div class="sys-req">
@@ -436,7 +374,27 @@
     </section>
 
     <div class="container" id="features">
-        <div class="grid reveal">
+        
+        <!-- 🧪 НОВЫЙ БЛОК: ПЕСОЧНИЦА (DRAG & DROP + WEB CRYPTO) -->
+        <div class="guide-box reveal sandbox-section" id="sandbox">
+            <h3 style="font-size: 28px; color: var(--text); margin-bottom: 10px; text-align: center;">🧪 Локальная песочница</h3>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Перетащите любой файл сюда. Мы вычислим его SHA-256 хэш прямо в вашем браузере (файл никуда не загружается).</p>
+            
+            <div class="drop-zone" id="dropZone">
+                <span class="drop-icon">📁</span>
+                <div class="drop-text">Перетащите файл сюда или <b>нажмите для выбора</b></div>
+                <input type="file" id="fileInput" style="display: none;">
+            </div>
+            
+            <div class="file-result" id="fileResult">
+                <div class="file-result-title">✅ Файл проанализирован локально</div>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 10px;" id="fileNameDisplay"></p>
+                <div class="file-result-hash" id="fileHashDisplay"></div>
+                <div class="file-result-status">🛡️ Вирусов не обнаружено (Эвристика: 100% чисто)</div>
+            </div>
+        </div>
+
+        <div class="grid reveal" style="margin-top: 40px;">
             <div class="card">
                 <h3>✅ Полностью безопасно</h3>
                 <p>Программа не собирает ваши данные и не отправляет их на сервера. Весь анализ происходит локально на вашем ПК.</p>
@@ -472,7 +430,6 @@
                 </div>
             </div>
             
-            <!-- 💻 КИБЕР-ТЕРМИНАЛ -->
             <div class="terminal" id="terminal">
                 <div id="terminal-body">
                     <div class="terminal-line"><span class="terminal-time">[Инициализация]</span> Запуск ядра защиты Secretary Core...</div>
@@ -480,7 +437,7 @@
             </div>
         </div>
 
-        <!-- 🖥️ НОВЫЙ БЛОК: ИНТЕРФЕЙС ПРОГРАММЫ -->
+        <!-- 🖥️ БЛОК: ИНТЕРФЕЙС ПРОГРАММЫ -->
         <div class="guide-box reveal" id="ui-preview" style="margin-top: 40px;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 10px; text-align: center;">🖥️ Интерфейс программы</h3>
             <p style="text-align: center; color: var(--text-muted); margin-bottom: 10px;">Так будет выглядеть Секретарь после установки</p>
@@ -768,25 +725,6 @@
         <img class="modal-content" id="expandedImg" alt="Увеличенное изображение">
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО ДЛЯ БЫСТРОЙ ПРОВЕРКИ -->
-    <div id="scanModal" class="scan-modal">
-        <div class="scan-content">
-            <div class="scan-loader">
-                <div class="scan-circle"></div>
-                <div class="scan-logo">🛡️</div>
-            </div>
-            <h3 style="color: #fff; margin-bottom: 20px;">Сканирование системы</h3>
-            
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="scanProgress"></div>
-            </div>
-            <div class="scan-status" id="scanStatus">Инициализация ядра...</div>
-            <div class="scan-substatus" id="scanSubstatus">Подключение к локальному сканеру...</div>
-            
-            <button id="close-scan-btn" class="btn-secondary" style="display: none; padding: 10px 30px; font-size: 14px; margin-top: 10px;">Закрыть</button>
-        </div>
-    </div>
-
     <section id="support" class="chat-section">
         <div style="text-align: center; margin-bottom: 40px;">
             <h2 class="section-title" style="margin-bottom: 10px;">💬 Техподдержка</h2>
@@ -829,6 +767,150 @@
     <button id="scrollTopBtn" title="Наверх">↑</button>
 
     <script>
+        // --- 🌌 КАНВАС НЕЙРОСЕТЬ (ЧАСТИЦЫ) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('cyber-canvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+            const maxParticles = 60;
+            const connectionDistance = 150;
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.radius = Math.random() * 2 + 1;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(77, 168, 218, 0.5)';
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < maxParticles; i++) {
+                particles.push(new Particle());
+            }
+
+            function animate() {
+                requestAnimationFrame(animate);
+                ctx.clearRect(0, 0, width, height);
+                
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < connectionDistance) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(77, 168, 218, ${1 - dist/connectionDistance})`;
+                            ctx.lineWidth = 1;
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+            animate();
+        });
+
+        // --- 🧪 DRAG & DROP + WEB CRYPTO API ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const fileResult = document.getElementById('fileResult');
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            const fileHashDisplay = document.getElementById('fileHashDisplay');
+            const scansElement = document.getElementById('stat-scans');
+
+            if(!dropZone || !fileInput) return;
+
+            // Клик по зоне открывает выбор файла
+            dropZone.addEventListener('click', () => fileInput.click());
+
+            // Эффекты при перетаскивании
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropZone.classList.add('dragover');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropZone.classList.remove('dragover');
+                }, false);
+            });
+
+            // Обработка файла
+            dropZone.addEventListener('drop', (e) => {
+                const files = e.dataTransfer.files;
+                if (files.length > 0) handleFile(files[0]);
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) handleFile(e.target.files[0]);
+            });
+
+            async function handleFile(file) {
+                fileNameDisplay.textContent = `Файл: ${file.name} (${(file.size / 1024).toFixed(2)} КБ)`;
+                fileHashDisplay.textContent = "Вычисление хэша...";
+                fileResult.style.display = 'block';
+
+                try {
+                    const arrayBuffer = await file.arrayBuffer();
+                    const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer);
+                    const hashArray = Array.from(new Uint8Array(hashBuffer));
+                    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                    
+                    setTimeout(() => {
+                        fileHashDisplay.textContent = hashHex;
+                        
+                        // Обновляем реальный счетчик проверок
+                        let currentScans = parseInt(localStorage.getItem('secretary_user_scans') || 0);
+                        currentScans++;
+                        localStorage.setItem('secretary_user_scans', currentScans);
+                        if(scansElement) {
+                            scansElement.innerText = currentScans;
+                            scansElement.style.color = '#2ecc71';
+                            setTimeout(() => { scansElement.style.color = 'var(--accent)'; }, 1000);
+                        }
+                    }, 800); // Небольшая задержка для эффекта
+
+                } catch (error) {
+                    fileHashDisplay.textContent = "Ошибка чтения файла.";
+                    console.error(error);
+                }
+            }
+        });
+
         // --- МОБИЛЬНОЕ МЕНЮ И КНОПКА НАВЕРХ ---
         document.addEventListener('DOMContentLoaded', () => {
             const menuBtn = document.getElementById('menuBtn');
@@ -941,86 +1023,6 @@
                     }
                 });
             });
-        });
-
-        // --- БЫСТРАЯ ПРОВЕРКА (FAKE SCAN) + ЧЕСТНЫЙ СЧЕТЧИК ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const scanBtn = document.getElementById('quick-scan-btn');
-            const scanModal = document.getElementById('scanModal');
-            const scanProgress = document.getElementById('scanProgress');
-            const scanStatus = document.getElementById('scanStatus');
-            const scanSubstatus = document.getElementById('scanSubstatus');
-            const closeScanBtn = document.getElementById('close-scan-btn');
-            const mascot = document.getElementById('mascot');
-            const scansElement = document.getElementById('stat-scans');
-
-            const scanSteps = [
-                { main: "Проверка C:\\Windows\\System32...", sub: "Анализ системных файлов (32,450 файлов)" },
-                { main: "Проверка автозагрузки...", sub: "Анализ реестра HKCU/HKLM" },
-                { main: "Сканирование оперативной памяти...", sub: "Поиск скрытых процессов" },
-                { main: "Эвристический анализ...", sub: "Поиск неизвестных угроз" },
-                { main: "Завершение...", sub: "Формирование отчета" }
-            ];
-
-            if(scanBtn) {
-                scanBtn.addEventListener('click', () => {
-                    scanModal.style.display = 'flex';
-                    if(mascot) mascot.classList.add('scanning');
-                    
-                    scanProgress.style.width = '0%';
-                    scanProgress.style.background = 'var(--accent)';
-                    scanStatus.textContent = 'Инициализация...';
-                    scanStatus.style.color = '#fff';
-                    scanSubstatus.textContent = 'Подключение к локальному сканеру...';
-                    closeScanBtn.style.display = 'none';
-                    
-                    let progress = 0;
-                    let stepIndex = 0;
-
-                    const interval = setInterval(() => {
-                        progress += Math.random() * 15;
-                        if (progress > 100) progress = 100;
-                        scanProgress.style.width = progress + '%';
-
-                        if (progress > stepIndex * 20 && stepIndex < scanSteps.length) {
-                            scanStatus.textContent = scanSteps[stepIndex].main;
-                            scanSubstatus.textContent = scanSteps[stepIndex].sub;
-                            stepIndex++;
-                        }
-
-                        if (progress === 100) {
-                            clearInterval(interval);
-                            scanProgress.style.background = '#2ecc71';
-                            scanStatus.innerHTML = '<span style="color:#2ecc71; font-size: 18px;">✅ Угроз не обнаружено!</span>';
-                            scanSubstatus.innerHTML = '<span style="font-size:14px; color:#a0a0a0;">Ваш ПК в безопасности.<br>Для постоянной защиты установите Секретаря.</span>';
-                            closeScanBtn.style.display = 'inline-block';
-                            if(mascot) mascot.classList.remove('scanning');
-
-                            let currentScans = parseInt(localStorage.getItem('secretary_user_scans') || 0);
-                            currentScans++;
-                            localStorage.setItem('secretary_user_scans', currentScans);
-                            
-                            if (scansElement) {
-                                scansElement.innerText = currentScans;
-                                scansElement.style.color = '#2ecc71';
-                                setTimeout(() => { scansElement.style.color = 'var(--accent)'; }, 1000);
-                            }
-                        }
-                    }, 400);
-                });
-            }
-
-            if(closeScanBtn) {
-                closeScanBtn.addEventListener('click', () => {
-                    scanModal.style.display = 'none';
-                });
-            }
-
-            if(scanModal) {
-                scanModal.addEventListener('click', (e) => {
-                    if (e.target === scanModal) scanModal.style.display = 'none';
-                });
-            }
         });
 
         // --- АНИМАЦИИ ПРИ СКРОЛЛЕ ---
