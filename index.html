@@ -43,7 +43,11 @@
         .hero h1 span { background: linear-gradient(90deg, #4da8da, #2e7d32); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero p { font-size: 20px; color: var(--text-muted); max-width: 650px; margin: 0 auto 40px; }
 
+        .hero-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px; }
         .btn-download { background: linear-gradient(135deg, #555, #333); color: white; padding: 20px 50px; font-size: 18px; font-weight: 800; border-radius: 16px; text-decoration: none; display: inline-block; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); cursor: not-allowed; }
+        .btn-secondary { background: transparent; color: var(--accent); border: 2px solid var(--accent); padding: 20px 40px; font-size: 18px; font-weight: 800; border-radius: 16px; cursor: pointer; transition: all 0.3s ease; display: inline-block; text-align: center; }
+        .btn-secondary:hover { background: rgba(77, 168, 218, 0.1); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(77, 168, 218, 0.2); }
+        
         .sys-req { margin-top: 15px; font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; gap: 15px; }
 
         .mascot-container { display: flex; justify-content: center; margin-bottom: 20px; perspective: 1000px; }
@@ -86,11 +90,29 @@
         .step-img { width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-top: auto; display: block; object-fit: cover; cursor: zoom-in; transition: transform 0.2s ease; }
         .step-img:hover { transform: scale(1.02); border-color: #4da8da; }
 
+        /* МОДАЛЬНЫЕ ОКНА */
         .modal { display: none; position: fixed; z-index: 9999; padding-top: 5vh; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); }
         .modal-content { margin: auto; display: block; max-width: 95%; max-height: 90vh; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 0 30px rgba(0,0,0,0.8); animation: zoomIn 0.3s; }
         @keyframes zoomIn { from {transform: scale(0.8); opacity: 0;} to {transform: scale(1); opacity: 1;} }
         .close { position: absolute; top: 15px; right: 35px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; transition: 0.3s; z-index: 10000; }
         .close:hover { color: var(--accent); }
+
+        /* МОДАЛЬНОЕ ОКНО СКАНИРОВАНИЯ */
+        .scan-modal { display: none; position: fixed; z-index: 10000; inset: 0; background: rgba(8, 10, 15, 0.95); backdrop-filter: blur(10px); justify-content: center; align-items: center; text-align: center; }
+        .scan-content { background: #11141a; padding: 40px; border-radius: 20px; border: 1px solid var(--accent); box-shadow: 0 0 50px rgba(77, 168, 218, 0.2); max-width: 450px; width: 90%; }
+        
+        .scan-loader { position: relative; width: 120px; height: 120px; margin: 0 auto 30px auto; }
+        .scan-circle { position: absolute; inset: 0; border: 3px solid rgba(77, 168, 218, 0.2); border-radius: 50%; border-top-color: var(--accent); animation: scanSpin 1s linear infinite; }
+        .scan-logo { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 40px; animation: pulse 2s ease-in-out infinite; }
+        
+        @keyframes scanSpin { 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
+
+        .progress-bar-container { width: 100%; height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; margin-bottom: 15px; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: var(--accent); border-radius: 5px; transition: width 0.3s ease, background 0.3s ease; }
+        
+        .scan-status { font-size: 15px; color: #fff; font-weight: 600; margin-bottom: 5px; height: 24px; }
+        .scan-substatus { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; height: 18px; font-family: monospace; }
 
         .chat-section { padding: 80px 20px; background: #0a0d13; margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .chat-container { background: var(--surface); border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; max-width: 750px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(12px); }
@@ -170,6 +192,8 @@
             .hero { padding-top: 100px; }
             .hero h1 { font-size: 36px; }
             .hero p { font-size: 16px; }
+            .hero-buttons { flex-direction: column; width: 100%; max-width: 300px; }
+            .btn-download, .btn-secondary { width: 100%; padding: 15px 20px; font-size: 16px; }
             .steps-grid { grid-template-columns: 1fr; }
             .guide-box { padding: 20px; }
             .chat-input-area { flex-direction: column; gap: 10px; }
@@ -221,7 +245,11 @@
         <h1>Твой ПК под защитой <br><span>умного антивируса</span></h1>
         <p>Легкий, адаптивный и защищенный от взлома. Секретарь позаботится о твоем железе, пока ты играешь или работаешь.</p>
 
-        <a href="#" id="download-btn" class="btn-download" onclick="alert('Программа находится на финальной стадии тестирования. Релиз совсем скоро!'); return false;">⏳ Скоро релиз</a>
+        <div class="hero-buttons">
+            <a href="#" id="download-btn" class="btn-download" onclick="alert('Программа находится на финальной стадии тестирования. Релиз совсем скоро!'); return false;">⏳ Скоро релиз</a>
+            <button id="quick-scan-btn" class="btn-secondary">🛡️ Быстрая проверка</button>
+        </div>
+        
         <div class="sys-req">
             <span>Windows 10 / 11 (64-bit)</span> | <span>~35 МБ</span> | <span>Бесплатно</span>
         </div>
@@ -317,7 +345,7 @@
             </div>
         </div>
 
-        <!-- НОВЫЙ БЛОК: СООБЩЕСТВО И ПОДДЕРЖКА (БЕЗ TELEGRAM) -->
+        <!-- БЛОК: СООБЩЕСТВО И ПОДДЕРЖКА -->
         <div class="guide-box reveal" id="community" style="margin-top: 40px;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 20px; text-align: center;">🤝 Сообщество и поддержка</h3>
             <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Проект активно развивается. Присоединяйтесь, чтобы первыми узнавать новости и помогать делать «Секретаря» лучше.</p>
@@ -480,9 +508,29 @@
         </div>
     </div>
 
+    <!-- МОДАЛЬНОЕ ОКНО ДЛЯ КАРТИНОК -->
     <div id="imageModal" class="modal">
         <span class="close" onclick="closeModal()">&times;</span>
         <img class="modal-content" id="expandedImg" alt="Увеличенное изображение">
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ДЛЯ БЫСТРОЙ ПРОВЕРКИ -->
+    <div id="scanModal" class="scan-modal">
+        <div class="scan-content">
+            <div class="scan-loader">
+                <div class="scan-circle"></div>
+                <div class="scan-logo">🛡️</div>
+            </div>
+            <h3 style="color: #fff; margin-bottom: 20px;">Сканирование системы</h3>
+            
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="scanProgress"></div>
+            </div>
+            <div class="scan-status" id="scanStatus">Инициализация ядра...</div>
+            <div class="scan-substatus" id="scanSubstatus">Подключение к локальному сканеру...</div>
+            
+            <button id="close-scan-btn" class="btn-secondary" style="display: none; padding: 10px 30px; font-size: 14px; margin-top: 10px;">Закрыть</button>
+        </div>
     </div>
 
     <section id="support" class="chat-section">
@@ -581,6 +629,78 @@
                     }
                 });
             });
+        });
+
+        // --- БЫСТРАЯ ПРОВЕРКА (FAKE SCAN) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const scanBtn = document.getElementById('quick-scan-btn');
+            const scanModal = document.getElementById('scanModal');
+            const scanProgress = document.getElementById('scanProgress');
+            const scanStatus = document.getElementById('scanStatus');
+            const scanSubstatus = document.getElementById('scanSubstatus');
+            const closeScanBtn = document.getElementById('close-scan-btn');
+            const mascot = document.getElementById('mascot');
+
+            const scanSteps = [
+                { main: "Проверка C:\\Windows\\System32...", sub: "Анализ системных файлов (32,450 файлов)" },
+                { main: "Проверка автозагрузки...", sub: "Анализ реестра HKCU/HKLM" },
+                { main: "Сканирование оперативной памяти...", sub: "Поиск скрытых процессов" },
+                { main: "Эвристический анализ...", sub: "Поиск неизвестных угроз" },
+                { main: "Завершение...", sub: "Формирование отчета" }
+            ];
+
+            if(scanBtn) {
+                scanBtn.addEventListener('click', () => {
+                    scanModal.style.display = 'flex';
+                    if(mascot) mascot.classList.add('scanning'); // Включаем анимацию маскота
+                    
+                    scanProgress.style.width = '0%';
+                    scanProgress.style.background = 'var(--accent)';
+                    scanStatus.textContent = 'Инициализация...';
+                    scanStatus.style.color = '#fff';
+                    scanSubstatus.textContent = 'Подключение к локальному сканеру...';
+                    closeScanBtn.style.display = 'none';
+                    
+                    let progress = 0;
+                    let stepIndex = 0;
+
+                    const interval = setInterval(() => {
+                        progress += Math.random() * 15;
+                        if (progress > 100) progress = 100;
+                        scanProgress.style.width = progress + '%';
+
+                        // Смена текста
+                        if (progress > stepIndex * 20 && stepIndex < scanSteps.length) {
+                            scanStatus.textContent = scanSteps[stepIndex].main;
+                            scanSubstatus.textContent = scanSteps[stepIndex].sub;
+                            stepIndex++;
+                        }
+
+                        // Завершение
+                        if (progress === 100) {
+                            clearInterval(interval);
+                            scanProgress.style.background = '#2ecc71'; // Зеленый
+                            scanStatus.innerHTML = '<span style="color:#2ecc71; font-size: 18px;">✅ Угроз не обнаружено!</span>';
+                            scanSubstatus.innerHTML = '<span style="font-size:14px; color:#a0a0a0;">Ваш ПК в безопасности.<br>Для постоянной защиты установите Секретаря.</span>';
+                            closeScanBtn.style.display = 'inline-block';
+                            if(mascot) mascot.classList.remove('scanning');
+                        }
+                    }, 400); // Скорость сканирования
+                });
+            }
+
+            if(closeScanBtn) {
+                closeScanBtn.addEventListener('click', () => {
+                    scanModal.style.display = 'none';
+                });
+            }
+
+            // Закрытие по клику на фон
+            if(scanModal) {
+                scanModal.addEventListener('click', (e) => {
+                    if (e.target === scanModal) scanModal.style.display = 'none';
+                });
+            }
         });
 
         // --- АНИМАЦИИ ПРИ СКРОЛЛЕ ---
