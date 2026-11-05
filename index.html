@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- 🛡️ ЗАЩИТА (CSP) -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://raw.githubusercontent.com https://*.githubusercontent.com https://api.qrserver.com; connect-src 'self' https://api.github.com https://api.pwnedpasswords.com https://api.ipify.org https://ipapi.co; frame-ancestors 'none'; form-action 'self'; base-uri 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://raw.githubusercontent.com https://*.githubusercontent.com https://api.qrserver.com; connect-src 'self' https://api.github.com https://api.pwnedpasswords.com https://api.ipify.org https://ipapi.co stun:stun.l.google.com; frame-ancestors 'none'; form-action 'self'; base-uri 'self';">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="no-referrer">
@@ -45,9 +45,13 @@
         body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; background-image: radial-gradient(circle at 15% 50%, rgba(77, 168, 218, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(46, 125, 50, 0.05), transparent 25%); background-attachment: fixed; transition: filter 0.5s ease; }
 
         /* 🍪 COOKIE BANNER */
-        .cookie-banner { position: fixed; bottom: 0; left: 0; width: 100%; background: #11141a; border-top: 1px solid rgba(255,255,255,0.1); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 99999; font-size: 14px; color: var(--text-muted); box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
-        .cookie-banner button { background: var(--accent); color: #fff; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; white-space: nowrap; }
-        .cookie-banner button:hover { background: #3a8bb8; }
+        .cookie-banner { position: fixed; bottom: 0; left: 0; width: 100%; background: #11141a; border-top: 1px solid rgba(255,255,255,0.1); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 99999; font-size: 14px; color: var(--text-muted); box-shadow: 0 -5px 20px rgba(0,0,0,0.5); gap: 15px; }
+        .cookie-banner-buttons { display: flex; gap: 10px; flex-shrink: 0; }
+        .cookie-btn { border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; white-space: nowrap; font-size: 14px; }
+        .cookie-btn.accept { background: var(--accent); color: #fff; }
+        .cookie-btn.accept:hover { background: #3a8bb8; }
+        .cookie-btn.necessary { background: #333; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+        .cookie-btn.necessary:hover { background: #555; }
         .cookie-banner a { color: var(--accent); text-decoration: underline; }
 
         /* 🚨 СОСТОЯНИЕ ТРЕВОГИ НА ВСЕМ САЙТЕ */
@@ -80,14 +84,17 @@
         .btn-secondary { background: transparent; color: var(--accent); border: 2px solid var(--accent); padding: 20px 40px; font-size: 18px; font-weight: 800; border-radius: 16px; cursor: pointer; transition: all 0.3s ease; display: inline-block; text-align: center; text-decoration: none; }
         .btn-secondary:hover { background: rgba(77, 168, 218, 0.1); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(77, 168, 218, 0.2); }
         
-        /* 📧 ФОРМА ПОДПИСКИ */
-        .subscribe-box { max-width: 500px; margin: 20px auto; display: flex; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); }
+        /* 📧 ФОРМА ПОДПИСКИ (ОБНОВЛЕНА ПО 152-ФЗ) */
+        .subscribe-box { max-width: 500px; margin: 20px auto; display: flex; flex-direction: column; align-items: stretch; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); gap: 10px; }
+        .subscribe-input-group { display: flex; gap: 10px; }
         .subscribe-input { flex: 1; background: transparent; border: none; padding: 10px 15px; color: #fff; outline: none; font-size: 15px; }
-        .subscribe-btn { background: var(--accent); color: #fff; border: none; padding: 10px 25px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .subscribe-btn { background: var(--accent); color: #fff; border: none; padding: 10px 25px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; white-space: nowrap; }
         .subscribe-btn:hover { background: #3a8bb8; }
-        .sub-success { color: var(--success); font-weight: bold; margin-top: 10px; display: none; }
-        .sub-note { font-size: 11px; color: var(--text-muted); margin-top: 5px; display: block; }
-
+        .sub-consent { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--text-muted); cursor: pointer; text-align: left; }
+        .sub-consent input { margin-top: 3px; accent-color: var(--accent); flex-shrink: 0; }
+        .sub-consent a { color: var(--accent); text-decoration: underline; }
+        .sub-success { color: var(--success); font-weight: bold; display: none; text-align: center; margin-top: 5px; }
+        
         .sys-req { margin-top: 15px; font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; gap: 15px; }
 
         /* 📊 LIVE STATS */
@@ -99,7 +106,6 @@
         .mascot-container { display: flex; justify-content: center; margin-bottom: 20px; perspective: 1000px; position: relative; cursor: pointer; }
         .mascot-svg { width: 160px; height: 160px; animation: float 4s ease-in-out infinite; overflow: visible; transition: transform 0.1s ease-out, filter 0.3s ease; }
         
-        /* Орбитальные частицы вокруг маскота */
         .mascot-container::before, .mascot-container::after {
             content: ''; position: absolute; width: 8px; height: 8px; background: var(--accent); border-radius: 50%;
             top: 50%; left: 50%; box-shadow: 0 0 10px var(--accent); animation: orbit 6s linear infinite;
@@ -116,45 +122,32 @@
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* 🟢 СКАНИРОВАНИЕ */
         .scanning #shield { fill: #e67e22; }
         .scanning #eye-bg { stroke: #e67e22; }
         .scanning #pupil { fill: #e67e22; animation: spinEye 0.3s infinite linear; transform-origin: 100px 95px; }
         .scanning #mouth { d: path("M 85 115 Q 100 125 115 115"); stroke: #e67e22; }
         @keyframes spinEye { 100% { transform: rotate(360deg); } }
 
-        /* 🚨 ВЗЛОМ (АНГРИ-МАСКОТ) */
         .compromised .mascot-svg { animation: shake 0.2s infinite; }
         .compromised #shield { fill: var(--danger) !important; filter: drop-shadow(0 0 30px rgba(231,76,60,0.8)) !important; }
         .compromised #eye-bg { stroke: var(--danger) !important; }
         .compromised #pupil { display: none; }
         .compromised .brow { display: none; }
-        .compromised #mouth { d: path("M 85 125 Q 100 115 115 125"); stroke: var(--danger) !important; } /* Грустный рот */
+        .compromised #mouth { d: path("M 85 125 Q 100 115 115 125"); stroke: var(--danger) !important; }
         .compromised .breach-text { opacity: 1; animation: pulseText 0.5s infinite alternate; }
         .compromised #eye-group { transform: translateY(-5px); }
-        .compromised #eye-group::after {
-            content: "X X"; position: absolute; font-size: 40px; font-weight: 900; color: var(--danger);
-            left: 50%; top: 50%; transform: translate(-50%, -50%); text-shadow: 0 0 10px red;
-        }
+        .compromised #eye-group::after { content: "X X"; position: absolute; font-size: 40px; font-weight: 900; color: var(--danger); left: 50%; top: 50%; transform: translate(-50%, -50%); text-shadow: 0 0 10px red; }
 
-        @keyframes shake {
-            0% { transform: translate(2px, 2px) rotate(0deg); }
-            25% { transform: translate(-2px, -2px) rotate(-3deg); }
-            50% { transform: translate(-2px, 2px) rotate(3deg); }
-            75% { transform: translate(2px, -2px) rotate(0deg); }
-            100% { transform: translate(2px, 2px) rotate(-3deg); }
-        }
+        @keyframes shake { 0% { transform: translate(2px, 2px) rotate(0deg); } 25% { transform: translate(-2px, -2px) rotate(-3deg); } 50% { transform: translate(-2px, 2px) rotate(3deg); } 75% { transform: translate(2px, -2px) rotate(0deg); } 100% { transform: translate(2px, 2px) rotate(-3deg); } }
         @keyframes pulseText { from { opacity: 0.5; } to { opacity: 1; } }
 
-        /* 😴 СПЯЩИЙ МАСКОТ (AFK) */
         .sleeping .mascot-svg { animation: float 6s ease-in-out infinite; opacity: 0.5; }
         .sleeping #eye-bg { ry: 2; }
         .sleeping .brow { transform: translateY(5px); opacity: 0; }
-        .sleeping #mouth { d: path("M 90 115 L 110 115"); stroke: #555; } /* Нейтральный */
+        .sleeping #mouth { d: path("M 90 115 L 110 115"); stroke: #555; }
         .sleeping #shield { fill: #555; }
-        .sleeping::before, .sleeping::after { display: none; } /* Убираем орбиты */
+        .sleeping::before, .sleeping::after { display: none; }
 
-        /* 😊 РАДОСТЬ (HAPPY) */
         .happy .mascot-svg { animation: bounce 0.5s ease infinite alternate; }
         .happy #shield { fill: #2ecc71 !important; filter: drop-shadow(0 0 30px rgba(46, 204, 113, 0.8)) !important; }
         .happy #eye-bg { stroke: #2ecc71 !important; }
@@ -163,7 +156,6 @@
         .happy #mouth { d: path("M 80 105 Q 100 130 120 105"); stroke: #2ecc71 !important; }
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
 
-        /* 🎉 ПАСХАЛКА (ВРАЩЕНИЕ) */
         .easter-egg .mascot-svg { animation: spinFast 0.5s linear infinite; }
         @keyframes spinFast { 100% { transform: rotate(360deg); } }
 
@@ -205,14 +197,8 @@
         .terminal-prompt { color: #4da8da; margin-right: 10px; font-weight: bold; }
         .terminal-input { background: transparent; border: none; color: #fff; font-family: monospace; font-size: 13px; outline: none; flex: 1; padding: 0; }
 
-        /* 🖥️ UI PREVIEW (МАКЕТ ПРОГРАММЫ) */
-        .app-window {
-            max-width: 850px; margin: 30px auto 0 auto; background: #0d1117;
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(77,168,218,0.1);
-            overflow: hidden; display: flex; height: 400px; font-family: 'Segoe UI', Arial, sans-serif;
-            position: relative;
-        }
+        /* 🖥️ UI PREVIEW */
+        .app-window { max-width: 850px; margin: 30px auto 0 auto; background: #0d1117; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(77,168,218,0.1); overflow: hidden; display: flex; height: 400px; font-family: 'Segoe UI', Arial, sans-serif; position: relative; }
         .app-sidebar { width: 200px; background: #010409; border-right: 1px solid rgba(255,255,255,0.05); padding: 20px 0; display: flex; flex-direction: column; }
         .app-sidebar-item { padding: 12px 20px; color: #8b949e; font-size: 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.3s; }
         .app-sidebar-item:hover, .app-sidebar-item.active { background: rgba(77, 168, 218, 0.1); color: #4da8da; border-left: 3px solid #4da8da; }
@@ -233,16 +219,11 @@
 
         /* 📁 DRAG & DROP ПЕСОЧНИЦА */
         .sandbox-section { margin-top: 40px; }
-        .drop-zone {
-            border: 2px dashed rgba(77, 168, 218, 0.4); border-radius: 20px;
-            padding: 40px; text-align: center; background: rgba(8, 10, 15, 0.5);
-            transition: all 0.3s ease; cursor: pointer; max-width: 800px; margin: 0 auto;
-        }
+        .drop-zone { border: 2px dashed rgba(77, 168, 218, 0.4); border-radius: 20px; padding: 40px; text-align: center; background: rgba(8, 10, 15, 0.5); transition: all 0.3s ease; cursor: pointer; max-width: 800px; margin: 0 auto; }
         .drop-zone:hover, .drop-zone.dragover { border-color: var(--accent); background: rgba(77, 168, 218, 0.05); box-shadow: 0 0 30px rgba(77, 168, 218, 0.1); }
         .drop-icon { font-size: 40px; margin-bottom: 10px; display: block; }
         .drop-text { color: var(--text-muted); font-size: 16px; }
         .drop-text b { color: #fff; }
-        
         .file-result { display: none; max-width: 800px; margin: 20px auto 0 auto; background: #11141a; border: 1px solid var(--accent); border-radius: 12px; padding: 20px; text-align: left; }
         .file-result-title { color: #fff; font-size: 18px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
         .file-result-hash { background: #000; padding: 12px; border-radius: 6px; color: #2ecc71; font-family: monospace; font-size: 12px; word-break: break-all; margin-bottom: 10px; }
@@ -255,11 +236,9 @@
         .password-input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(77, 168, 218, 0.2); }
         .btn-check-pass { background: var(--accent); color: white; border: none; padding: 15px 30px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; white-space: nowrap; }
         .btn-check-pass:hover { background: #3a8bb8; }
-        
         .strength-meter { height: 5px; background: rgba(255,255,255,0.1); border-radius: 5px; margin-top: 10px; overflow: hidden; display: none; }
         .strength-bar { height: 100%; width: 0%; transition: 0.3s ease; }
         .strength-text { font-size: 12px; color: var(--text-muted); margin-top: 5px; display: none; }
-        
         .pass-result { display: none; padding: 15px; border-radius: 12px; font-size: 14px; font-weight: 600; margin-top: 10px; }
         .pass-safe { background: rgba(46, 204, 113, 0.1); color: #2ecc71; border: 1px solid #2ecc71; }
         .pass-danger { background: rgba(231, 76, 60, 0.1); color: #e74c3c; border: 1px solid #e74c3c; }
@@ -269,12 +248,10 @@
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
         .tool-card { background: #11141a; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 25px; text-align: left; }
         .tool-card h4 { color: #fff; font-size: 18px; margin-bottom: 15px; }
-        
         .gen-box { display: flex; gap: 10px; margin-bottom: 15px; }
         .gen-input { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #2ecc71; font-family: monospace; font-size: 16px; font-weight: bold; outline: none; }
         .btn-gen { background: #333; color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 0 15px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
         .btn-gen:hover { background: #555; }
-        
         .ip-result { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
         .ip-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; font-size: 14px; }
         .ip-label { color: var(--text-muted); }
@@ -285,12 +262,25 @@
         .privacy-item { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; font-size: 13px; }
         .privacy-label { color: var(--text-muted); }
         .privacy-value { color: #fff; font-family: monospace; font-weight: bold; word-break: break-all; }
-        
         .url-box { display: flex; gap: 10px; margin-bottom: 15px; }
         .url-input { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; outline: none; }
         .btn-url { background: #333; color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 0 15px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: bold; }
         .btn-url:hover { background: #555; }
         .url-result { display: none; padding: 15px; border-radius: 8px; font-size: 14px; font-weight: 600; }
+
+        /* 🎮 СИМУЛЯТОР ФАЕРВОЛА */
+        .firewall-sim { background: #0a0d13; border: 1px solid var(--accent); border-radius: 12px; padding: 20px; margin-top: 20px; position: relative; overflow: hidden; height: 200px; display: flex; flex-direction: column; justify-content: space-between; }
+        .fw-packet { position: absolute; top: 20%; left: -150px; background: #1e1e23; border: 1px solid #fff; padding: 5px 10px; border-radius: 8px; font-size: 12px; font-family: monospace; display: flex; align-items: center; gap: 10px; animation: fly 4s linear forwards; z-index: 2; }
+        .fw-packet.bad { border-color: var(--danger); color: var(--danger); }
+        .fw-packet.good { border-color: var(--success); color: var(--success); }
+        .fw-actions { display: flex; gap: 5px; }
+        .fw-btn { padding: 2px 8px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 11px; }
+        .fw-btn.allow { background: var(--success); color: #fff; }
+        .fw-btn.block { background: var(--danger); color: #fff; }
+        .fw-health-bar { width: 100%; height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; overflow: hidden; margin-top: 10px; }
+        .fw-health-fill { height: 100%; width: 100%; background: var(--success); transition: width 0.3s ease, background 0.3s ease; }
+        .fw-score { position: absolute; top: 10px; right: 20px; font-size: 16px; font-weight: bold; color: #fff; font-family: monospace; }
+        @keyframes fly { 0% { left: -150px; } 100% { left: 100%; } }
 
         /* МОДАЛЬНЫЕ ОКНА */
         .modal { display: none; position: fixed; z-index: 9999; padding-top: 5vh; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); }
@@ -386,7 +376,10 @@
             .chat-input-area { flex-direction: column; gap: 10px; }
             .chat-input-area button { margin-left: 0; }
             #scrollTopBtn { bottom: 20px; right: 20px; padding: 12px 16px; font-size: 16px; }
-            .cookie-banner { flex-direction: column; text-align: center; gap: 10px; }
+            
+            .cookie-banner { flex-direction: column; text-align: center; }
+            .cookie-banner-buttons { width: 100%; justify-content: center; }
+            .cookie-btn { flex: 1; }
             
             .app-window { flex-direction: column; height: auto; }
             .app-sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: 10px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -400,7 +393,7 @@
             .gen-box { flex-direction: column; }
             .btn-gen { padding: 10px; }
             .privacy-grid { grid-template-columns: 1fr; }
-            .subscribe-box { flex-direction: column; }
+            .subscribe-input-group { flex-direction: column; }
         }
     </style>
 </head>
@@ -423,7 +416,7 @@
     <section class="hero">
         <div class="mascot-container" id="mascotContainer">
             <div class="breach-text">ВЗЛОМ!</div>
-            <!-- 🛡️ УЛУЧШЕННЫЙ МАСКОТ -->
+            <!-- 🛡️ МАСКОТ -->
             <svg id="mascot" class="mascot-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -448,7 +441,6 @@
                     <path class="brow left" d="M75 85 L95 85" fill="none" stroke="url(#eyeGrad)" stroke-width="3" stroke-linecap="round"/>
                     <path class="brow right" d="M105 85 L125 85" fill="none" stroke="url(#eyeGrad)" stroke-width="3" stroke-linecap="round"/>
                 </g>
-                <!-- РОТ -->
                 <path id="mouth" d="M 85 115 Q 100 125 115 115" fill="none" stroke="url(#eyeGrad)" stroke-width="3" stroke-linecap="round"/>
             </svg>
         </div>
@@ -461,13 +453,18 @@
             <a href="#sandbox" class="btn-secondary">🧪 Песочница</a>
         </div>
 
-        <!-- 📧 ФОРМА ПОДПИСКИ -->
+        <!-- 📧 ФОРМА ПОДПИСКИ (СОГЛАСИЕ 152-ФЗ) -->
         <div class="subscribe-box reveal">
-            <input type="email" id="subEmail" class="subscribe-input" placeholder="Ваш Email для новостей...">
-            <button class="subscribe-btn" onclick="subscribeEmail()">Узнать о релизе</button>
+            <div class="subscribe-input-group">
+                <input type="email" id="subEmail" class="subscribe-input" placeholder="Ваш Email для новостей...">
+                <button class="subscribe-btn" onclick="subscribeEmail()">Узнать о релизе</button>
+            </div>
+            <label class="sub-consent">
+                <input type="checkbox" id="subConsent">
+                <span>Я даю согласие на обработку моих персональных данных (email) в соответствии с <a href="privacy.html" target="_blank">Политикой конфиденциальности</a> (152-ФЗ).</span>
+            </label>
         </div>
         <div class="sub-success" id="subSuccess">✅ Вы подписаны! Мы сообщим о выходе.</div>
-        <span class="sub-note">*Email сохраняется только в вашем браузере (localStorage) и никуда не отправляется.</span>
         
         <div class="sys-req">
             <span>Windows 10 / 11 (64-bit)</span> | <span>~35 МБ</span> | <span>Бесплатно</span>
@@ -604,6 +601,26 @@
                     <div style="text-align: center; margin-top: 10px;">
                         <img id="qrImage" src="" alt="QR Code" style="display: none; width: 120px; height: 120px; border-radius: 8px; border: 2px solid var(--accent);">
                     </div>
+                </div>
+
+                <!-- 🆕 УТЕЧКА IP ЧЕРЕЗ WEBRTC -->
+                <div class="tool-card">
+                    <h4>📡 Тест WebRTC (Утечка IP)</h4>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Проверьте, не сливает ли ваш браузер реальный IP-адрес даже при включенном VPN.</p>
+                    <button class="btn-check-pass" style="width: 100%; padding: 10px;" onclick="checkWebRTCLeak()">Проверить утечку</button>
+                    <div id="webrtcResult" class="url-result" style="margin-top: 10px;"></div>
+                </div>
+
+                <!-- 🆕 СИМУЛЯТОР ФАЕРВОЛА -->
+                <div class="tool-card" style="grid-column: span 2;">
+                    <h4>🎮 Симулятор Фаервола</h4>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Представьте, что вы — админ. Пропускайте легитимный трафик (зеленый) и блокируйте атаки (красный).</p>
+                    <div class="firewall-sim" id="firewallSim">
+                        <div class="fw-score">Здоровье: <span id="fwHealth">100</span>%</div>
+                        <div class="fw-health-bar"><div class="fw-health-fill" id="fwHealthBar"></div></div>
+                        <div style="flex: 1; position: relative;" id="fwPlayground"></div>
+                    </div>
+                    <button class="btn-secondary" style="width: 100%; padding: 10px; margin-top: 10px;" onclick="startFirewallGame()">▶️ Запустить игру</button>
                 </div>
             </div>
         </div>
@@ -969,42 +986,53 @@
         </div>
     </footer>
 
-    <!-- 🍪 COOKIE BANNER -->
+    <!-- 🍪 COOKIE BANNER (152-ФЗ) -->
     <div class="cookie-banner" id="cookieBanner" style="display: none;">
-        <span>Мы используем технические cookie для работы сайта. Продолжая, вы соглашаетесь с <a href="privacy.html">Политикой конфиденциальности</a> (152-ФЗ).</span>
-        <button onclick="acceptCookies()">Принять</button>
+        <span>Мы используем технические cookie для работы сайта. Вы можете принять все или только необходимые. Подробнее в <a href="privacy.html">Политике конфиденциальности</a> (152-ФЗ).</span>
+        <div class="cookie-banner-buttons">
+            <button class="cookie-btn accept" onclick="acceptCookies('all')">Принять все</button>
+            <button class="cookie-btn necessary" onclick="acceptCookies('necessary')">Только необходимые</button>
+        </div>
     </div>
 
     <button id="scrollTopBtn" title="Наверх">↑</button>
 
     <script>
         // ==========================================
-        // 1. 🍪 COOKIE BANNER
+        // 1. 🍪 COOKIE BANNER (152-ФЗ)
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             if (!localStorage.getItem('secretary_cookies_accepted')) {
                 document.getElementById('cookieBanner').style.display = 'flex';
             }
         });
-        function acceptCookies() {
-            localStorage.setItem('secretary_cookies_accepted', 'true');
+        function acceptCookies(mode) {
+            localStorage.setItem('secretary_cookies_accepted', mode);
             document.getElementById('cookieBanner').style.display = 'none';
+            // Здесь можно добавить подключение аналитики, если mode === 'all'
         }
 
         // ==========================================
-        // 2. 📧 ПОДПИСКА НА РЕЛИЗ + РАДОСТЬ МАСКОТА
+        // 2. 📧 ПОДПИСКА НА РЕЛИЗ + СОГЛАСИЕ 152-ФЗ
         // ==========================================
         function subscribeEmail() {
             const email = document.getElementById('subEmail').value;
+            const consent = document.getElementById('subConsent');
+            
             if (!email || !email.includes('@')) {
                 alert('Пожалуйста, введите корректный Email.');
                 return;
             }
+            if (!consent.checked) {
+                alert('Пожалуйста, подтвердите согласие на обработку персональных данных.');
+                return;
+            }
+            
             localStorage.setItem('secretary_sub_email', email);
             document.getElementById('subSuccess').style.display = 'block';
             document.getElementById('subEmail').value = '';
-            addTerminalLog(`Email добавлен в локальную базу ожидания.`, '');
-            triggerHappyMascot(); // Вызываем радость маскота
+            addTerminalLog(`Email добавлен в локальную базу ожидания (согласие получено).`, '');
+            triggerHappyMascot();
         }
 
         function triggerHappyMascot() {
@@ -1085,7 +1113,7 @@
                         let currentScans = parseInt(localStorage.getItem('secretary_user_scans') || 0) + 1;
                         localStorage.setItem('secretary_user_scans', currentScans);
                         if(scansElement) { scansElement.innerText = currentScans; scansElement.style.color = '#2ecc71'; setTimeout(() => { scansElement.style.color = 'var(--accent)'; }, 1000); }
-                        triggerHappyMascot(); // Радость при проверке
+                        triggerHappyMascot();
                     }, 600);
                 } catch (error) { fileHashDisplay.textContent = "Ошибка чтения файла."; }
             }
@@ -1143,7 +1171,7 @@
         });
 
         // ==========================================
-        // 6. 🛠️ КИБЕР-ИНСТРУМЕНТЫ
+        // 6. 🛠️ КИБЕР-ИНСТРУМЕНТЫ + NEW FEATURES
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             // Генератор
@@ -1212,7 +1240,7 @@
                     const reasonList = document.getElementById('reasonList');
                     reasons.forEach(r => {
                         const li = document.createElement('li');
-                        li.textContent = r; // Безопасный вывод
+                        li.textContent = r;
                         reasonList.appendChild(li);
                     });
                 } else {
@@ -1280,10 +1308,138 @@
                 img.style.display = 'inline-block';
                 addTerminalLog("QR-код сгенерирован.", '');
             };
+
+            // 🆕 WEBRTC LEAK TEST
+            window.checkWebRTCLeak = () => {
+                const resDiv = document.getElementById('webrtcResult');
+                resDiv.style.display = 'block';
+                resDiv.className = 'url-result pass-warning';
+                resDiv.textContent = 'Проверка...';
+
+                if (!window.RTCPeerConnection) {
+                    resDiv.className = 'url-result pass-safe';
+                    resDiv.textContent = '✅ WebRTC не поддерживается браузером. Утечки нет.';
+                    return;
+                }
+
+                const pc = new RTCPeerConnection({iceServers: [{urls: 'stun:stun.l.google.com:19302'}]});
+                pc.createDataChannel('');
+                pc.createOffer().then(offer => pc.setLocalDescription(offer));
+                
+                let ipFound = false;
+                pc.onicecandidate = (ice) => {
+                    if (!ice || !ice.candidate || !ice.candidate.candidate) {
+                        if (!ipFound) {
+                            resDiv.className = 'url-result pass-safe';
+                            resDiv.innerHTML = '✅ <b>Утечек не обнаружено.</b><br><span style="font-size:12px; font-weight:normal;">Ваш реальный IP скрыт.</span>';
+                        }
+                        pc.close();
+                        return;
+                    }
+                    const myIP = /([0-9]{1,3}(\.[0-9]{1,3}){3})/.exec(ice.candidate.candidate);
+                    if (myIP) {
+                        ipFound = true;
+                        resDiv.className = 'url-result pass-danger';
+                        resDiv.innerHTML = `⚠️ <b>Обнаружена утечка IP!</b><br>Ваш реальный IP: <b>${myIP[1]}</b><br><span style="font-size:12px; font-weight:normal;">Даже с VPN этот адрес доступен сайтам.</span>`;
+                        pc.close();
+                    }
+                };
+                
+                setTimeout(() => {
+                    if (!ipFound && resDiv.textContent === 'Проверка...') {
+                        resDiv.className = 'url-result pass-safe';
+                        resDiv.innerHTML = '✅ <b>WebRTC заблокирован браузером.</b><br><span style="font-size:12px; font-weight:normal;">Утечка невозможна.</span>';
+                        pc.close();
+                    }
+                }, 3000);
+            };
+
+            // 🆕 FIREWALL SIMULATOR GAME
+            let fwInterval, fwHealth = 100, fwScore = 0, fwActive = false;
+            
+            window.startFirewallGame = () => {
+                if (fwActive) return;
+                fwActive = true;
+                fwHealth = 100;
+                fwScore = 0;
+                document.getElementById('fwHealth').textContent = fwHealth;
+                document.getElementById('fwHealthBar').style.width = '100%';
+                document.getElementById('fwHealthBar').style.background = 'var(--success)';
+                document.getElementById('fwPlayground').innerHTML = '';
+
+                const playground = document.getElementById('fwPlayground');
+
+                fwInterval = setInterval(() => {
+                    if (fwHealth <= 0) {
+                        clearInterval(fwInterval);
+                        fwActive = false;
+                        playground.innerHTML = '<div style="text-align:center; color:var(--danger); font-weight:bold; margin-top:20px;">СИСТЕМА ВЗЛОМАНА! Нажмите для рестарта.</div>';
+                        document.body.classList.add('breach-active');
+                        setTimeout(() => document.body.classList.remove('breach-active'), 2000);
+                        return;
+                    }
+
+                    const packet = document.createElement('div');
+                    packet.className = 'fw-packet';
+                    
+                    const isBad = Math.random() > 0.4;
+                    if (isBad) {
+                        packet.classList.add('bad');
+                        packet.innerHTML = `🚨 <span>Атака (Порт ${Math.floor(Math.random()*8000)+1000})</span>`;
+                    } else {
+                        packet.classList.add('good');
+                        packet.innerHTML = `✅ <span>HTTPS (Порт 443)</span>`;
+                    }
+
+                    const actions = document.createElement('div');
+                    actions.className = 'fw-actions';
+                    
+                    const btnAllow = document.createElement('button');
+                    btnAllow.className = 'fw-btn allow'; btnAllow.textContent = 'Allow';
+                    btnAllow.onclick = (e) => {
+                        e.stopPropagation();
+                        if (isBad) { takeDamage(20); packet.style.background = 'var(--danger)'; }
+                        else { fwScore += 10; }
+                        packet.remove();
+                    };
+
+                    const btnBlock = document.createElement('button');
+                    btnBlock.className = 'fw-btn block'; btnBlock.textContent = 'Block';
+                    btnBlock.onclick = (e) => {
+                        e.stopPropagation();
+                        if (!isBad) { takeDamage(10); } // Штраф
+                        else { fwScore += 10; }
+                        packet.remove();
+                    };
+
+                    actions.appendChild(btnAllow);
+                    actions.appendChild(btnBlock);
+                    packet.appendChild(actions);
+                    playground.appendChild(packet);
+
+                    setTimeout(() => {
+                        if (packet.parentNode) {
+                            if (isBad) takeDamage(15);
+                            packet.remove();
+                        }
+                    }, 4000);
+
+                }, 2000);
+            };
+
+            function takeDamage(amount) {
+                fwHealth -= amount;
+                if (fwHealth < 0) fwHealth = 0;
+                document.getElementById('fwHealth').textContent = fwHealth;
+                const bar = document.getElementById('fwHealthBar');
+                bar.style.width = fwHealth + '%';
+                if (fwHealth < 40) bar.style.background = 'var(--danger)';
+                else if (fwHealth < 70) bar.style.background = '#e67e22';
+            }
         });
 
         // ==========================================
-        // 7. 🚨 СИСТЕМА ЗАЩИТЫ ОТ ВЗЛОМА (БЕЗОПАСНАЯ)
+        // 7. 🚨 СИСТЕМА ЗАЩИТЫ ОТ ВЗЛОМА
         // ==========================================
         (function() {
             'use strict';
@@ -1316,7 +1472,6 @@
                 addTerminalLog("⚠️ ВНИМАНИЕ! Обнаружена подмена ссылки. Защита сработала.", "danger");
             }
 
-            // БЕЗОПАСНЫЙ ВЫВОД ЛОГОВ (XSS Protection)
             window.addTerminalLog = (text, type = '') => {
                 const termBody = document.getElementById('terminal-body');
                 if(!termBody) return;
@@ -1330,7 +1485,7 @@
                 const textSpan = document.createElement('span');
                 if (type === 'danger') textSpan.className = 'terminal-danger';
                 if (type === 'warn') textSpan.className = 'terminal-warn';
-                textSpan.textContent = text; // БЕЗОПАСНО
+                textSpan.textContent = text;
 
                 line.appendChild(timeSpan);
                 line.appendChild(textSpan);
@@ -1382,7 +1537,7 @@
                 } else { konamiIndex = 0; }
             });
 
-            // Терминал Ввод (БЕЗОПАСНЫЙ)
+            // Терминал Ввод
             const terminalInput = document.getElementById('terminalInput');
             if (terminalInput) {
                 terminalInput.addEventListener('keypress', (e) => {
