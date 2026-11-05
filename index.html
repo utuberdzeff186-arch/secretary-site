@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- 🛡️ ЗАЩИТА -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://raw.githubusercontent.com https://*.githubusercontent.com; connect-src 'self' https://api.github.com; frame-ancestors 'none'; form-action 'self'; base-uri 'self';">
+    <!-- 🛡️ ЗАЩИТА (CSP обновлен для API паролей) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://raw.githubusercontent.com https://*.githubusercontent.com; connect-src 'self' https://api.github.com https://api.pwnedpasswords.com; frame-ancestors 'none'; form-action 'self'; base-uri 'self';">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="no-referrer">
@@ -45,9 +45,7 @@
         body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; background-image: radial-gradient(circle at 15% 50%, rgba(77, 168, 218, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(46, 125, 50, 0.05), transparent 25%); background-attachment: fixed; }
 
         /* 🌌 CANVAS ДЛЯ НЕЙРОСЕТИ НА ФОНЕ */
-        #cyber-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.6; pointer-events: none;
-        }
+        #cyber-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.6; pointer-events: none; }
 
         header { padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 10, 15, 0.7); backdrop-filter: blur(16px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .logo { font-size: 24px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 10px; }
@@ -171,6 +169,18 @@
         .file-result-hash { background: #000; padding: 12px; border-radius: 6px; color: #2ecc71; font-family: monospace; font-size: 12px; word-break: break-all; margin-bottom: 10px; }
         .file-result-status { color: var(--success); font-weight: bold; font-size: 14px; }
 
+        /* 🔐 ПРОВЕРКА ПАРОЛЕЙ */
+        .password-section { max-width: 800px; margin: 40px auto 0 auto; }
+        .password-box { display: flex; gap: 10px; margin-bottom: 15px; }
+        .password-input { flex: 1; padding: 15px 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: rgba(0,0,0,0.3); color: white; font-size: 16px; outline: none; transition: 0.3s; }
+        .password-input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(77, 168, 218, 0.2); }
+        .btn-check-pass { background: var(--accent); color: white; border: none; padding: 15px 30px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; white-space: nowrap; }
+        .btn-check-pass:hover { background: #3a8bb8; }
+        .pass-result { display: none; padding: 15px; border-radius: 12px; font-size: 14px; font-weight: 600; margin-top: 10px; }
+        .pass-safe { background: rgba(46, 204, 113, 0.1); color: #2ecc71; border: 1px solid #2ecc71; }
+        .pass-danger { background: rgba(231, 76, 60, 0.1); color: #e74c3c; border: 1px solid #e74c3c; }
+        .pass-warning { background: rgba(230, 126, 34, 0.1); color: #e67e22; border: 1px solid #e67e22; }
+
         /* МОДАЛЬНЫЕ ОКНА */
         .modal { display: none; position: fixed; z-index: 9999; padding-top: 5vh; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); }
         .modal-content { margin: auto; display: block; max-width: 95%; max-height: 90vh; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 0 30px rgba(0,0,0,0.8); animation: zoomIn 0.3s; }
@@ -214,13 +224,7 @@
         .steps-grid .step-card:nth-child(4) { transition-delay: 0.4s; }
 
         /* ⬆️ КНОПКА НАВЕРХ */
-        #scrollTopBtn {
-            display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99;
-            border: none; outline: none; background-color: var(--accent); color: white;
-            cursor: pointer; padding: 15px 20px; border-radius: 50%;
-            font-size: 20px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transition: all 0.3s ease;
-        }
+        #scrollTopBtn { display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99; border: none; outline: none; background-color: var(--accent); color: white; cursor: pointer; padding: 15px 20px; border-radius: 50%; font-size: 20px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: all 0.3s ease; }
         #scrollTopBtn:hover { background-color: #3a8bb8; transform: translateY(-3px); }
 
         /* 📂 FAQ АККОРДЕОН */
@@ -255,11 +259,7 @@
         @media (max-width: 768px) {
             header { padding: 15px 20px; justify-content: space-between; }
             .menu-btn { display: block; }
-            .nav-links { 
-                display: none; flex-direction: column; position: absolute;
-                top: 70px; left: 0; width: 100%; background: rgba(8, 10, 15, 0.95);
-                backdrop-filter: blur(16px); padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center;
-            }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 70px; left: 0; width: 100%; background: rgba(8, 10, 15, 0.95); backdrop-filter: blur(16px); padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; }
             .nav-links.active { display: flex; }
             .nav-links a { margin: 15px 0; font-size: 18px; }
             
@@ -275,18 +275,17 @@
             .chat-input-area { flex-direction: column; gap: 10px; }
             .chat-input-area button { margin-left: 0; }
             #scrollTopBtn { bottom: 20px; right: 20px; padding: 12px 16px; font-size: 16px; }
-
             .app-window { flex-direction: column; height: auto; }
             .app-sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: 10px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
             .app-sidebar-item { padding: 10px; font-size: 12px; white-space: nowrap; }
             .app-sidebar-item.active { border-left: none; border-bottom: 3px solid #4da8da; }
             .app-main { padding: 20px; }
+            .password-box { flex-direction: column; }
         }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
-    <!-- 🌌 КАНВАС ДЛЯ НЕЙРОСЕТИ НА ФОНЕ -->
     <canvas id="cyber-canvas"></canvas>
 
     <header>
@@ -363,7 +362,7 @@
 
     <div class="container" id="features">
         
-        <!-- 🧪 БЛОК: ПЕСОЧНИЦА (DRAG & DROP + WEB CRYPTO) -->
+        <!-- 🧪 БЛОК: ПЕСОЧНИЦА -->
         <div class="guide-box reveal sandbox-section" id="sandbox">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 10px; text-align: center;">🧪 Локальная песочница</h3>
             <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Перетащите любой файл сюда. Мы вычислим его SHA-256 хэш прямо в вашем браузере (файл никуда не загружается).</p>
@@ -380,6 +379,18 @@
                 <div class="file-result-hash" id="fileHashDisplay"></div>
                 <div class="file-result-status">🛡️ Вирусов не обнаружено (Эвристика: 100% чисто)</div>
             </div>
+        </div>
+
+        <!-- 🔐 БЛОК: ПРОВЕРКА ПАРОЛЕЙ -->
+        <div class="guide-box reveal password-section" id="password-check">
+            <h3 style="font-size: 28px; color: var(--text); margin-bottom: 10px; text-align: center;">🔐 Проверка утечек паролей</h3>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Узнайте, был ли ваш пароль слит в базы хакеров. Мы используем технологию k-anonymity: ваш пароль <b>никогда не покидает браузер</b>.</p>
+            
+            <div class="password-box">
+                <input type="password" id="passInput" class="password-input" placeholder="Введите пароль для проверки...">
+                <button id="checkPassBtn" class="btn-check-pass">Проверить</button>
+            </div>
+            <div id="passResult" class="pass-result"></div>
         </div>
 
         <div class="grid reveal" style="margin-top: 40px;">
@@ -431,11 +442,7 @@
             <p style="text-align: center; color: var(--text-muted); margin-bottom: 10px;">Визуальный концепт интерфейса (не является рабочей программой)</p>
             
             <div class="app-window">
-                <!-- Плашка ДЕМО -->
-                <div style="position: absolute; top: 12px; left: 50%; transform: translateX(-50%); background: rgba(230, 126, 34, 0.2); color: #e67e22; border: 1px solid #e67e22; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; z-index: 10; letter-spacing: 1px;">
-                    ДЕМО-МАКЕТ
-                </div>
-
+                <div style="position: absolute; top: 12px; left: 50%; transform: translateX(-50%); background: rgba(230, 126, 34, 0.2); color: #e67e22; border: 1px solid #e67e22; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; z-index: 10; letter-spacing: 1px;">ДЕМО-МАКЕТ</div>
                 <div class="app-sidebar">
                     <div class="app-sidebar-item active">🛡️ Главная</div>
                     <div class="app-sidebar-item">🔍 Проверка</div>
@@ -501,9 +508,7 @@
             <div style="display: inline-block; background: rgba(0,0,0,0.3); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); max-width: 600px;">
                 <div style="width: 80px; height: 80px; background: var(--accent); border-radius: 50%; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 40px;">👤</div>
                 <h4 style="color: #fff; font-size: 20px; margin-bottom: 10px;">Независимый разработчик</h4>
-                <p style="color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 15px;">
-                    Привет! Я создал «Секретаря», потому что устал от тяжелых, навязчивых и дорогих антивирусов. Моя цель — сделать легкую, умную и бесплатную защиту, которая уважает вашу приватность. Весь код открыт для проверки.
-                </p>
+                <p style="color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 15px;">Привет! Я создал «Секретаря», потому что устал от тяжелых, навязчивых и дорогих антивирусов. Моя цель — сделать легкую, умную и бесплатную защиту, которая уважает вашу приватность. Весь код открыт для проверки.</p>
                 <a href="https://github.com/utuberdzeff186-arch" target="_blank" style="display: inline-block; padding: 10px 20px; background: #333; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600; transition: 0.3s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='#333'">Мой GitHub</a>
             </div>
         </div>
@@ -512,7 +517,6 @@
         <div class="guide-box reveal" id="community" style="margin-top: 40px;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 20px; text-align: center;">🤝 Сообщество и поддержка</h3>
             <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Проект активно развивается. Присоединяйтесь, чтобы первыми узнавать новости и помогать делать «Секретаря» лучше.</p>
-            
             <div class="grid">
                 <div class="card" style="text-align: center; display: flex; flex-direction: column;">
                     <div style="font-size: 40px; margin-bottom: 15px;">🐞</div>
@@ -554,7 +558,6 @@
         <div class="guide-box reveal" id="roadmap" style="margin-top: 40px;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 30px; text-align: center;">🗺️ Планы развития</h3>
             <div class="roadmap-list">
-                
                 <div class="roadmap-item done">
                     <div class="roadmap-icon">✅</div>
                     <div class="roadmap-content">
@@ -563,7 +566,6 @@
                         <span class="roadmap-status status-done">Завершено</span>
                     </div>
                 </div>
-
                 <div class="roadmap-item">
                     <div class="roadmap-icon">🚀</div>
                     <div class="roadmap-content">
@@ -572,7 +574,6 @@
                         <span class="roadmap-status status-progress">В процессе</span>
                     </div>
                 </div>
-
                 <div class="roadmap-item planned">
                     <div class="roadmap-icon">🛡️</div>
                     <div class="roadmap-content">
@@ -581,7 +582,6 @@
                         <span class="roadmap-status status-planned">Планируется (Зима 2026)</span>
                     </div>
                 </div>
-
                 <div class="roadmap-item planned">
                     <div class="roadmap-icon">📱</div>
                     <div class="roadmap-content">
@@ -590,7 +590,6 @@
                         <span class="roadmap-status status-planned">Будущее</span>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -677,7 +676,6 @@
         <div class="guide-box reveal" id="faq" style="margin-top: 40px;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 30px; text-align: center;">❓ Частые вопросы</h3>
             <div style="max-width: 800px; margin: 0 auto;">
-                
                 <div class="faq-item">
                     <button class="faq-question">
                         <span>Это безопасно? Вы не воруете данные?</span>
@@ -687,7 +685,6 @@
                         <p>Абсолютно. Секретарь работает полностью локально. Он не отправляет ваши файлы или пароли на сервера. Код открыт для проверки.</p>
                     </div>
                 </div>
-
                 <div class="faq-item">
                     <button class="faq-question">
                         <span>Нужно ли устанавливать Python?</span>
@@ -697,7 +694,6 @@
                         <p>Нет. Мы собрали программу в один файл <b>SecretarySetup.exe</b>. Python уже встроен внутрь.</p>
                     </div>
                 </div>
-
                 <div class="faq-item">
                     <button class="faq-question">
                         <span>Почему Windows пишет «Неопознанное приложение»?</span>
@@ -707,12 +703,10 @@
                         <p>У нас нет платного сертификата Microsoft. Нажмите «Подробнее» и «Выполнить в любом случае». Это нормально.</p>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО ДЛЯ КАРТИНОК -->
     <div id="imageModal" class="modal">
         <span class="close" onclick="closeModal()">&times;</span>
         <img class="modal-content" id="expandedImg" alt="Увеличенное изображение">
@@ -723,7 +717,6 @@
             <h2 class="section-title" style="margin-bottom: 10px;">💬 Техподдержка</h2>
             <p style="color: var(--text-muted);">Нажмите на кнопку ниже или напишите свой вопрос.</p>
         </div>
-
         <div class="chat-container reveal">
             <div class="chat-header">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -735,14 +728,12 @@
             <div class="chat-box" id="chatBox">
                 <div class="message msg-bot">Приветствую! Я цифровой помощник Secretary Defender. Задайте мне любой вопрос.</div>
             </div>
-
             <div class="quick-replies">
                 <button class="quick-btn" onclick="quickAsk('Не запускается')">Не запускается</button>
                 <button class="quick-btn" onclick="quickAsk('Забыл пароль')">Забыл пароль</button>
                 <button class="quick-btn" onclick="quickAsk('Как проверить файл?')">Как проверить файл?</button>
                 <button class="quick-btn" onclick="quickAsk('Где карантин?')">Где карантин?</button>
             </div>
-
             <div class="chat-input-area">
                 <input type="text" id="chatInput" placeholder="Напишите вопрос..." onkeypress="handleKeyPress(event)">
                 <button onclick="sendMessage()">Отправить</button>
@@ -842,10 +833,8 @@
 
             if(!dropZone || !fileInput) return;
 
-            // Клик по зоне открывает выбор файла
             dropZone.addEventListener('click', () => fileInput.click());
 
-            // Эффекты при перетаскивании
             ['dragenter', 'dragover'].forEach(eventName => {
                 dropZone.addEventListener(eventName, (e) => {
                     e.preventDefault();
@@ -862,7 +851,6 @@
                 }, false);
             });
 
-            // Обработка файла
             dropZone.addEventListener('drop', (e) => {
                 const files = e.dataTransfer.files;
                 if (files.length > 0) handleFile(files[0]);
@@ -886,7 +874,6 @@
                     setTimeout(() => {
                         fileHashDisplay.textContent = hashHex;
                         
-                        // Обновляем реальный счетчик проверок
                         let currentScans = parseInt(localStorage.getItem('secretary_user_scans') || 0);
                         currentScans++;
                         localStorage.setItem('secretary_user_scans', currentScans);
@@ -895,13 +882,79 @@
                             scansElement.style.color = '#2ecc71';
                             setTimeout(() => { scansElement.style.color = 'var(--accent)'; }, 1000);
                         }
-                    }, 800); // Небольшая задержка для эффекта
+                    }, 800);
 
                 } catch (error) {
                     fileHashDisplay.textContent = "Ошибка чтения файла.";
                     console.error(error);
                 }
             }
+        });
+
+        // --- 🔐 ПРОВЕРКА УТЕЧЕК ПАРОЛЕЙ (k-anonymity) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const passInput = document.getElementById('passInput');
+            const checkPassBtn = document.getElementById('checkPassBtn');
+            const passResult = document.getElementById('passResult');
+
+            if(!checkPassBtn) return;
+
+            checkPassBtn.addEventListener('click', async () => {
+                const password = passInput.value;
+                if (!password) {
+                    passResult.style.display = 'block';
+                    passResult.className = 'pass-result pass-warning';
+                    passResult.textContent = 'Пожалуйста, введите пароль.';
+                    return;
+                }
+
+                passResult.style.display = 'block';
+                passResult.className = 'pass-result';
+                passResult.textContent = 'Проверка баз утечек...';
+
+                try {
+                    // 1. Хэшируем пароль в SHA-1
+                    const msgBuffer = new TextEncoder().encode(password);
+                    const hashBuffer = await crypto.subtle.digest('SHA-1', msgBuffer);
+                    const hashArray = Array.from(new Uint8Array(hashBuffer));
+                    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+                    
+                    // 2. Берем первые 5 символов и остаток
+                    const prefix = hashHex.substring(0, 5);
+                    const suffix = hashHex.substring(5);
+
+                    // 3. Запрос к API
+                    const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
+                    const data = await response.text();
+                    
+                    // 4. Ищем наш суффикс в ответе
+                    const lines = data.split('\n');
+                    let found = false;
+                    let count = 0;
+
+                    for (let line of lines) {
+                        const [lineSuffix, lineCount] = line.split(':');
+                        if (lineSuffix === suffix) {
+                            found = true;
+                            count = parseInt(lineCount);
+                            break;
+                        }
+                    }
+
+                    if (found) {
+                        passResult.className = 'pass-result pass-danger';
+                        passResult.innerHTML = `⚠️ <b>Внимание!</b> Этот пароль был найден в базах утечек <b>${count}</b> раз. Никогда не используйте его!`;
+                    } else {
+                        passResult.className = 'pass-result pass-safe';
+                        passResult.innerHTML = `✅ <b>Отлично!</b> Этот пароль не найден в известных базах утечек.`;
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    passResult.className = 'pass-result pass-warning';
+                    passResult.textContent = 'Ошибка подключения к базе. Проверьте интернет.';
+                }
+            });
         });
 
         // --- МОБИЛЬНОЕ МЕНЮ И КНОПКА НАВЕРХ ---
