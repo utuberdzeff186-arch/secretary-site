@@ -127,12 +127,6 @@
 </head>
 <body oncontextmenu="return false;">
 
-    <div id="canary-1" style="display:none;" aria-hidden="true"></div>
-    <div id="canary-2" style="display:none;" aria-hidden="true"></div>
-    <div id="canary-3" style="display:none;" aria-hidden="true"></div>
-    <div id="canary-4" style="display:none;" aria-hidden="true"></div>
-    <div id="canary-5" style="display:none;" aria-hidden="true"></div>
-
     <header>
         <div class="logo">🛡️ СЕКРЕТАРЬ<span>.</span></div>
         <div class="nav-links">
@@ -411,72 +405,19 @@
     </footer>
 
     <script>
+        // --- ЗАЩИТА САЙТА (УМНАЯ) ---
         (function() {
             'use strict';
-            let isCompromised = false;
-            const BACKUPS = new Map();
-
-            function logEvent(event, details) { console.warn(`🛡️ [SECURITY] ${event}:`, details); }
-            function backupElement(id) { const el = document.getElementById(id); if (el) BACKUPS.set(id, el.cloneNode(true)); }
-
-            function verifyIntegrity() {
-                let issues = [];
-                for (let i = 1; i <= 5; i++) { if (!document.getElementById(`canary-${i}`)) issues.push(`Canary token ${i} удален`); }
-                
-                const btn = document.getElementById('download-btn');
-                if (!btn) {
-                    issues.push("Кнопка скачивания удалена");
-                } else if (btn.tagName === 'A' && btn.href !== '#' && !btn.href.includes('SecretarySetup.exe')) {
-                    issues.push("Ссылка кнопки скачивания подменена!");
-                }
-                
-                if (!document.getElementById('hash-display')) issues.push("Блок с хэшем удален");
-                document.querySelectorAll('script').forEach(s => {
-                    if (s.src && !s.src.startsWith(location.origin) && !s.src.includes('none')) {
-                        issues.push(`Внедрен сторонний скрипт: ${s.src}`); s.remove();
-                    }
-                });
-                if (window.top !== window.self) issues.push("Сайт встроен в iframe (Clickjacking!)");
-                if (issues.length > 0) { isCompromised = true; logEvent("COMPROMISED", issues); lockdown(issues); }
-            }
-
-            function lockdown(issues) {
-                if (document.getElementById('compromise-warning')) return;
-                const btn = document.getElementById('download-btn');
-                if (btn) { btn.style.pointerEvents = 'none'; btn.style.opacity = '0.5'; btn.href = '#'; btn.innerText = '⚠️ САЙТ ВЗЛОМАН — НЕ СКАЧИВАЙТЕ ФАЙЛЫ'; btn.style.background = '#c0392b'; }
-                const warning = document.createElement('div');
-                warning.id = 'compromise-warning';
-                warning.style.cssText = `position: fixed; top: 0; left: 0; width: 100%; background: #c0392b; color: white; padding: 20px; text-align: center; z-index: 999999; font-weight: bold; font-size: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.5);`;
-                warning.innerHTML = `⚠️ ВНИМАНИЕ: Целостность сайта нарушена!<br><span style="font-size: 13px; font-weight: normal;">Обнаружено: ${issues.join('; ')}<br>НЕ скачивайте файлы с этого сайта!</span>`;
-                document.body.prepend(warning);
-            }
-
-            function startObserver() {
-                const observer = new MutationObserver((mutations) => {
-                    mutations.forEach((mutation) => {
-                        if (mutation.removedNodes.length > 0) {
-                            mutation.removedNodes.forEach(node => {
-                                if (node.id && node.id.startsWith('canary-')) {
-                                    logEvent("TAMPER", `Удален canary-токен ${node.id}`); isCompromised = true; lockdown([`Удален маячок ${node.id}`]); mutation.target.appendChild(node.cloneNode(true));
-                                }
-                            });
-                        }
-                        if (mutation.addedNodes.length > 0) {
-                            mutation.addedNodes.forEach(node => {
-                                if (node.tagName === 'SCRIPT' && node.src && !node.src.startsWith(location.origin)) {
-                                    logEvent("INJECTION", `Внедрен скрипт: ${node.src}`); node.remove(); isCompromised = true; lockdown([`Внедрен сторонний скрипт`]);
-                                }
-                            });
-                        }
-                        if (mutation.target.id === 'download-btn') verifyIntegrity();
-                    });
-                });
-                observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['href', 'src'] });
-            }
+            
+            let originalDownloadHref = null;
 
             document.addEventListener('DOMContentLoaded', () => {
-                backupElement('download-btn'); backupElement('hash-display'); backupElement('chatBox'); backupElement('chatInput');
-                verifyIntegrity(); startObserver();
+                const btn = document.getElementById('download-btn');
+                if (btn) {
+                    originalDownloadHref = btn.getAttribute('href');
+                }
+                
+                // Проверка на копию сайта
                 const allowedHosts = ['utuberdzeff186-arch.github.io', 'localhost', '127.0.0.1'];
                 if (!allowedHosts.includes(window.location.hostname)) {
                     const banner = document.createElement('div');
@@ -486,13 +427,50 @@
                 }
             });
 
-            setInterval(verifyIntegrity, 3000);
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'U')) { e.preventDefault(); return false; }
-            });
-            // Убрали debugger, чтобы сайт не лагал
+            function silentLockdown() {
+                const btn = document.getElementById('download-btn');
+                if (btn) { 
+                    btn.style.pointerEvents = 'none'; 
+                    btn.style.opacity = '0.7'; 
+                    btn.href = '#'; 
+                    btn.innerText = '🛡️ Проверка безопасности...'; 
+                    btn.style.background = '#555';
+                }
+                
+                if (!document.getElementById('safe-warning')) {
+                    const warning = document.createElement('div');
+                    warning.id = 'safe-warning';
+                    warning.style.cssText = `position: fixed; bottom: 20px; right: 20px; background: #333; color: #fff; padding: 15px 25px; border-radius: 8px; z-index: 999999; font-size: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border-left: 4px solid #4da8da;`;
+                    warning.innerHTML = `🛡️ <b>В целях безопасности</b><br>Скачивание временно приостановлено. Попробуйте позже.`;
+                    document.body.appendChild(warning);
+                }
+            }
+
+            // Проверка, не изменилась ли ссылка на лету
+            setInterval(() => {
+                const btn = document.getElementById('download-btn');
+                if (!btn || originalDownloadHref === null) return;
+                const currentHref = btn.getAttribute('href');
+                
+                if (currentHref !== originalDownloadHref) {
+                    console.warn("🛡️ [SECURITY] Обнаружена попытка изменения ссылки на лету!");
+                    silentLockdown();
+                }
+            }, 3000);
+
+            // Проверка на внедрение сторонних скриптов
+            setInterval(() => {
+                document.querySelectorAll('script').forEach(s => {
+                    if (s.src && !s.src.startsWith(location.origin) && !s.src.includes('none')) {
+                        console.warn("🛡️ [SECURITY] Внедрен сторонний скрипт!");
+                        s.remove();
+                        silentLockdown();
+                    }
+                });
+            }, 3000);
         })();
 
+        // --- МАСКОТ ---
         function triggerScan() {
             const mascot = document.getElementById('mascot');
             if(mascot) mascot.classList.add('scanning');
@@ -526,6 +504,7 @@
             }
         }, 4000);
 
+        // --- МОДАЛЬНОЕ ОКНО ---
         function openModal(src) {
             const modal = document.getElementById("imageModal"); const img = document.getElementById("expandedImg");
             if (modal && img) { modal.style.display = "block"; img.src = src; }
@@ -536,6 +515,7 @@
         const imageModal = document.getElementById("imageModal");
         if(imageModal) imageModal.addEventListener('click', function(e) { if (e.target === this) closeModal(); });
 
+        // --- ЧАТ-БОТ ---
         function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)); }
 
         let lastMessageTime = 0; const MESSAGE_COOLDOWN = 1500;
