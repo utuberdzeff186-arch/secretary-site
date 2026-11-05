@@ -119,6 +119,113 @@
         .terminal-warn { color: #e67e22; }
         .terminal-danger { color: #e74c3c; }
 
+        /* 🖥️ UI PREVIEW (МАКЕТ ПРОГРАММЫ) */
+        .app-window {
+            max-width: 850px;
+            margin: 30px auto 0 auto;
+            background: #0d1117;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(77,168,218,0.1);
+            overflow: hidden;
+            display: flex;
+            height: 400px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .app-sidebar {
+            width: 200px;
+            background: #010409;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .app-sidebar-item {
+            padding: 12px 20px;
+            color: #8b949e;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .app-sidebar-item:hover, .app-sidebar-item.active {
+            background: rgba(77, 168, 218, 0.1);
+            color: #4da8da;
+            border-left: 3px solid #4da8da;
+        }
+        .app-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: radial-gradient(circle at center, rgba(46, 125, 50, 0.05) 0%, transparent 70%);
+            padding: 30px;
+            position: relative;
+        }
+        .app-titlebar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #8b949e;
+            font-size: 13px;
+        }
+        .app-titlebar-dots { display: flex; gap: 6px; }
+        .app-titlebar-dot { width: 10px; height: 10px; border-radius: 50%; background: #30363d; }
+        .app-titlebar-dot.red { background: #ff5f56; }
+        .app-titlebar-dot.yellow { background: #ffbd2e; }
+        .app-titlebar-dot.green { background: #27c93f; }
+        
+        .app-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+        .app-shield {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            box-shadow: 0 0 30px rgba(46, 204, 113, 0.3);
+            margin-bottom: 20px;
+            animation: pulseGreen 3s infinite;
+        }
+        @keyframes pulseGreen {
+            0% { box-shadow: 0 0 20px rgba(46, 204, 113, 0.3); }
+            50% { box-shadow: 0 0 50px rgba(46, 204, 113, 0.6); }
+            100% { box-shadow: 0 0 20px rgba(46, 204, 113, 0.3); }
+        }
+        .app-status-title {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .app-status-desc {
+            color: #8b949e;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .app-button {
+            background: rgba(77, 168, 218, 0.1);
+            color: #4da8da;
+            border: 1px solid #4da8da;
+            padding: 10px 30px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .app-button:hover { background: #4da8da; color: #fff; }
+
         /* МОДАЛЬНЫЕ ОКНА */
         .modal { display: none; position: fixed; z-index: 9999; padding-top: 5vh; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); }
         .modal-content { margin: auto; display: block; max-width: 95%; max-height: 90vh; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 0 30px rgba(0,0,0,0.8); animation: zoomIn 0.3s; }
@@ -244,6 +351,13 @@
             .chat-input-area { flex-direction: column; gap: 10px; }
             .chat-input-area button { margin-left: 0; }
             #scrollTopBtn { bottom: 20px; right: 20px; padding: 12px 16px; font-size: 16px; }
+
+            /* Адаптив UI окна */
+            .app-window { flex-direction: column; height: auto; }
+            .app-sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: 10px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
+            .app-sidebar-item { padding: 10px; font-size: 12px; white-space: nowrap; }
+            .app-sidebar-item.active { border-left: none; border-bottom: 3px solid #4da8da; }
+            .app-main { padding: 20px; }
         }
     </style>
 </head>
@@ -362,6 +476,37 @@
             <div class="terminal" id="terminal">
                 <div id="terminal-body">
                     <div class="terminal-line"><span class="terminal-time">[Инициализация]</span> Запуск ядра защиты Secretary Core...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🖥️ НОВЫЙ БЛОК: ИНТЕРФЕЙС ПРОГРАММЫ -->
+        <div class="guide-box reveal" id="ui-preview" style="margin-top: 40px;">
+            <h3 style="font-size: 28px; color: var(--text); margin-bottom: 10px; text-align: center;">🖥️ Интерфейс программы</h3>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 10px;">Так будет выглядеть Секретарь после установки</p>
+            
+            <div class="app-window">
+                <div class="app-sidebar">
+                    <div class="app-sidebar-item active">🛡️ Главная</div>
+                    <div class="app-sidebar-item">🔍 Проверка</div>
+                    <div class="app-sidebar-item">📁 Карантин</div>
+                    <div class="app-sidebar-item">⚙️ Настройки</div>
+                </div>
+                <div class="app-main">
+                    <div class="app-titlebar">
+                        <span>Секретарь Defender v9.3</span>
+                        <div class="app-titlebar-dots">
+                            <div class="app-titlebar-dot red"></div>
+                            <div class="app-titlebar-dot yellow"></div>
+                            <div class="app-titlebar-dot green"></div>
+                        </div>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-shield">🛡️</div>
+                        <div class="app-status-title">Все под контролем</div>
+                        <div class="app-status-desc">Ваша система полностью защищена</div>
+                        <div class="app-button">Проверить сейчас</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -719,7 +864,6 @@
 
         // --- ЧЕСТНАЯ СТАТИСТИКА (localStorage и GitHub API) ---
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. Загружаем реальное количество звезд с GitHub
             fetch('https://api.github.com/repos/utuberdzeff186-arch/secretary-site')
                 .then(response => response.json())
                 .then(data => {
@@ -730,7 +874,6 @@
                 })
                 .catch(err => console.warn("Не удалось загрузить статистику GitHub", err));
 
-            // 2. Загружаем количество проверок, сделанных ЭТИМ пользователем
             const scansElement = document.getElementById('stat-scans');
             if (scansElement) {
                 let userScans = localStorage.getItem('secretary_user_scans');
@@ -853,14 +996,13 @@
                             closeScanBtn.style.display = 'inline-block';
                             if(mascot) mascot.classList.remove('scanning');
 
-                            // УВЕЛИЧИВАЕМ РЕАЛЬНЫЙ СЧЕТЧИК ПРОВЕРОК
                             let currentScans = parseInt(localStorage.getItem('secretary_user_scans') || 0);
                             currentScans++;
                             localStorage.setItem('secretary_user_scans', currentScans);
                             
                             if (scansElement) {
                                 scansElement.innerText = currentScans;
-                                scansElement.style.color = '#2ecc71'; // Подсвечиваем зеленым
+                                scansElement.style.color = '#2ecc71';
                                 setTimeout(() => { scansElement.style.color = 'var(--accent)'; }, 1000);
                             }
                         }
