@@ -67,7 +67,7 @@
 
         .hero-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px; }
         .btn-download { background: linear-gradient(135deg, #555, #333); color: white; padding: 20px 50px; font-size: 18px; font-weight: 800; border-radius: 16px; text-decoration: none; display: inline-block; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); cursor: not-allowed; }
-        .btn-secondary { background: transparent; color: var(--accent); border: 2px solid var(--accent); padding: 20px 40px; font-size: 18px; font-weight: 800; border-radius: 16px; cursor: pointer; transition: all 0.3s ease; display: inline-block; text-align: center; }
+        .btn-secondary { background: transparent; color: var(--accent); border: 2px solid var(--accent); padding: 20px 40px; font-size: 18px; font-weight: 800; border-radius: 16px; cursor: pointer; transition: all 0.3s ease; display: inline-block; text-align: center; text-decoration: none; }
         .btn-secondary:hover { background: rgba(77, 168, 218, 0.1); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(77, 168, 218, 0.2); }
         
         .sys-req { margin-top: 15px; font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; gap: 15px; }
@@ -130,6 +130,7 @@
             border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(77,168,218,0.1);
             overflow: hidden; display: flex; height: 400px; font-family: 'Segoe UI', Arial, sans-serif;
+            position: relative;
         }
         .app-sidebar { width: 200px; background: #010409; border-right: 1px solid rgba(255,255,255,0.05); padding: 20px 0; display: flex; flex-direction: column; }
         .app-sidebar-item { padding: 12px 20px; color: #8b949e; font-size: 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.3s; }
@@ -176,19 +177,6 @@
         @keyframes zoomIn { from {transform: scale(0.8); opacity: 0;} to {transform: scale(1); opacity: 1;} }
         .close { position: absolute; top: 15px; right: 35px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; transition: 0.3s; z-index: 10000; }
         .close:hover { color: var(--accent); }
-
-        /* МОДАЛЬНОЕ ОКНО СКАНИРОВАНИЯ */
-        .scan-modal { display: none; position: fixed; z-index: 10000; inset: 0; background: rgba(8, 10, 15, 0.95); backdrop-filter: blur(10px); justify-content: center; align-items: center; text-align: center; }
-        .scan-content { background: #11141a; padding: 40px; border-radius: 20px; border: 1px solid var(--accent); box-shadow: 0 0 50px rgba(77, 168, 218, 0.2); max-width: 450px; width: 90%; }
-        .scan-loader { position: relative; width: 120px; height: 120px; margin: 0 auto 30px auto; }
-        .scan-circle { position: absolute; inset: 0; border: 3px solid rgba(77, 168, 218, 0.2); border-radius: 50%; border-top-color: var(--accent); animation: scanSpin 1s linear infinite; }
-        .scan-logo { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 40px; animation: pulse 2s ease-in-out infinite; }
-        @keyframes scanSpin { 100% { transform: rotate(360deg); } }
-        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
-        .progress-bar-container { width: 100%; height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; margin-bottom: 15px; overflow: hidden; }
-        .progress-bar { width: 0%; height: 100%; background: var(--accent); border-radius: 5px; transition: width 0.3s ease, background 0.3s ease; }
-        .scan-status { font-size: 15px; color: #fff; font-weight: 600; margin-bottom: 5px; height: 24px; }
-        .scan-substatus { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; height: 18px; font-family: monospace; }
 
         .chat-section { padding: 80px 20px; background: #0a0d13; margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .chat-container { background: var(--surface); border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; max-width: 750px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(12px); }
@@ -344,7 +332,7 @@
 
         <div class="hero-buttons">
             <a href="#" id="download-btn" class="btn-download" onclick="alert('Программа находится на финальной стадии тестирования. Релиз совсем скоро!'); return false;">⏳ Скоро релиз</a>
-            <a href="#sandbox" class="btn-secondary" style="text-decoration: none;">🧪 Песочница</a>
+            <a href="#sandbox" class="btn-secondary">🧪 Песочница</a>
         </div>
         
         <div class="sys-req">
@@ -375,7 +363,7 @@
 
     <div class="container" id="features">
         
-        <!-- 🧪 НОВЫЙ БЛОК: ПЕСОЧНИЦА (DRAG & DROP + WEB CRYPTO) -->
+        <!-- 🧪 БЛОК: ПЕСОЧНИЦА (DRAG & DROP + WEB CRYPTO) -->
         <div class="guide-box reveal sandbox-section" id="sandbox">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 10px; text-align: center;">🧪 Локальная песочница</h3>
             <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Перетащите любой файл сюда. Мы вычислим его SHA-256 хэш прямо в вашем браузере (файл никуда не загружается).</p>
@@ -440,9 +428,14 @@
         <!-- 🖥️ БЛОК: ИНТЕРФЕЙС ПРОГРАММЫ -->
         <div class="guide-box reveal" id="ui-preview" style="margin-top: 40px;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 10px; text-align: center;">🖥️ Интерфейс программы</h3>
-            <p style="text-align: center; color: var(--text-muted); margin-bottom: 10px;">Так будет выглядеть Секретарь после установки</p>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 10px;">Визуальный концепт интерфейса (не является рабочей программой)</p>
             
             <div class="app-window">
+                <!-- Плашка ДЕМО -->
+                <div style="position: absolute; top: 12px; left: 50%; transform: translateX(-50%); background: rgba(230, 126, 34, 0.2); color: #e67e22; border: 1px solid #e67e22; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; z-index: 10; letter-spacing: 1px;">
+                    ДЕМО-МАКЕТ
+                </div>
+
                 <div class="app-sidebar">
                     <div class="app-sidebar-item active">🛡️ Главная</div>
                     <div class="app-sidebar-item">🔍 Проверка</div>
@@ -462,7 +455,7 @@
                         <div class="app-shield">🛡️</div>
                         <div class="app-status-title">Все под контролем</div>
                         <div class="app-status-desc">Ваша система полностью защищена</div>
-                        <div class="app-button">Проверить сейчас</div>
+                        <button class="app-button" onclick="alert('Это визуальный макет интерфейса. Реальная проверка будет доступна после установки программы!');">Проверить сейчас</button>
                     </div>
                 </div>
             </div>
