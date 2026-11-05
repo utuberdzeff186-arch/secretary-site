@@ -10,7 +10,7 @@
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="no-referrer">
     
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/user1.png.png">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/step1.png">
     <title>Секретарь — Умный антивирус</title>
     
     <style>
@@ -193,25 +193,25 @@
                     <div class="step-num">1</div>
                     <h4>Скачивание</h4>
                     <p>Нажмите зеленую кнопку выше. Скачается файл <b>SecretarySetup.exe</b>.</p>
-                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/user1.png.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 1: Скачивание">
+                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/step1.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 1: Скачивание">
                 </div>
                 <div class="step-card">
                     <div class="step-num">2</div>
                     <h4>Запуск</h4>
                     <p>Откройте папку «Загрузки» и запустите скачанный файл двойным кликом.</p>
-                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/user2.png.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 2: Запуск">
+                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/step2.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 2: Запуск">
                 </div>
                 <div class="step-card highlight-card">
                     <div class="step-num" style="background:#e67e22;">3</div>
                     <h4 style="color:#e67e22;">SmartScreen</h4>
                     <p>Windows выдаст синее окно. Нажмите <b>«Подробнее»</b>, а затем <b>«Выполнить в любом случае»</b>.</p>
-                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/user3.png.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 3: SmartScreen">
+                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/step3.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 3: SmartScreen">
                 </div>
                 <div class="step-card">
                     <div class="step-num">4</div>
                     <h4>Готово!</h4>
                     <p>Появится окно установки. Следуйте инструкциям. Ярлык появится на рабочем столе.</p>
-                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/user4.png.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 4: Установка">
+                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/step4.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 4: Установка">
                 </div>
             </div>
         </div>
@@ -390,9 +390,6 @@
     </footer>
 
     <script>
-        // ============================================================
-        // 🛡️ САМОВОССТАНАВЛИВАЮЩИЙСЯ САЙТ (Self-Healing Shield)
-        // ============================================================
         (function() {
             'use strict';
             let isCompromised = false;
@@ -473,9 +470,6 @@
             setInterval(() => { debugger; }, 1000);
         })();
 
-        // ============================================================
-        // 🎯 ОСТАЛЬНОЙ КОД (Маскот, Чат, UI)
-        // ============================================================
         function triggerScan() {
             const mascot = document.getElementById('mascot');
             if(mascot) mascot.classList.add('scanning');
