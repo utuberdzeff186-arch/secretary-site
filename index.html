@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- ========================================== -->
-    <!-- 🛡️ МАКСИМАЛЬНАЯ ЗАЩИТА (Security Headers) -->
-    <!-- ========================================== -->
+    <!-- 🛡️ ЗАЩИТА -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://github.com https://raw.githubusercontent.com https://*.githubusercontent.com; connect-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self';">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="no-referrer">
     
-    <link rel="icon" type="image/png" href="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/icon.png?raw=true">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/icon.png">
     <title>Секретарь — Умный антивирус</title>
     
     <style>
@@ -38,16 +36,13 @@
         .btn-download:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 35px rgba(46, 125, 50, 0.4); }
         .sys-req { margin-top: 15px; font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; gap: 15px; }
 
-        /* --- ЖИВОЙ МАСКОТ --- */
         .mascot-container { display: flex; justify-content: center; margin-bottom: 20px; perspective: 1000px; }
         .mascot-svg { width: 160px; height: 160px; animation: float 4s ease-in-out infinite; overflow: visible; }
         
-        .pulse { animation: pulseGlow 2s infinite; }
         .spin-slow { transform-origin: center; animation: spin 20s linear infinite; }
         #pupil { transition: cx 0.1s ease-out, cy 0.1s ease-out; }
         
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
-        @keyframes pulseGlow { 0% { opacity: 1; r: 8; } 50% { opacity: 0.5; r: 10; fill: #2e7d32; } 100% { opacity: 1; r: 8; } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         .scanning #shield { fill: #e67e22; }
@@ -63,12 +58,10 @@
         .card h3 { font-size: 18px; margin-bottom: 10px; color: #fff; }
         .card p { font-size: 14px; color: var(--text-muted); }
 
-        /* Блок SHA-256 */
         .hash-box { margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); max-width: 650px; margin-left: auto; margin-right: auto; text-align: left; }
         .hash-box p { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; }
         .hash-code { display: block; background: #000; padding: 12px; border-radius: 6px; color: #2ecc71; font-size: 12px; word-break: break-all; user-select: all; font-family: monospace; }
 
-        /* --- БЛОКИ ИНСТРУКЦИИ И FAQ --- */
         .guide-box { background: var(--surface); border-radius: 24px; padding: 40px; border: 1px solid rgba(255,255,255,0.08); margin-top: 40px; text-align: left; }
         .steps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px; }
         
@@ -85,14 +78,12 @@
         .step-img { width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-top: auto; display: block; object-fit: cover; cursor: zoom-in; transition: transform 0.2s ease; }
         .step-img:hover { transform: scale(1.02); border-color: #4da8da; }
 
-        /* Модальное окно для картинок */
         .modal { display: none; position: fixed; z-index: 9999; padding-top: 5vh; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); }
         .modal-content { margin: auto; display: block; max-width: 95%; max-height: 90vh; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 0 30px rgba(0,0,0,0.8); animation: zoomIn 0.3s; }
         @keyframes zoomIn { from {transform: scale(0.8); opacity: 0;} to {transform: scale(1); opacity: 1;} }
         .close { position: absolute; top: 15px; right: 35px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; transition: 0.3s; z-index: 10000; }
         .close:hover { color: var(--accent); }
 
-        /* --- ЧАТ --- */
         .chat-section { padding: 80px 20px; background: #0a0d13; margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .chat-container { background: var(--surface); border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; max-width: 750px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(12px); }
         .chat-header { background: rgba(255,255,255,0.02); padding: 20px; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 15px; color: #fff; font-size: 16px; }
@@ -118,7 +109,6 @@
 </head>
 <body oncontextmenu="return false;">
 
-    <!-- ⚠️ CANARY TOKENS (Система самозащиты) -->
     <div id="canary-1" style="display:none;" aria-hidden="true"></div>
     <div id="canary-2" style="display:none;" aria-hidden="true"></div>
     <div id="canary-3" style="display:none;" aria-hidden="true"></div>
@@ -193,20 +183,20 @@
             </div>
         </div>
 
-        <!-- БЛОК: СКРИНШОТЫ ПРОГРАММЫ -->
+        <!-- БЛОК СКРИНШОТОВ -->
         <div class="guide-box" id="screens" style="margin-top: 40px;">
             <div style="text-align: center; margin-bottom: 20px;">
                 <h3 style="font-size: 28px; color: var(--text);">🖥️ Как выглядит Секретарь</h3>
                 <p style="color: var(--text-muted); margin-top: 10px;">Темный интерфейс, удобные вкладки и живой маскот</p>
             </div>
             <div class="steps-grid">
-                <div class="step-card"><img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step1.png.png?raw=true"openModal(this.src)" alt="Главный экран"></div>
-                <div class="step-card"><img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/app-screen-2.png?raw=true" class="step-img" onclick="openModal(this.src)" alt="Кибер-щит"></div>
-                <div class="step-card"><img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/app-screen-3.png?raw=true" class="step-img" onclick="openModal(this.src)" alt="Карантин"></div>
+                <div class="step-card"><img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/app-screen-1.png" class="step-img" onclick="openModal(this.src)" alt="Главный экран"></div>
+                <div class="step-card"><img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/app-screen-2.png" class="step-img" onclick="openModal(this.src)" alt="Кибер-щит"></div>
+                <div class="step-card"><img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/app-screen-3.png" class="step-img" onclick="openModal(this.src)" alt="Карантин"></div>
             </div>
         </div>
 
-        <!-- ИНСТРУКЦИЯ -->
+        <!-- БЛОК ИНСТРУКЦИИ -->
         <div class="guide-box" id="guide">
             <div style="text-align: center; margin-bottom: 20px;">
                 <h3 style="font-size: 28px; color: var(--text);">📖 Как установить Секретаря</h3>
@@ -217,32 +207,30 @@
                     <div class="step-num">1</div>
                     <h4>Скачивание</h4>
                     <p>Нажмите зеленую кнопку выше. Скачается файл <b>SecretarySetup.exe</b>.</p>
-                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step1.png?raw=true" class="step-img" onclick="openModal(this.src)" alt="Шаг 1: Скачивание">
+                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/step1.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 1: Скачивание">
                 </div>
                 <div class="step-card">
                     <div class="step-num">2</div>
                     <h4>Запуск</h4>
                     <p>Откройте папку «Загрузки» и запустите скачанный файл двойным кликом.</p>
-                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step2.png?raw=true" class="step-img" onclick="openModal(this.src)" alt="Шаг 2: Запуск">
+                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/step2.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 2: Запуск">
                 </div>
                 <div class="step-card highlight-card">
                     <div class="step-num" style="background:#e67e22;">3</div>
                     <h4 style="color:#e67e22;">SmartScreen</h4>
                     <p>Windows выдаст синее окно. Нажмите <b>«Подробнее»</b>, а затем <b>«Выполнить в любом случае»</b>.</p>
-                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step3.png?raw=true" class="step-img" onclick="openModal(this.src)" alt="Шаг 3: SmartScreen">
+                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/step3.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 3: SmartScreen">
                 </div>
                 <div class="step-card">
                     <div class="step-num">4</div>
                     <h4>Готово!</h4>
                     <p>Появится окно установки. Следуйте инструкциям. Ярлык появится на рабочем столе.</p>
-                    <img src="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/step4.png?raw=true" class="step-img" onclick="openModal(this.src)" alt="Шаг 4: Установка">
+                    <img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/step4.png" class="step-img" onclick="openModal(this.src)" alt="Шаг 4: Установка">
                 </div>
             </div>
         </div>
 
-        <!-- 5 БЛОКОВ, КОТОРЫЕ ВЫ ВЫБРАЛИ -->
-        
-        <!-- 1. О разработчике -->
+        <!-- 5 БЛОКОВ -->
         <div class="guide-box" id="developer" style="margin-top: 40px; text-align: center;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 20px;">👨‍💻 О разработчике</h3>
             <div style="display: inline-block; background: rgba(0,0,0,0.3); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); max-width: 600px;">
@@ -255,7 +243,6 @@
             </div>
         </div>
 
-        <!-- 2. История версий -->
         <div class="guide-box" id="changelog" style="margin-top: 40px;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 20px; text-align: center;">📜 История обновлений</h3>
             <div style="border-left: 2px solid var(--accent); margin-left: 20px; padding-left: 20px; display: flex; flex-direction: column; gap: 20px;">
@@ -277,34 +264,32 @@
             </div>
         </div>
 
-        <!-- 3. Системные требования -->
         <div class="guide-box" id="requirements" style="margin-top: 40px;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 20px; text-align: center;">⚙️ Системные требования</h3>
             <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
                 <div class="card" style="text-align: center; padding: 20px;">
                     <div style="font-size: 30px; margin-bottom: 10px;">🖥️</div>
-                    <h4 style="color: #fff; margin-bottom: 5px;">Операционная система</h4>
+                    <h4 style="color: #fff; margin-bottom: 5px;">ОС</h4>
                     <p style="color: var(--text-muted); font-size: 14px;">Windows 10 / 11<br>(64-bit)</p>
                 </div>
                 <div class="card" style="text-align: center; padding: 20px;">
                     <div style="font-size: 30px; margin-bottom: 10px;">🧠</div>
-                    <h4 style="color: #fff; margin-bottom: 5px;">Оперативная память</h4>
+                    <h4 style="color: #fff; margin-bottom: 5px;">ОЗУ</h4>
                     <p style="color: var(--text-muted); font-size: 14px;">От 2 ГБ<br>(рекомендуется 4 ГБ)</p>
                 </div>
                 <div class="card" style="text-align: center; padding: 20px;">
                     <div style="font-size: 30px; margin-bottom: 10px;">💾</div>
-                    <h4 style="color: #fff; margin-bottom: 5px;">Место на диске</h4>
+                    <h4 style="color: #fff; margin-bottom: 5px;">Диск</h4>
                     <p style="color: var(--text-muted); font-size: 14px;">~100 МБ</p>
                 </div>
                 <div class="card" style="text-align: center; padding: 20px;">
                     <div style="font-size: 30px; margin-bottom: 10px;">🌐</div>
                     <h4 style="color: #fff; margin-bottom: 5px;">Интернет</h4>
-                    <p style="color: var(--text-muted); font-size: 14px;">Не требуется<br>(работает офлайн)</p>
+                    <p style="color: var(--text-muted); font-size: 14px;">Не требуется<br>(офлайн)</p>
                 </div>
             </div>
         </div>
 
-        <!-- 4. Статус серверов -->
         <div style="margin-top: 40px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
             <div style="background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; padding: 10px 20px; border-radius: 20px; display: flex; align-items: center; gap: 10px;">
                 <div style="width: 10px; height: 10px; background: #2ecc71; border-radius: 50%; box-shadow: 0 0 10px #2ecc71;"></div>
@@ -316,7 +301,6 @@
             </div>
         </div>
 
-        <!-- 5. Сравнение с конкурентами -->
         <div class="guide-box" id="comparison" style="margin-top: 40px;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 20px; text-align: center;">🧩 Почему Секретарь?</h3>
             <div style="overflow-x: auto;">
@@ -325,27 +309,27 @@
                         <tr style="border-bottom: 2px solid var(--accent);">
                             <th style="padding: 15px; font-size: 16px;">Функция</th>
                             <th style="padding: 15px; font-size: 16px; color: var(--accent); text-align: center;">Секретарь</th>
-                            <th style="padding: 15px; font-size: 16px; text-align: center; color: var(--text-muted);">Другие антивирусы</th>
+                            <th style="padding: 15px; font-size: 16px; text-align: center; color: var(--text-muted);">Другие</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 15px; font-size: 14px;">Нагрузка на процессор</td>
+                            <td style="padding: 15px; font-size: 14px;">Нагрузка на ЦП</td>
                             <td style="padding: 15px; text-align: center; color: var(--success); font-weight: bold;">Минимальная (IDLE)</td>
                             <td style="padding: 15px; text-align: center; color: var(--text-muted);">Высокая</td>
                         </tr>
                         <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 15px; font-size: 14px;">Сбор данных в облако</td>
+                            <td style="padding: 15px; font-size: 14px;">Сбор данных</td>
                             <td style="padding: 15px; text-align: center; color: var(--success); font-weight: bold;">Нет (100% офлайн)</td>
                             <td style="padding: 15px; text-align: center; color: var(--text-muted);">Да</td>
                         </tr>
                         <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 15px; font-size: 14px;">Навязчивая реклама</td>
+                            <td style="padding: 15px; font-size: 14px;">Реклама</td>
                             <td style="padding: 15px; text-align: center; color: var(--success); font-weight: bold;">Нет</td>
                             <td style="padding: 15px; text-align: center; color: var(--text-muted);">Часто</td>
                         </tr>
                         <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 15px; font-size: 14px;">Живой маскот-помощник</td>
+                            <td style="padding: 15px; font-size: 14px;">Маскот</td>
                             <td style="padding: 15px; text-align: center; color: var(--success); font-weight: bold;">Да</td>
                             <td style="padding: 15px; text-align: center; color: var(--text-muted);">Нет</td>
                         </tr>
@@ -359,7 +343,6 @@
             </div>
         </div>
 
-        <!-- БЛОК FAQ -->
         <div class="guide-box" id="faq" style="margin-top: 40px;">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 20px; text-align: center;">❓ Частые вопросы</h3>
             <div style="display: flex; flex-direction: column; gap: 15px;">
@@ -373,7 +356,7 @@
                 </div>
                 <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border-left: 3px solid var(--accent);">
                     <h4 style="color: #fff; margin-bottom: 5px;">Почему Windows пишет «Неопознанное приложение»?</h4>
-                    <p style="font-size: 14px; color: var(--text-muted);">У нас нет платного сертификата Microsoft. Нажмите «Подробнее» и «Выполнить в любом случае». Это нормально для новых программ.</p>
+                    <p style="font-size: 14px; color: var(--text-muted);">У нас нет платного сертификата Microsoft. Нажмите «Подробнее» и «Выполнить в любом случае». Это нормально.</p>
                 </div>
             </div>
         </div>
@@ -384,7 +367,6 @@
         <img class="modal-content" id="expandedImg">
     </div>
 
-    <!-- ТЕХПОДДЕРЖКА -->
     <section id="support" class="chat-section">
         <div style="text-align: center; margin-bottom: 40px;">
             <h2 class="section-title" style="margin-bottom: 10px;">💬 Техподдержка</h2>
@@ -422,28 +404,17 @@
     </footer>
 
     <script>
-        // ============================================================
-        // 🛡️ САМОВОССТАНАВЛИВАЮЩИЙСЯ САЙТ (Self-Healing Shield)
-        // ============================================================
         (function() {
             'use strict';
             let isCompromised = false;
             const BACKUPS = new Map();
 
-            function logEvent(event, details) {
-                console.warn(`🛡️ [SECURITY] ${event}:`, details);
-            }
-
-            function backupElement(id) {
-                const el = document.getElementById(id);
-                if (el) BACKUPS.set(id, el.cloneNode(true));
-            }
+            function logEvent(event, details) { console.warn(`🛡️ [SECURITY] ${event}:`, details); }
+            function backupElement(id) { const el = document.getElementById(id); if (el) BACKUPS.set(id, el.cloneNode(true)); }
 
             function verifyIntegrity() {
                 let issues = [];
-                for (let i = 1; i <= 5; i++) {
-                    if (!document.getElementById(`canary-${i}`)) issues.push(`Canary token ${i} удален`);
-                }
+                for (let i = 1; i <= 5; i++) { if (!document.getElementById(`canary-${i}`)) issues.push(`Canary token ${i} удален`); }
                 const btn = document.getElementById('download-btn');
                 if (!btn) {
                     issues.push("Кнопка скачивания удалена");
@@ -451,31 +422,19 @@
                     issues.push("Ссылка кнопки скачивания подменена!");
                 }
                 if (!document.getElementById('hash-display')) issues.push("Блок с хэшем удален");
-                
                 document.querySelectorAll('script').forEach(s => {
                     if (s.src && !s.src.startsWith(location.origin) && !s.src.includes('none')) {
-                        issues.push(`Внедрен сторонний скрипт: ${s.src}`);
-                        s.remove();
+                        issues.push(`Внедрен сторонний скрипт: ${s.src}`); s.remove();
                     }
                 });
-
                 if (window.top !== window.self) issues.push("Сайт встроен в iframe (Clickjacking!)");
-
-                if (issues.length > 0) {
-                    isCompromised = true;
-                    logEvent("COMPROMISED", issues);
-                    lockdown(issues);
-                }
+                if (issues.length > 0) { isCompromised = true; logEvent("COMPROMISED", issues); lockdown(issues); }
             }
 
             function lockdown(issues) {
                 if (document.getElementById('compromise-warning')) return;
                 const btn = document.getElementById('download-btn');
-                if (btn) {
-                    btn.style.pointerEvents = 'none'; btn.style.opacity = '0.5';
-                    btn.href = '#'; btn.innerText = '⚠️ САЙТ ВЗЛОМАН — НЕ СКАЧИВАЙТЕ ФАЙЛЫ';
-                    btn.style.background = '#c0392b';
-                }
+                if (btn) { btn.style.pointerEvents = 'none'; btn.style.opacity = '0.5'; btn.href = '#'; btn.innerText = '⚠️ САЙТ ВЗЛОМАН — НЕ СКАЧИВАЙТЕ ФАЙЛЫ'; btn.style.background = '#c0392b'; }
                 const warning = document.createElement('div');
                 warning.id = 'compromise-warning';
                 warning.style.cssText = `position: fixed; top: 0; left: 0; width: 100%; background: #c0392b; color: white; padding: 20px; text-align: center; z-index: 999999; font-weight: bold; font-size: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.5);`;
@@ -489,17 +448,14 @@
                         if (mutation.removedNodes.length > 0) {
                             mutation.removedNodes.forEach(node => {
                                 if (node.id && node.id.startsWith('canary-')) {
-                                    logEvent("TAMPER", `Удален canary-токен ${node.id}`);
-                                    isCompromised = true; lockdown([`Удален маячок ${node.id}`]);
-                                    mutation.target.appendChild(node.cloneNode(true));
+                                    logEvent("TAMPER", `Удален canary-токен ${node.id}`); isCompromised = true; lockdown([`Удален маячок ${node.id}`]); mutation.target.appendChild(node.cloneNode(true));
                                 }
                             });
                         }
                         if (mutation.addedNodes.length > 0) {
                             mutation.addedNodes.forEach(node => {
                                 if (node.tagName === 'SCRIPT' && node.src && !node.src.startsWith(location.origin)) {
-                                    logEvent("INJECTION", `Внедрен скрипт: ${node.src}`);
-                                    node.remove(); isCompromised = true; lockdown([`Внедрен сторонний скрипт`]);
+                                    logEvent("INJECTION", `Внедрен скрипт: ${node.src}`); node.remove(); isCompromised = true; lockdown([`Внедрен сторонний скрипт`]);
                                 }
                             });
                         }
@@ -510,10 +466,8 @@
             }
 
             document.addEventListener('DOMContentLoaded', () => {
-                backupElement('download-btn'); backupElement('hash-display');
-                backupElement('chatBox'); backupElement('chatInput');
+                backupElement('download-btn'); backupElement('hash-display'); backupElement('chatBox'); backupElement('chatInput');
                 verifyIntegrity(); startObserver();
-                
                 const allowedHosts = ['utuberdzeff186-arch.github.io', 'localhost', '127.0.0.1'];
                 if (!allowedHosts.includes(window.location.hostname)) {
                     const banner = document.createElement('div');
@@ -524,18 +478,12 @@
             });
 
             setInterval(verifyIntegrity, 3000);
-
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'U')) {
-                    e.preventDefault(); return false;
-                }
+                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'U')) { e.preventDefault(); return false; }
             });
             setInterval(() => { debugger; }, 1000);
         })();
 
-        // ============================================================
-        // 🎯 ОСТАЛЬНОЙ КОД (Маскот, Чат, UI)
-        // ============================================================
         function triggerScan() {
             const mascot = document.getElementById('mascot');
             if(mascot) mascot.classList.add('scanning');
@@ -551,8 +499,7 @@
             const rect = mascot.getBoundingClientRect();
             const mascotX = rect.left + rect.width / 2;
             const mascotY = rect.top + rect.height / 2;
-            const dx = e.clientX - mascotX;
-            const dy = e.clientY - mascotY;
+            const dx = e.clientX - mascotX; const dy = e.clientY - mascotY;
             const angle = Math.atan2(dy, dx);
             const pupilRadius = 8; const eyeRadiusX = 30; const eyeRadiusY = 15;
             const maxOffsetX = eyeRadiusX - pupilRadius; const maxOffsetY = eyeRadiusY - pupilRadius;
@@ -566,8 +513,7 @@
 
         setInterval(() => {
             if (Math.random() > 0.6 && eyeBg) {
-                eyeBg.setAttribute('ry', '2');
-                setTimeout(() => eyeBg.setAttribute('ry', '15'), 150);
+                eyeBg.setAttribute('ry', '2'); setTimeout(() => eyeBg.setAttribute('ry', '15'), 150);
             }
         }, 4000);
 
@@ -576,23 +522,16 @@
             if (modal && img) { modal.style.display = "block"; img.src = src; }
         }
         function closeModal() {
-            const modal = document.getElementById("imageModal");
-            if (modal) modal.style.display = "none";
+            const modal = document.getElementById("imageModal"); if (modal) modal.style.display = "none";
         }
         const imageModal = document.getElementById("imageModal");
         if(imageModal) imageModal.addEventListener('click', function(e) { if (e.target === this) closeModal(); });
 
-        function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
-        }
+        function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)); }
 
-        let lastMessageTime = 0;
-        const MESSAGE_COOLDOWN = 1500; 
+        let lastMessageTime = 0; const MESSAGE_COOLDOWN = 1500; 
         function randomReply(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-        function quickAsk(text) { 
-            const input = document.getElementById("chatInput");
-            if(input) { input.value = text; sendMessage(); }
-        }
+        function quickAsk(text) { const input = document.getElementById("chatInput"); if(input) { input.value = text; sendMessage(); } }
 
         const knowledgeBase = [
             { keywords: ["не запускается", "закрывается", "вылетает", "ошибка"], answer: "Если программа не запускается: 1) Проверьте, не удалил ли файл ваш антивирус. 2) Запустите ярлык от имени Администратора. 3) Скачайте установщик заново." },
@@ -600,52 +539,30 @@
             { keywords: ["как проверить", "проверить файл", "сканировать"], answer: "Откройте Секретаря, перейдите на вкладку 'Главная' и нажмите 'Проверить файл'. Выберите файл, и он будет просканирован." },
             { keywords: ["карантин", "где карантин", "восстановить"], answer: "Все вирусы находятся во вкладке 'Карантин'. Там вы можете выбрать файл и нажать 'Удалить' или 'Восстановить'." },
             { keywords: ["удалить программу", "как удалить"], answer: "Зайдите в 'Параметры Windows' -> 'Приложения' -> 'Установленные приложения'. Найдите Secretary Defender и нажмите 'Удалить'." },
-            { keywords: ["windows", "система", "совместимость"], answer: "Секретарь работает на Windows 10 и Windows 11 (64-bit). На старых системах или Linux он не запустится." },
-            { keywords: ["virustotal", "хэш"], answer: "Сайт VirusTotal может быть заблокирован в РФ. Используйте VPN или другие сервисы для проверки хэша." }
+            { keywords: ["windows", "система", "совместимость"], answer: "Секретарь работает на Windows 10 и Windows 11 (64-bit). На старых системах или Linux он не запустится." }
         ];
 
         function getAIResponse(text) {
             const t = text.toLowerCase();
-            for (let item of knowledgeBase) {
-                if (item.keywords.some(kw => t.includes(kw))) return item.answer;
-            }
+            for (let item of knowledgeBase) { if (item.keywords.some(kw => t.includes(kw))) return item.answer; }
             if (t.includes("привет") || t.includes("здравствуй")) return randomReply(["Приветствую! Задайте вопрос.", "Здравствуйте! Чем помочь?"]);
             if (t.includes("спасибо") || t.includes("благодарю")) return "Всегда рад помочь! 🛡️";
             if (t.includes("модель") || t.includes("gpt")) return "Я — локальный JavaScript-бот, созданный специально для помощи с Secretary Defender!";
-            return randomReply([
-                "Я не совсем понял вопрос. Попробуйте нажать на кнопки быстрого ответа.",
-                "Моя база знаний пока не знает ответа. Опишите проблему другими словами.",
-                "Уточните вопрос, пожалуйста. Я лучше всего разбираюсь в установке и защите."
-            ]);
+            return randomReply(["Я не совсем понял вопрос. Попробуйте нажать на кнопки быстрого ответа.", "Моя база знаний пока не знает ответа. Опишите проблему другими словами.", "Уточните вопрос, пожалуйста. Я лучше всего разбираюсь в установке и защите."]);
         }
 
         function sendMessage() {
             const input = document.getElementById("chatInput");
             const rawText = input.value.trim();
             if (!rawText) return;
-
-            const now = Date.now();
-            if (now - lastMessageTime < MESSAGE_COOLDOWN) return;
+            const now = Date.now(); if (now - lastMessageTime < MESSAGE_COOLDOWN) return;
             lastMessageTime = now;
-
             const safeText = escapeHTML(rawText);
-            const chatBox = document.getElementById("chatBox");
-            if(!chatBox) return;
-            
-            const userMsg = document.createElement("div");
-            userMsg.className = "message msg-user";
-            userMsg.textContent = safeText; 
-            chatBox.appendChild(userMsg);
-            
-            input.value = "";
-            chatBox.scrollTop = chatBox.scrollHeight;
-
+            const chatBox = document.getElementById("chatBox"); if(!chatBox) return;
+            const userMsg = document.createElement("div"); userMsg.className = "message msg-user"; userMsg.textContent = safeText; chatBox.appendChild(userMsg);
+            input.value = ""; chatBox.scrollTop = chatBox.scrollHeight;
             setTimeout(() => {
-                const botMsg = document.createElement("div");
-                botMsg.className = "message msg-bot";
-                botMsg.textContent = getAIResponse(rawText);
-                chatBox.appendChild(botMsg);
-                chatBox.scrollTop = chatBox.scrollHeight;
+                const botMsg = document.createElement("div"); botMsg.className = "message msg-bot"; botMsg.textContent = getAIResponse(rawText); chatBox.appendChild(botMsg); chatBox.scrollTop = chatBox.scrollHeight;
             }, 600);
         }
 
