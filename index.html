@@ -177,6 +177,20 @@
         }
         .community-btn:hover { transform: translateY(-3px); opacity: 0.9; box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
 
+        /* 🗺️ ROADMAP */
+        .roadmap-list { display: flex; flex-direction: column; gap: 20px; max-width: 800px; margin: 0 auto; }
+        .roadmap-item { display: flex; gap: 20px; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; border-left: 4px solid var(--accent); transition: 0.3s; }
+        .roadmap-item:hover { background: rgba(0,0,0,0.4); transform: translateX(5px); }
+        .roadmap-item.done { border-left-color: #2ecc71; }
+        .roadmap-item.planned { border-left-color: #f1c40f; }
+        .roadmap-icon { font-size: 28px; flex-shrink: 0; width: 40px; text-align: center; }
+        .roadmap-content h4 { color: #fff; margin-bottom: 5px; font-size: 18px; }
+        .roadmap-content p { color: var(--text-muted); font-size: 14px; margin-bottom: 5px; }
+        .roadmap-status { display: inline-block; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 20px; margin-top: 5px; }
+        .status-done { background: rgba(46, 204, 113, 0.2); color: #2ecc71; }
+        .status-progress { background: rgba(77, 168, 218, 0.2); color: var(--accent); }
+        .status-planned { background: rgba(241, 196, 15, 0.2); color: #f1c40f; }
+
         /* 📱 МОБИЛЬНАЯ АДАПТАЦИЯ */
         @media (max-width: 768px) {
             header { padding: 15px 20px; justify-content: space-between; }
@@ -351,15 +365,12 @@
             <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Проект активно развивается. Присоединяйтесь, чтобы первыми узнавать новости и помогать делать «Секретаря» лучше.</p>
             
             <div class="grid">
-                <!-- GitHub Issues -->
                 <div class="card" style="text-align: center; display: flex; flex-direction: column;">
                     <div style="font-size: 40px; margin-bottom: 15px;">🐞</div>
                     <h4 style="color: #fff; margin-bottom: 10px; font-size: 18px;">Нашли баг?</h4>
                     <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px; flex-grow: 1;">Помогите сделать «Секретаря» лучше. Сообщите об ошибке или предложите новую идею на GitHub.</p>
                     <a href="https://github.com/utuberdzeff186-arch/secretary-site/issues" target="_blank" class="community-btn" style="background: #2ea44f;">Сообщить</a>
                 </div>
-                
-                <!-- GitHub Repo -->
                 <div class="card" style="text-align: center; display: flex; flex-direction: column;">
                     <div style="font-size: 40px; margin-bottom: 15px;">⭐</div>
                     <h4 style="color: #fff; margin-bottom: 10px; font-size: 18px;">Open Source</h4>
@@ -387,6 +398,50 @@
                     <h4 style="color: #fff; margin-bottom: 5px;">v8.0</h4>
                     <p style="color: var(--text-muted); font-size: 14px;">Добавлен живой маскот на рабочий стол, вкладка «Кибер-щит» и умный чат-бот.</p>
                 </div>
+            </div>
+        </div>
+
+        <!-- 🗺️ НОВЫЙ БЛОК: ROADMAP -->
+        <div class="guide-box reveal" id="roadmap" style="margin-top: 40px;">
+            <h3 style="font-size: 28px; color: var(--text); margin-bottom: 30px; text-align: center;">🗺️ Планы развития</h3>
+            <div class="roadmap-list">
+                
+                <div class="roadmap-item done">
+                    <div class="roadmap-icon">✅</div>
+                    <div class="roadmap-content">
+                        <h4>Ядро и базовый функционал</h4>
+                        <p>Разработка версий 8.0 и 9.0. Добавлен маскот, чат-бот и оптимизация ресурсов.</p>
+                        <span class="roadmap-status status-done">Завершено</span>
+                    </div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">🚀</div>
+                    <div class="roadmap-content">
+                        <h4>Версия 9.3 (Текущая разработка)</h4>
+                        <p>Добавление защиты от шифровальщиков, живые эмоции маскота и мониторинг подозрительных инструментов.</p>
+                        <span class="roadmap-status status-progress">В процессе</span>
+                    </div>
+                </div>
+
+                <div class="roadmap-item planned">
+                    <div class="roadmap-icon">🛡️</div>
+                    <div class="roadmap-content">
+                        <h4>Бета-тестирование и релиз v10.0</h4>
+                        <p>Открытый тест программы. Проверка стабильности, сбор отзывов и исправление багов перед глобальным релизом.</p>
+                        <span class="roadmap-status status-planned">Планируется (Зима 2026)</span>
+                    </div>
+                </div>
+
+                <div class="roadmap-item planned">
+                    <div class="roadmap-icon">📱</div>
+                    <div class="roadmap-content">
+                        <h4>Версия для Android и macOS</h4>
+                        <p>Адаптация ядра «Секретаря» под мобильные устройства и систему Mac. (В далеком будущем).</p>
+                        <span class="roadmap-status status-planned">Будущее</span>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -652,7 +707,7 @@
             if(scanBtn) {
                 scanBtn.addEventListener('click', () => {
                     scanModal.style.display = 'flex';
-                    if(mascot) mascot.classList.add('scanning'); // Включаем анимацию маскота
+                    if(mascot) mascot.classList.add('scanning');
                     
                     scanProgress.style.width = '0%';
                     scanProgress.style.background = 'var(--accent)';
@@ -669,23 +724,21 @@
                         if (progress > 100) progress = 100;
                         scanProgress.style.width = progress + '%';
 
-                        // Смена текста
                         if (progress > stepIndex * 20 && stepIndex < scanSteps.length) {
                             scanStatus.textContent = scanSteps[stepIndex].main;
                             scanSubstatus.textContent = scanSteps[stepIndex].sub;
                             stepIndex++;
                         }
 
-                        // Завершение
                         if (progress === 100) {
                             clearInterval(interval);
-                            scanProgress.style.background = '#2ecc71'; // Зеленый
+                            scanProgress.style.background = '#2ecc71';
                             scanStatus.innerHTML = '<span style="color:#2ecc71; font-size: 18px;">✅ Угроз не обнаружено!</span>';
                             scanSubstatus.innerHTML = '<span style="font-size:14px; color:#a0a0a0;">Ваш ПК в безопасности.<br>Для постоянной защиты установите Секретаря.</span>';
                             closeScanBtn.style.display = 'inline-block';
                             if(mascot) mascot.classList.remove('scanning');
                         }
-                    }, 400); // Скорость сканирования
+                    }, 400);
                 });
             }
 
@@ -695,7 +748,6 @@
                 });
             }
 
-            // Закрытие по клику на фон
             if(scanModal) {
                 scanModal.addEventListener('click', (e) => {
                     if (e.target === scanModal) scanModal.style.display = 'none';
