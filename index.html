@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- 🛡️ ЗАЩИТА (CSP обновлен для QR-кодов) -->
+    <!-- 🛡️ ЗАЩИТА (CSP) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://raw.githubusercontent.com https://*.githubusercontent.com https://api.qrserver.com; connect-src 'self' https://api.github.com https://api.pwnedpasswords.com https://api.ipify.org https://ipapi.co; frame-ancestors 'none'; form-action 'self'; base-uri 'self';">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="no-referrer">
+
+    <!-- 🔍 SEO -->
+    <title>Секретарь — Бесплатный умный антивирус для Windows 10 и 11</title>
+    <meta name="description" content="Секретарь — легкий, бесплатный и умный антивирус для вашего ПК. Локальный анализ, защита от шифровальщиков, без рекламы и сбора данных. Скачать для Windows.">
+    <link rel="canonical" href="https://utuberdzeff186-arch.github.io/secretary-site/">
 
     <!-- 🖼️ Превью для соцсетей (Open Graph) -->
     <meta property="og:title" content="Секретарь — Умный антивирус">
@@ -30,7 +35,6 @@
     </script>
 
     <link rel="icon" type="image/png" href="step1.png">
-    <title>Секретарь — Умный антивирус</title>
 
     <style>
         :root {
@@ -39,6 +43,12 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; background-image: radial-gradient(circle at 15% 50%, rgba(77, 168, 218, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(46, 125, 50, 0.05), transparent 25%); background-attachment: fixed; transition: filter 0.5s ease; }
+
+        /* 🍪 COOKIE BANNER */
+        .cookie-banner { position: fixed; bottom: 0; left: 0; width: 100%; background: #11141a; border-top: 1px solid rgba(255,255,255,0.1); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 99999; font-size: 14px; color: var(--text-muted); box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
+        .cookie-banner button { background: var(--accent); color: #fff; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; white-space: nowrap; }
+        .cookie-banner button:hover { background: #3a8bb8; }
+        .cookie-banner a { color: var(--accent); text-decoration: underline; }
 
         /* 🚨 СОСТОЯНИЕ ТРЕВОГИ НА ВСЕМ САЙТЕ */
         body.breach-alert { filter: sepia(50%) hue-rotate(-50deg) saturate(300%) brightness(0.8); }
@@ -70,6 +80,13 @@
         .btn-secondary { background: transparent; color: var(--accent); border: 2px solid var(--accent); padding: 20px 40px; font-size: 18px; font-weight: 800; border-radius: 16px; cursor: pointer; transition: all 0.3s ease; display: inline-block; text-align: center; text-decoration: none; }
         .btn-secondary:hover { background: rgba(77, 168, 218, 0.1); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(77, 168, 218, 0.2); }
         
+        /* 📧 ФОРМА ПОДПИСКИ */
+        .subscribe-box { max-width: 500px; margin: 20px auto; display: flex; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); }
+        .subscribe-input { flex: 1; background: transparent; border: none; padding: 10px 15px; color: #fff; outline: none; font-size: 15px; }
+        .subscribe-btn { background: var(--accent); color: #fff; border: none; padding: 10px 25px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .subscribe-btn:hover { background: #3a8bb8; }
+        .sub-success { color: var(--success); font-weight: bold; margin-top: 10px; display: none; }
+
         .sys-req { margin-top: 15px; font-size: 13px; color: var(--text-muted); display: flex; justify-content: center; gap: 15px; }
 
         /* 📊 LIVE STATS */
@@ -345,6 +362,7 @@
             .chat-input-area { flex-direction: column; gap: 10px; }
             .chat-input-area button { margin-left: 0; }
             #scrollTopBtn { bottom: 20px; right: 20px; padding: 12px 16px; font-size: 16px; }
+            .cookie-banner { flex-direction: column; text-align: center; gap: 10px; }
             
             .app-window { flex-direction: column; height: auto; }
             .app-sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: 10px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -358,6 +376,7 @@
             .gen-box { flex-direction: column; }
             .btn-gen { padding: 10px; }
             .privacy-grid { grid-template-columns: 1fr; }
+            .subscribe-box { flex-direction: column; }
         }
     </style>
 </head>
@@ -415,6 +434,13 @@
             <a href="#" id="download-btn" class="btn-download" onclick="alert('Программа находится на финальной стадии тестирования. Релиз совсем скоро!'); return false;">⏳ Скоро релиз</a>
             <a href="#sandbox" class="btn-secondary">🧪 Песочница</a>
         </div>
+
+        <!-- 📧 ФОРМА ПОДПИСКИ -->
+        <div class="subscribe-box reveal">
+            <input type="email" id="subEmail" class="subscribe-input" placeholder="Ваш Email для новостей...">
+            <button class="subscribe-btn" onclick="subscribeEmail()">Узнать о релизе</button>
+        </div>
+        <div class="sub-success" id="subSuccess">✅ Вы подписаны! Мы сообщим о выходе.</div>
         
         <div class="sys-req">
             <span>Windows 10 / 11 (64-bit)</span> | <span>~35 МБ</span> | <span>Бесплатно</span>
@@ -912,15 +938,49 @@
     <footer>
         <div class="footer-text">
             © 2026 Секретарь Defender Project. Все права защищены. <br>
-            <a href="privacy.html">Политика конфиденциальности</a>
+            <a href="privacy.html">Политика конфиденциальности</a> | <a href="#" onclick="alert('Мы не используем сторонние трекеры. Только технические cookie.'); return false;">Cookie</a>
         </div>
     </footer>
+
+    <!-- 🍪 COOKIE BANNER -->
+    <div class="cookie-banner" id="cookieBanner" style="display: none;">
+        <span>Мы используем технические cookie для работы сайта. Продолжая, вы соглашаетесь с <a href="privacy.html">Политикой конфиденциальности</a> (152-ФЗ).</span>
+        <button onclick="acceptCookies()">Принять</button>
+    </div>
 
     <button id="scrollTopBtn" title="Наверх">↑</button>
 
     <script>
         // ==========================================
-        // 1. 🌌 КАНВАС НЕЙРОСЕТЬ
+        // 1. 🍪 COOKIE BANNER
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!localStorage.getItem('secretary_cookies_accepted')) {
+                document.getElementById('cookieBanner').style.display = 'flex';
+            }
+        });
+        function acceptCookies() {
+            localStorage.setItem('secretary_cookies_accepted', 'true');
+            document.getElementById('cookieBanner').style.display = 'none';
+        }
+
+        // ==========================================
+        // 2. 📧 ПОДПИСКА НА РЕЛИЗ
+        // ==========================================
+        function subscribeEmail() {
+            const email = document.getElementById('subEmail').value;
+            if (!email || !email.includes('@')) {
+                alert('Пожалуйста, введите корректный Email.');
+                return;
+            }
+            localStorage.setItem('secretary_sub_email', email);
+            document.getElementById('subSuccess').style.display = 'block';
+            document.getElementById('subEmail').value = '';
+            addTerminalLog(`Email ${email} добавлен в базу ожидания.`, '');
+        }
+
+        // ==========================================
+        // 3. 🌌 КАНВАС НЕЙРОСЕТЬ
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const canvas = document.getElementById('cyber-canvas');
@@ -960,7 +1020,7 @@
         });
 
         // ==========================================
-        // 2. 🧪 ПЕСОЧНИЦА
+        // 4. 🧪 ПЕСОЧНИЦА
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const dropZone = document.getElementById('dropZone'), fileInput = document.getElementById('fileInput');
@@ -996,7 +1056,7 @@
         });
 
         // ==========================================
-        // 3. 🔐 ПРОВЕРКА ПАРОЛЕЙ + ШКАЛА
+        // 5. 🔐 ПРОВЕРКА ПАРОЛЕЙ + ШКАЛА
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const passInput = document.getElementById('passInput'), checkPassBtn = document.getElementById('checkPassBtn');
@@ -1047,7 +1107,7 @@
         });
 
         // ==========================================
-        // 4. 🛠️ КИБЕР-ИНСТРУМЕНТЫ (Генератор, IP, Privacy, URL, Crypto, QR)
+        // 6. 🛠️ КИБЕР-ИНСТРУМЕНТЫ
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             // Генератор
@@ -1180,7 +1240,7 @@
         });
 
         // ==========================================
-        // 5. 🚨 СИСТЕМА ЗАЩИТЫ ОТ ВЗЛОМА
+        // 7. 🚨 СИСТЕМА ЗАЩИТЫ ОТ ВЗЛОМА
         // ==========================================
         (function() {
             'use strict';
@@ -1225,7 +1285,7 @@
         })();
 
         // ==========================================
-        // 6. 🧠 СОБЫТИЯ (F12, AFK, Tab Visibility, Konami Code)
+        // 8. 🧠 СОБЫТИЯ (F12, AFK, Tab Visibility, Konami Code)
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const mascot = document.getElementById('mascot');
@@ -1299,7 +1359,7 @@
         });
 
         // ==========================================
-        // 7. ОСТАЛЬНЫЕ СКРИПТЫ (Терминал, Чат, Меню, Анимации)
+        // 9. ОСТАЛЬНЫЕ СКРИПТЫ
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const terminalLines = [
