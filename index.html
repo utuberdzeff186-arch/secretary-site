@@ -24,11 +24,7 @@
       "name": "Секретарь Defender",
       "operatingSystem": "Windows 10, Windows 11",
       "applicationCategory": "SecurityApplication",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "RUB"
-      },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "RUB" },
       "description": "Легкий, умный и бесплатный антивирус для Windows с защитой от шифровальщиков и открытым исходным кодом."
     }
     </script>
@@ -39,12 +35,18 @@
     <style>
         :root {
             --bg: #080a0f; --surface: rgba(30, 30, 35, 0.6); --surface-hover: rgba(40, 40, 48, 0.8);
-            --text: #ffffff; --text-muted: #a0a0a0; --accent: #4da8da; --success: #2e7d32;
+            --text: #ffffff; --text-muted: #a0a0a0; --accent: #4da8da; --success: #2e7d32; --danger: #e74c3c;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; background-image: radial-gradient(circle at 15% 50%, rgba(77, 168, 218, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(46, 125, 50, 0.05), transparent 25%); background-attachment: fixed; }
+        body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; background-image: radial-gradient(circle at 15% 50%, rgba(77, 168, 218, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(46, 125, 50, 0.05), transparent 25%); background-attachment: fixed; transition: filter 0.5s ease; }
 
-        /* 🌌 CANVAS ДЛЯ НЕЙРОСЕТИ НА ФОНЕ */
+        /* 🚨 СОСТОЯНИЕ ТРЕВОГИ НА ВСЕМ САЙТЕ */
+        body.breach-alert { filter: sepia(50%) hue-rotate(-50deg) saturate(300%) brightness(0.8); }
+        .breach-overlay { position: fixed; inset: 0; border: 5px solid var(--danger); z-index: 99999; pointer-events: none; display: none; box-shadow: inset 0 0 100px rgba(231,76,60,0.5); animation: flashBorder 1s infinite alternate; }
+        @keyframes flashBorder { from { border-color: transparent; } to { border-color: var(--danger); } }
+        .breach-active .breach-overlay { display: block; }
+
+        /* 🌌 CANVAS ДЛЯ НЕЙРОСЕТИ */
         #cyber-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.6; pointer-events: none; }
 
         header { padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 10, 15, 0.7); backdrop-filter: blur(16px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -75,19 +77,52 @@
         .stat-item { text-align: center; font-size: 14px; color: var(--text-muted); font-weight: 600; }
         .stat-item span { font-size: 32px; color: var(--accent); font-weight: 800; display: block; margin-bottom: 5px; font-family: monospace; }
 
-        .mascot-container { display: flex; justify-content: center; margin-bottom: 20px; perspective: 1000px; }
-        .mascot-svg { width: 160px; height: 160px; animation: float 4s ease-in-out infinite; overflow: visible; }
+        .mascot-container { display: flex; justify-content: center; margin-bottom: 20px; perspective: 1000px; position: relative; }
+        .mascot-svg { width: 160px; height: 160px; animation: float 4s ease-in-out infinite; overflow: visible; transition: all 0.3s ease; }
 
         .spin-slow { transform-origin: center; animation: spin 20s linear infinite; }
         #pupil { transition: cx 0.1s ease-out, cy 0.1s ease-out; }
+        .brow { transition: all 0.3s ease; }
+        .breach-text { position: absolute; top: -30px; color: var(--danger); font-weight: bold; font-size: 20px; opacity: 0; transition: 0.3s; text-shadow: 0 0 10px red; }
 
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
+        /* 🟢 СКАНИРОВАНИЕ */
         .scanning #shield { fill: #e67e22; }
         .scanning #eye-bg { stroke: #e67e22; }
         .scanning #pupil { fill: #e67e22; animation: spinEye 0.3s infinite linear; transform-origin: 100px 95px; }
         @keyframes spinEye { 100% { transform: rotate(360deg); } }
+
+        /* 🚨 ВЗЛОМ (АНГРИ-МАСКОТ) */
+        .compromised .mascot-svg { animation: shake 0.2s infinite; }
+        .compromised #shield { fill: var(--danger) !important; filter: drop-shadow(0 0 30px rgba(231,76,60,0.8)) !important; }
+        .compromised #eye-bg { stroke: var(--danger) !important; }
+        .compromised #pupil { display: none; } /* Прячем зрачки */
+        .compromised .brow { display: none; } /* Прячем брови */
+        .compromised .breach-text { opacity: 1; animation: pulseText 0.5s infinite alternate; }
+        .compromised #eye-group { transform: translateY(-5px); }
+        
+        /* Крестики вместо глаз */
+        .compromised #eye-group::after {
+            content: "X X"; position: absolute; font-size: 40px; font-weight: 900; color: var(--danger);
+            left: 50%; top: 50%; transform: translate(-50%, -50%); text-shadow: 0 0 10px red;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(2px, 2px) rotate(0deg); }
+            25% { transform: translate(-2px, -2px) rotate(-3deg); }
+            50% { transform: translate(-2px, 2px) rotate(3deg); }
+            75% { transform: translate(2px, -2px) rotate(0deg); }
+            100% { transform: translate(2px, 2px) rotate(-3deg); }
+        }
+        @keyframes pulseText { from { opacity: 0.5; } to { opacity: 1; } }
+
+        /* 😴 СПЯЩИЙ МАСКОТ (AFK) */
+        .sleeping .mascot-svg { animation: float 6s ease-in-out infinite; opacity: 0.5; }
+        .sleeping #eye-bg { ry: 2; } /* Закрытые глаза */
+        .sleeping .brow { transform: translateY(5px); opacity: 0; }
+        .sleeping #shield { fill: #555; }
 
         .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 10; }
         .section-title { text-align: center; font-size: 36px; margin-bottom: 40px; font-weight: 800; }
@@ -160,7 +195,6 @@
         .drop-text { color: var(--text-muted); font-size: 16px; }
         .drop-text b { color: #fff; }
         
-        /* РЕЗУЛЬТАТ ПРОВЕРКИ ФАЙЛА */
         .file-result { display: none; max-width: 800px; margin: 20px auto 0 auto; background: #11141a; border: 1px solid var(--accent); border-radius: 12px; padding: 20px; text-align: left; }
         .file-result-title { color: #fff; font-size: 18px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
         .file-result-hash { background: #000; padding: 12px; border-radius: 6px; color: #2ecc71; font-family: monospace; font-size: 12px; word-break: break-all; margin-bottom: 10px; }
@@ -173,6 +207,11 @@
         .password-input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(77, 168, 218, 0.2); }
         .btn-check-pass { background: var(--accent); color: white; border: none; padding: 15px 30px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; white-space: nowrap; }
         .btn-check-pass:hover { background: #3a8bb8; }
+        
+        /* Шкала надежности пароля */
+        .strength-meter { height: 5px; background: rgba(255,255,255,0.1); border-radius: 5px; margin-top: 10px; overflow: hidden; display: none; }
+        .strength-bar { height: 100%; width: 0%; transition: 0.3s ease; }
+        
         .pass-result { display: none; padding: 15px; border-radius: 12px; font-size: 14px; font-weight: 600; margin-top: 10px; }
         .pass-safe { background: rgba(46, 204, 113, 0.1); color: #2ecc71; border: 1px solid #2ecc71; }
         .pass-danger { background: rgba(231, 76, 60, 0.1); color: #e74c3c; border: 1px solid #e74c3c; }
@@ -288,15 +327,13 @@
             .chat-input-area button { margin-left: 0; }
             #scrollTopBtn { bottom: 20px; right: 20px; padding: 12px 16px; font-size: 16px; }
             
-            /* Мобильная адаптация UI-макета */
             .app-window { flex-direction: column; height: auto; }
             .app-sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: 10px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
             .app-sidebar-item { padding: 10px; font-size: 12px; white-space: nowrap; }
             .app-sidebar-item.active { border-left: none; border-bottom: 3px solid #4da8da; }
             .app-main { padding: 20px; }
-            .app-titlebar span { display: none; } /* Прячем длинный текст в мобильном окне */
+            .app-titlebar span { display: none; }
             
-            /* Мобильная адаптация инструментов */
             .password-box { flex-direction: column; }
             .tools-grid { grid-template-columns: 1fr; }
             .gen-box { flex-direction: column; }
@@ -306,6 +343,7 @@
 </head>
 <body oncontextmenu="return false;">
 
+    <div class="breach-overlay"></div>
     <canvas id="cyber-canvas"></canvas>
 
     <header>
@@ -320,7 +358,9 @@
     </header>
 
     <section class="hero">
-        <div class="mascot-container">
+        <div class="mascot-container" id="mascotContainer">
+            <div class="breach-text">ВЗЛОМ!</div>
+            <!-- 🛡️ МАСКОТ -->
             <svg id="mascot" class="mascot-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -342,6 +382,8 @@
                 <g id="eye-group">
                     <ellipse id="eye-bg" cx="100" cy="95" rx="30" ry="15" fill="#080a0f" stroke="url(#eyeGrad)" stroke-width="3"/>
                     <circle id="pupil" cx="100" cy="95" r="8" fill="#4da8da" filter="url(#glow)"/>
+                    <path class="brow left" d="M75 85 L95 85" fill="none" stroke="url(#eyeGrad)" stroke-width="3" stroke-linecap="round"/>
+                    <path class="brow right" d="M105 85 L125 85" fill="none" stroke="url(#eyeGrad)" stroke-width="3" stroke-linecap="round"/>
                 </g>
             </svg>
         </div>
@@ -358,7 +400,6 @@
             <span>Windows 10 / 11 (64-bit)</span> | <span>~35 МБ</span> | <span>Бесплатно</span>
         </div>
 
-        <!-- 📊 ЧЕСТНАЯ СТАТИСТИКА -->
         <div class="live-stats reveal">
             <div class="stat-item">
                 <span id="stat-stars">0</span>
@@ -385,7 +426,7 @@
         <!-- 🧪 БЛОК: ПЕСОЧНИЦА -->
         <div class="guide-box reveal sandbox-section" id="sandbox">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 10px; text-align: center;">🧪 Локальная песочница</h3>
-            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Перетащите любой файл сюда. Мы вычислим его SHA-256 хэш прямо в вашем браузере (файл никуда не загружается).</p>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Перетащите любой файл (до 50 МБ). Мы вычислим его SHA-256 хэш прямо в браузере.</p>
             
             <div class="drop-zone" id="dropZone">
                 <span class="drop-icon">📁</span>
@@ -409,6 +450,9 @@
             <div class="password-box">
                 <input type="password" id="passInput" class="password-input" placeholder="Введите пароль для проверки..." onkeypress="if(event.key === 'Enter') document.getElementById('checkPassBtn').click()">
                 <button id="checkPassBtn" class="btn-check-pass">Проверить</button>
+            </div>
+            <div class="strength-meter" id="strengthMeter">
+                <div class="strength-bar" id="strengthBar"></div>
             </div>
             <div id="passResult" class="pass-result"></div>
         </div>
@@ -801,70 +845,39 @@
     <button id="scrollTopBtn" title="Наверх">↑</button>
 
     <script>
-        // --- 🌌 КАНВАС НЕЙРОСЕТЬ (ЧАСТИЦЫ) ---
+        // ==========================================
+        // 1. 🌌 КАНВАС НЕЙРОСЕТЬ
+        // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const canvas = document.getElementById('cyber-canvas');
             if(!canvas) return;
             const ctx = canvas.getContext('2d');
-            let width, height;
-            let particles = [];
-            const maxParticles = 60;
-            const connectionDistance = 150;
+            let width, height, particles = [];
+            const maxParticles = 60, connectionDistance = 150;
 
-            function resize() {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-            }
-            window.addEventListener('resize', resize);
-            resize();
+            function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+            window.addEventListener('resize', resize); resize();
 
             class Particle {
-                constructor() {
-                    this.x = Math.random() * width;
-                    this.y = Math.random() * height;
-                    this.vx = (Math.random() - 0.5) * 0.5;
-                    this.vy = (Math.random() - 0.5) * 0.5;
-                    this.radius = Math.random() * 2 + 1;
-                }
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    if (this.x < 0 || this.x > width) this.vx *= -1;
-                    if (this.y < 0 || this.y > height) this.vy *= -1;
-                }
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(77, 168, 218, 0.5)';
-                    ctx.fill();
-                }
+                constructor() { this.x = Math.random() * width; this.y = Math.random() * height; this.vx = (Math.random() - 0.5) * 0.5; this.vy = (Math.random() - 0.5) * 0.5; this.radius = Math.random() * 2 + 1; }
+                update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > width) this.vx *= -1; if (this.y < 0 || this.y > height) this.vy *= -1; }
+                draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = 'rgba(77, 168, 218, 0.5)'; ctx.fill(); }
             }
 
-            for (let i = 0; i < maxParticles; i++) {
-                particles.push(new Particle());
-            }
+            for (let i = 0; i < maxParticles; i++) particles.push(new Particle());
 
             function animate() {
                 requestAnimationFrame(animate);
                 ctx.clearRect(0, 0, width, height);
-                
-                particles.forEach(p => {
-                    p.update();
-                    p.draw();
-                });
-
+                particles.forEach(p => { p.update(); p.draw(); });
                 for (let i = 0; i < particles.length; i++) {
                     for (let j = i; j < particles.length; j++) {
-                        const dx = particles[i].x - particles[j].x;
-                        const dy = particles[i].y - particles[j].y;
+                        const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
                         const dist = Math.sqrt(dx * dx + dy * dy);
                         if (dist < connectionDistance) {
-                            ctx.beginPath();
-                            ctx.strokeStyle = `rgba(77, 168, 218, ${1 - dist/connectionDistance})`;
-                            ctx.lineWidth = 1;
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.stroke();
+                            ctx.beginPath(); ctx.strokeStyle = `rgba(77, 168, 218, ${1 - dist/connectionDistance})`;
+                            ctx.lineWidth = 1; ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
                         }
                     }
                 }
@@ -872,7 +885,9 @@
             animate();
         });
 
-        // --- 🧪 DRAG & DROP + WEB CRYPTO API ---
+        // ==========================================
+        // 2. 🧪 ПЕСОЧНИЦА И ВАЛИДАЦИЯ ФАЙЛОВ
+        // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const dropZone = document.getElementById('dropZone');
             const fileInput = document.getElementById('fileInput');
@@ -880,75 +895,81 @@
             const fileNameDisplay = document.getElementById('fileNameDisplay');
             const fileHashDisplay = document.getElementById('fileHashDisplay');
             const scansElement = document.getElementById('stat-scans');
+            const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
 
             if(!dropZone || !fileInput) return;
-
             dropZone.addEventListener('click', () => fileInput.click());
 
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropZone.addEventListener(eventName, (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dropZone.classList.add('dragover');
-                }, false);
-            });
+            ['dragenter', 'dragover'].forEach(ev => dropZone.addEventListener(ev, (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('dragover'); }, false));
+            ['dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('dragover'); }, false));
 
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dropZone.classList.remove('dragover');
-                }, false);
-            });
-
-            dropZone.addEventListener('drop', (e) => {
-                const files = e.dataTransfer.files;
-                if (files.length > 0) handleFile(files[0]);
-            });
-
-            fileInput.addEventListener('change', (e) => {
-                if (e.target.files.length > 0) handleFile(e.target.files[0]);
-            });
+            dropZone.addEventListener('drop', (e) => { if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]); });
+            fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files[0]); });
 
             async function handleFile(file) {
+                if (file.size > MAX_FILE_SIZE) {
+                    fileNameDisplay.textContent = `Файл: ${file.name}`;
+                    fileHashDisplay.textContent = "Ошибка: Файл слишком большой (макс. 50 МБ).";
+                    fileResult.style.display = 'block';
+                    return;
+                }
+
                 fileNameDisplay.textContent = `Файл: ${file.name} (${(file.size / 1024).toFixed(2)} КБ)`;
-                fileHashDisplay.textContent = "Вычисление хэша...";
+                fileHashDisplay.textContent = "Вычисление хэша (Web Crypto API)...";
                 fileResult.style.display = 'block';
 
                 try {
                     const arrayBuffer = await file.arrayBuffer();
                     const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer);
-                    const hashArray = Array.from(new Uint8Array(hashBuffer));
-                    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
                     
                     setTimeout(() => {
                         fileHashDisplay.textContent = hashHex;
-                        
-                        let currentScans = parseInt(localStorage.getItem('secretary_user_scans') || 0);
-                        currentScans++;
+                        let currentScans = parseInt(localStorage.getItem('secretary_user_scans') || 0) + 1;
                         localStorage.setItem('secretary_user_scans', currentScans);
                         if(scansElement) {
                             scansElement.innerText = currentScans;
                             scansElement.style.color = '#2ecc71';
                             setTimeout(() => { scansElement.style.color = 'var(--accent)'; }, 1000);
                         }
-                    }, 800);
-
+                    }, 600);
                 } catch (error) {
                     fileHashDisplay.textContent = "Ошибка чтения файла.";
-                    console.error(error);
                 }
             }
         });
 
-        // --- 🔐 ПРОВЕРКА УТЕЧЕК ПАРОЛЕЙ (k-anonymity) ---
+        // ==========================================
+        // 3. 🔐 ПРОВЕРКА ПАРОЛЕЙ + ШКАЛА НАДЕЖНОСТИ
+        // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const passInput = document.getElementById('passInput');
             const checkPassBtn = document.getElementById('checkPassBtn');
             const passResult = document.getElementById('passResult');
+            const strengthMeter = document.getElementById('strengthMeter');
+            const strengthBar = document.getElementById('strengthBar');
+
+            // Реакция на ввод пароля (Шкала)
+            passInput.addEventListener('input', () => {
+                const val = passInput.value;
+                strengthMeter.style.display = val ? 'block' : 'none';
+                
+                let score = 0;
+                if (val.length > 5) score++;
+                if (val.length > 8) score++;
+                if (/[A-Z]/.test(val)) score++;
+                if (/[0-9]/.test(val)) score++;
+                if (/[^A-Za-z0-9]/.test(val)) score++;
+
+                const width = Math.min(score * 20, 100);
+                strengthBar.style.width = width + '%';
+                
+                if (score <= 2) strengthBar.style.background = '#e74c3c';
+                else if (score <= 4) strengthBar.style.background = '#f1c40f';
+                else strengthBar.style.background = '#2ecc71';
+            });
 
             if(!checkPassBtn) return;
-
             checkPassBtn.addEventListener('click', async () => {
                 const password = passInput.value;
                 if (!password) {
@@ -960,31 +981,21 @@
 
                 passResult.style.display = 'block';
                 passResult.className = 'pass-result';
-                passResult.textContent = 'Проверка баз утечек...';
+                passResult.textContent = 'Проверка баз утечек (k-anonymity)...';
 
                 try {
                     const msgBuffer = new TextEncoder().encode(password);
                     const hashBuffer = await crypto.subtle.digest('SHA-1', msgBuffer);
-                    const hashArray = Array.from(new Uint8Array(hashBuffer));
-                    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+                    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
                     
-                    const prefix = hashHex.substring(0, 5);
-                    const suffix = hashHex.substring(5);
-
+                    const prefix = hashHex.substring(0, 5), suffix = hashHex.substring(5);
                     const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
                     const data = await response.text();
                     
-                    const lines = data.split('\n');
-                    let found = false;
-                    let count = 0;
-
-                    for (let line of lines) {
+                    let found = false, count = 0;
+                    for (let line of data.split('\n')) {
                         const [lineSuffix, lineCount] = line.split(':');
-                        if (lineSuffix === suffix) {
-                            found = true;
-                            count = parseInt(lineCount);
-                            break;
-                        }
+                        if (lineSuffix === suffix) { found = true; count = parseInt(lineCount); break; }
                     }
 
                     if (found) {
@@ -994,27 +1005,23 @@
                         passResult.className = 'pass-result pass-safe';
                         passResult.innerHTML = `✅ <b>Отлично!</b> Этот пароль не найден в известных базах утечек.`;
                     }
-
                 } catch (error) {
-                    console.error(error);
                     passResult.className = 'pass-result pass-warning';
-                    passResult.textContent = 'Ошибка подключения к базе. Проверьте интернет.';
+                    passResult.textContent = 'Ошибка подключения к базе.';
                 }
             });
         });
 
-        // --- 🛠️ КИБЕР-ИНСТРУМЕНТЫ (Генератор и IP) ---
+        // ==========================================
+        // 4. 🛠️ КИБЕР-ИНСТРУМЕНТЫ
+        // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. Генератор паролей
             const genOutput = document.getElementById('genOutput');
             window.generatePassword = () => {
                 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
-                let password = "";
-                const array = new Uint32Array(16);
+                let password = "", array = new Uint32Array(16);
                 crypto.getRandomValues(array);
-                for (let i = 0; i < 16; i++) {
-                    password += chars[array[i] % chars.length];
-                }
+                for (let i = 0; i < 16; i++) password += chars[array[i] % chars.length];
                 genOutput.value = password;
             };
 
@@ -1022,300 +1029,227 @@
                 if (!genOutput.value || genOutput.value === 'Нажмите «Сгенерировать»') return;
                 navigator.clipboard.writeText(genOutput.value).then(() => {
                     const originalText = btn.innerText;
-                    btn.innerText = '✅ Скопировано!';
-                    btn.style.color = '#2ecc71';
+                    btn.innerText = '✅ Скопировано!'; btn.style.color = '#2ecc71';
                     setTimeout(() => { btn.innerText = originalText; btn.style.color = 'white'; }, 2000);
                 });
             };
 
-            // 2. Проверка IP
             const ipAddress = document.getElementById('ipAddress');
-            const ipIsp = document.getElementById('ipIsp');
-            const ipLocation = document.getElementById('ipLocation');
-
             if (ipAddress) {
-                fetch('https://ipapi.co/json/')
-                    .then(res => res.json())
-                    .then(data => {
-                        ipAddress.textContent = data.ip || 'Неизвестно';
-                        ipIsp.textContent = data.org || 'Неизвестно';
-                        ipLocation.textContent = `${data.country_name || '?'}, ${data.city || '?'}`;
-                    })
-                    .catch(() => {
-                        ipAddress.textContent = 'Ошибка загрузки';
-                        ipIsp.textContent = 'Ошибка загрузки';
-                        ipLocation.textContent = 'Ошибка загрузки';
-                    });
+                fetch('https://ipapi.co/json/').then(res => res.json()).then(data => {
+                    ipAddress.textContent = data.ip || 'Неизвестно';
+                    document.getElementById('ipIsp').textContent = data.org || 'Неизвестно';
+                    document.getElementById('ipLocation').textContent = `${data.country_name || '?'}, ${data.city || '?'}`;
+                }).catch(() => {
+                    ipAddress.textContent = 'Ошибка';
+                    document.getElementById('ipIsp').textContent = 'Ошибка';
+                    document.getElementById('ipLocation').textContent = 'Ошибка';
+                });
             }
         });
 
-        // --- МОБИЛЬНОЕ МЕНЮ И КНОПКА НАВЕРХ ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const menuBtn = document.getElementById('menuBtn');
-            const navLinks = document.getElementById('navLinks');
-            const scrollTopBtn = document.getElementById('scrollTopBtn');
+        // ==========================================
+        // 5. 🚨 СИСТЕМА ЗАЩИТЫ ОТ ВЗЛОМА (УМНАЯ)
+        // ==========================================
+        (function() {
+            'use strict';
+            const downloadBtn = document.getElementById('download-btn');
+            const mascot = document.getElementById('mascot');
+            let originalHref = downloadBtn ? downloadBtn.getAttribute('href') : null;
+            let isBreached = false;
 
-            if(menuBtn && navLinks) {
-                menuBtn.addEventListener('click', () => {
-                    navLinks.classList.toggle('active');
-                    menuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
-                });
-
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.addEventListener('click', () => {
-                        navLinks.classList.remove('active');
-                        menuBtn.textContent = '☰';
-                    });
-                });
+            // Защита от кликджекинга (встраивания в iframe)
+            if (window.top !== window.self) {
+                document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:20vh;'>⚠️ Обнаружена попытка кликджекинга! Сайт заблокирован.</h1>";
+                return;
             }
 
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 300) {
-                    scrollTopBtn.style.display = 'block';
-                } else {
-                    scrollTopBtn.style.display = 'none';
+            // Проверка на изменение ссылки через MutationObserver (без ложных срабатываний)
+            if (downloadBtn) {
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'href') {
+                            const currentHref = downloadBtn.getAttribute('href');
+                            // Если ссылка изменилась (и это не первоначальная установка)
+                            if (currentHref !== originalHref && currentHref !== null) {
+                                triggerBreach();
+                            }
+                        }
+                    });
+                });
+                observer.observe(downloadBtn, { attributes: true });
+            }
+
+            function triggerBreach() {
+                if (isBreached) return;
+                isBreached = true;
+                
+                console.warn("🚨 [SECURITY] Взлом предотвращен! Попытка подмены ссылки.");
+                
+                // 1. Ломаем кнопку
+                downloadBtn.style.pointerEvents = 'none';
+                downloadBtn.style.opacity = '0.5';
+                downloadBtn.href = '#';
+                downloadBtn.innerText = '🚨 ВЗЛОМ ПРЕДОТВРАЩЕН';
+                downloadBtn.style.background = '#c0392b';
+
+                // 2. Включаем режим тревоги (красный маскот, тряска, затемнение сайта)
+                document.body.classList.add('breach-active');
+                if (mascot) mascot.classList.add('compromised');
+                
+                // 3. Добавляем лог в терминал
+                addTerminalLog("⚠️ ВНИМАНИЕ! Обнаружена подмена ссылки. Защита сработала.", "danger");
+            }
+
+            // Добавление лога в терминал
+            window.addTerminalLog = (text, type = '') => {
+                const termBody = document.getElementById('terminal-body');
+                if(!termBody) return;
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+                const time = new Date().toLocaleTimeString();
+                let colorClass = type === 'danger' ? 'terminal-danger' : (type === 'warn' ? 'terminal-warn' : '');
+                line.innerHTML = `<span class="terminal-time">[${time}]</span> <span class="${colorClass}">${text}</span>`;
+                termBody.appendChild(line);
+                termBody.scrollTop = termBody.scrollHeight;
+            };
+        })();
+
+        // ==========================================
+        // 6. 🧠 НОВЫЕ СОБЫТИЯ (F12, AFK)
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const mascot = document.getElementById('mascot');
+
+            // Событие: Нажатие F12 или Ctrl+Shift+I
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
+                    addTerminalLog("🔍 Обнаружено открытие консоли разработчика.", "warn");
                 }
             });
 
-            scrollTopBtn.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
+            // Событие: Долгое бездействие (AFK) - 3 минуты
+            let afkTimer;
+            const resetAfk = () => {
+                if (mascot) mascot.classList.remove('sleeping');
+                clearTimeout(afkTimer);
+                afkTimer = setTimeout(() => {
+                    if (mascot) mascot.classList.add('sleeping');
+                    addTerminalLog("💤 Режим ожидания. Мониторинг продолжается.", "");
+                }, 180000); // 3 минуты
+            };
+
+            ['mousemove', 'keydown', 'scroll', 'click'].forEach(ev => window.addEventListener(ev, resetAfk));
+            resetAfk(); // Запускаем таймер
         });
 
-        // --- ЧЕСТНАЯ СТАТИСТИКА (localStorage и GitHub API) ---
+        // ==========================================
+        // 7. ОСТАЛЬНЫЕ СКРИПТЫ (Терминал, Чат, Меню, Анимации)
+        // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('https://api.github.com/repos/utuberdzeff186-arch/secretary-site')
-                .then(response => response.json())
-                .then(data => {
-                    const starsElement = document.getElementById('stat-stars');
-                    if (starsElement && data.stargazers_count !== undefined) {
-                        starsElement.innerText = data.stargazers_count;
-                    }
-                })
-                .catch(err => console.warn("Не удалось загрузить статистику GitHub", err));
-
-            const scansElement = document.getElementById('stat-scans');
-            if (scansElement) {
-                let userScans = localStorage.getItem('secretary_user_scans');
-                if (!userScans) {
-                    userScans = 0;
-                    localStorage.setItem('secretary_user_scans', 0);
-                }
-                scansElement.innerText = userScans;
-            }
-        });
-
-        // --- КИБЕР-ТЕРМИНАЛ ---
-        document.addEventListener('DOMContentLoaded', () => {
+            // Терминал
             const terminalLines = [
                 "[SCAN] Проверка C:\\Windows\\System32... OK",
                 "[WARN] Обнаружена подозрительная активность в порту 8080",
                 "[BLOCK] Угроза изолирована: Trojan.Win32.Generic",
                 "[SCAN] Проверка реестра HKCU/HKLM... OK",
-                "[SYSTEM] Мониторинг в реальном времени активен.",
-                "[SCAN] Эвристический анализ завершен. Угроз нет."
+                "[SYSTEM] Мониторинг в реальном времени активен."
             ];
             let termIndex = 0;
-            const termBody = document.getElementById('terminal-body');
-            
             setInterval(() => {
-                if (!termBody) return;
-                const line = document.createElement('div');
-                line.className = 'terminal-line';
-                const time = new Date().toLocaleTimeString();
-                let text = terminalLines[termIndex];
-                let colorClass = '';
-                if (text.includes('[WARN]')) colorClass = 'terminal-warn';
-                if (text.includes('[BLOCK]')) colorClass = 'terminal-danger';
-                
-                line.innerHTML = `<span class="terminal-time">[${time}]</span> <span class="${colorClass}">${text}</span>`;
-                termBody.appendChild(line);
-                termBody.scrollTop = termBody.scrollHeight;
-                
-                if (termBody.children.length > 15) {
-                    termBody.removeChild(termBody.firstChild);
-                }
-                
+                if (isBreached) return; // Если взлом, не спамим
+                addTerminalLog(terminalLines[termIndex], terminalLines[termIndex].includes('[WARN]') ? 'warn' : (terminalLines[termIndex].includes('[BLOCK]') ? 'danger' : ''));
                 termIndex = (termIndex + 1) % terminalLines.length;
-            }, 3000);
-        });
+            }, 5000);
 
-        // --- FAQ АККОРДЕОН ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const faqQuestions = document.querySelectorAll('.faq-question');
+            // Меню
+            const menuBtn = document.getElementById('menuBtn'), navLinks = document.getElementById('navLinks');
+            if(menuBtn && navLinks) {
+                menuBtn.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    menuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+                });
+                document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', () => {
+                    navLinks.classList.remove('active'); menuBtn.textContent = '☰';
+                }));
+            }
 
-            faqQuestions.forEach(button => {
+            // Кнопка Наверх
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            window.addEventListener('scroll', () => { scrollTopBtn.style.display = window.scrollY > 300 ? 'block' : 'none'; });
+            scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+            // FAQ
+            document.querySelectorAll('.faq-question').forEach(button => {
                 button.addEventListener('click', () => {
-                    const item = button.parentElement;
-                    const answer = button.nextElementSibling;
+                    const item = button.parentElement, answer = button.nextElementSibling;
                     const isActive = item.classList.contains('active');
-
-                    document.querySelectorAll('.faq-item').forEach(i => {
-                        i.classList.remove('active');
-                        i.querySelector('.faq-answer').style.maxHeight = null;
-                    });
-
-                    if (!isActive) {
-                        item.classList.add('active');
-                        answer.style.maxHeight = answer.scrollHeight + "px";
-                    }
+                    document.querySelectorAll('.faq-item').forEach(i => { i.classList.remove('active'); i.querySelector('.faq-answer').style.maxHeight = null; });
+                    if (!isActive) { item.classList.add('active'); answer.style.maxHeight = answer.scrollHeight + "px"; }
                 });
             });
-        });
 
-        // --- АНИМАЦИИ ПРИ СКРОЛЛЕ ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const revealElements = document.querySelectorAll('.reveal');
+            // Reveal Анимации
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
-                });
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
             }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-            revealElements.forEach(el => observer.observe(el));
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+            // GitHub Stars
+            fetch('https://api.github.com/repos/utuberdzeff186-arch/secretary-site')
+                .then(res => res.json()).then(data => {
+                    const starsElement = document.getElementById('stat-stars');
+                    if (starsElement && data.stargazers_count !== undefined) starsElement.innerText = data.stargazers_count;
+                }).catch(() => {});
+
+            // Счетчик проверок
+            const scansElement = document.getElementById('stat-scans');
+            if (scansElement) scansElement.innerText = localStorage.getItem('secretary_user_scans') || 0;
         });
 
-        // --- ЗАЩИТА САЙТА (УМНАЯ) ---
-        (function() {
-            'use strict';
-            let originalDownloadHref = null;
-
-            document.addEventListener('DOMContentLoaded', () => {
-                const btn = document.getElementById('download-btn');
-                if (btn) { originalDownloadHref = btn.getAttribute('href'); }
-                
-                const allowedHosts = ['utuberdzeff186-arch.github.io', 'localhost', '127.0.0.1'];
-                if (!allowedHosts.includes(window.location.hostname)) {
-                    const banner = document.createElement('div');
-                    banner.style.cssText = `position: fixed; top: 0; left: 0; width: 100%; background: #e67e22; color: white; padding: 15px; text-align: center; z-index: 999998; font-weight: bold;`;
-                    banner.textContent = '⚠️ Это копия сайта! Оригинал: https://utuberdzeff186-arch.github.io/secretary-site/';
-                    document.body.prepend(banner);
-                }
-            });
-
-            function silentLockdown() {
-                const btn = document.getElementById('download-btn');
-                if (btn) { 
-                    btn.style.pointerEvents = 'none'; btn.style.opacity = '0.7'; btn.href = '#'; 
-                    btn.innerText = '🛡️ Проверка безопасности...'; btn.style.background = '#555';
-                }
-                if (!document.getElementById('safe-warning')) {
-                    const warning = document.createElement('div');
-                    warning.id = 'safe-warning';
-                    warning.style.cssText = `position: fixed; bottom: 20px; right: 20px; background: #333; color: #fff; padding: 15px 25px; border-radius: 8px; z-index: 999999; font-size: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border-left: 4px solid #4da8da;`;
-                    warning.innerHTML = `🛡️ <b>В целях безопасности</b><br>Скачивание временно приостановлено. Попробуйте позже.`;
-                    document.body.appendChild(warning);
-                }
-            }
-
-            setInterval(() => {
-                const btn = document.getElementById('download-btn');
-                if (!btn || originalDownloadHref === null) return;
-                const currentHref = btn.getAttribute('href');
-                if (currentHref !== originalDownloadHref) {
-                    console.warn("🛡️ [SECURITY] Обнаружена попытка изменения ссылки на лету!");
-                    silentLockdown();
-                }
-            }, 3000);
-
-            setInterval(() => {
-                document.querySelectorAll('script').forEach(s => {
-                    if (s.src && !s.src.startsWith(location.origin) && !s.src.includes('none')) {
-                        console.warn("🛡️ [SECURITY] Внедрен сторонний скрипт!");
-                        s.remove();
-                        silentLockdown();
-                    }
-                });
-            }, 3000);
-        })();
-
-        // --- МАСКОТ ---
-        function triggerScan() {
-            const mascot = document.getElementById('mascot');
-            if(mascot) mascot.classList.add('scanning');
-            setTimeout(() => { if(mascot) mascot.classList.remove('scanning'); }, 3500);
-        }
-
-        const mascot = document.getElementById('mascot');
-        const pupil = document.getElementById('pupil');
-        const eyeBg = document.getElementById('eye-bg');
-
+        // Маскот (Зрачки)
         document.addEventListener('mousemove', (e) => {
-            if (!mascot || !pupil) return;
+            const mascot = document.getElementById('mascot'), pupil = document.getElementById('pupil');
+            if (!mascot || !pupil || mascot.classList.contains('compromised') || mascot.classList.contains('sleeping')) return;
+            
             const rect = mascot.getBoundingClientRect();
-            const mascotX = rect.left + rect.width / 2;
-            const mascotY = rect.top + rect.height / 2;
-            const dx = e.clientX - mascotX; const dy = e.clientY - mascotY;
-            const angle = Math.atan2(dy, dx);
-            const pupilRadius = 8; const eyeRadiusX = 30; const eyeRadiusY = 15;
-            const maxOffsetX = eyeRadiusX - pupilRadius; const maxOffsetY = eyeRadiusY - pupilRadius;
-            const cos = Math.cos(angle); const sin = Math.sin(angle);
-            const maxDist = (maxOffsetX * maxOffsetY) / Math.sqrt(Math.pow(maxOffsetY * cos, 2) + Math.pow(maxOffsetX * sin, 2));
-            const rawDist = Math.hypot(dx, dy);
-            const moveDist = Math.min(rawDist / 10, maxDist);
-            pupil.setAttribute('cx', 100 + cos * moveDist);
-            pupil.setAttribute('cy', 95 + sin * moveDist);
+            const dx = e.clientX - (rect.left + rect.width / 2), dy = e.clientY - (rect.top + rect.height / 2);
+            const angle = Math.atan2(dy, dx), maxDist = 7;
+            pupil.setAttribute('cx', 100 + Math.cos(angle) * maxDist);
+            pupil.setAttribute('cy', 95 + Math.sin(angle) * maxDist);
         });
 
-        setInterval(() => {
-            if (Math.random() > 0.6 && eyeBg) {
-                eyeBg.setAttribute('ry', '2'); setTimeout(() => eyeBg.setAttribute('ry', '15'), 150);
-            }
-        }, 4000);
+        // Модалка
+        function openModal(src) { document.getElementById("imageModal").style.display = "block"; document.getElementById("expandedImg").src = src; }
+        function closeModal() { document.getElementById("imageModal").style.display = "none"; }
 
-        // --- МОДАЛЬНОЕ ОКНО ---
-        function openModal(src) {
-            const modal = document.getElementById("imageModal"); const img = document.getElementById("expandedImg");
-            if (modal && img) { modal.style.display = "block"; img.src = src; }
-        }
-        function closeModal() {
-            const modal = document.getElementById("imageModal"); if (modal) modal.style.display = "none";
-        }
-        const imageModal = document.getElementById("imageModal");
-        if(imageModal) imageModal.addEventListener('click', function(e) { if (e.target === this) closeModal(); });
-
-        // --- ЧАТ-БОТ ---
-        function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)); }
-
-        let lastMessageTime = 0; const MESSAGE_COOLDOWN = 1500;
-        function randomReply(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-        function quickAsk(text) { const input = document.getElementById("chatInput"); if(input) { input.value = text; sendMessage(); } }
-
+        // Чат-бот
         const knowledgeBase = [
-            { keywords: ["не запускается", "закрывается", "вылетает", "ошибка"], answer: "Если программа не запускается: 1) Проверьте, не удалил ли файл ваш антивирус. 2) Запустите ярлык от имени Администратора. 3) Скачайте установщик заново." },
-            { keywords: ["забыл пароль", "сброс пароля", "не помню"], answer: "Если вы забыли Мастер-пароль, откройте PowerShell и введите: Remove-Item -Path 'HKCU:\\Software\\SecretaryDefenderCore' -Recurse -Force. Затем запустите Секретаря заново." },
-            { keywords: ["как проверить", "проверить файл", "сканировать"], answer: "Откройте Секретаря, перейдите на вкладку 'Главная' и нажмите 'Проверить файл'. Выберите файл, и он будет просканирован." },
-            { keywords: ["карантин", "где карантин", "восстановить"], answer: "Все вирусы находятся во вкладке 'Карантин'. Там вы можете выбрать файл и нажать 'Удалить' или 'Восстановить'." },
-            { keywords: ["удалить программу", "как удалить"], answer: "Зайдите в 'Параметры Windows' -> 'Приложения' -> 'Установленные приложения'. Найдите Secretary Defender и нажмите 'Удалить'." },
-            { keywords: ["windows", "система", "совместимость"], answer: "Секретарь работает на Windows 10 и Windows 11 (64-bit). На старых системах или Linux он не запустится." }
+            { keywords: ["не запускается", "ошибка"], answer: "Если программа не запускается: 1) Проверьте антивирус. 2) Запустите от Администратора. 3) Переустановите." },
+            { keywords: ["забыл пароль", "сброс"], answer: "Для сброса пароля введите в PowerShell: Remove-Item -Path 'HKCU:\\Software\\SecretaryDefenderCore' -Recurse -Force" },
+            { keywords: ["как проверить"], answer: "Откройте Секретаря, вкладка 'Главная', кнопка 'Проверить файл'." },
+            { keywords: ["карантин"], answer: "Все вирусы во вкладке 'Карантин'. Там можно выбрать 'Удалить' или 'Восстановить'." }
         ];
-
         function getAIResponse(text) {
             const t = text.toLowerCase();
             for (let item of knowledgeBase) { if (item.keywords.some(kw => t.includes(kw))) return item.answer; }
-            if (t.includes("привет") || t.includes("здравствуй")) return randomReply(["Приветствую! Задайте вопрос.", "Здравствуйте! Чем помочь?"]);
-            if (t.includes("спасибо") || t.includes("благодарю")) return "Всегда рад помочь! 🛡️";
-            if (t.includes("модель") || t.includes("gpt")) return "Я — локальный JavaScript-бот, созданный специально для помощи с Secretary Defender!";
-            return randomReply(["Я не совсем понял вопрос. Попробуйте нажать на кнопки быстрого ответа.", "Моя база знаний пока не знает ответа. Опишите проблему другими словами.", "Уточните вопрос, пожалуйста. Я лучше всего разбираюсь в установке и защите."]);
+            if (t.includes("привет")) return "Приветствую! Задайте вопрос.";
+            return "Я не совсем понял. Нажмите кнопку быстрого ответа или переформулируйте.";
         }
-
+        let lastMsg = 0;
         function sendMessage() {
-            const input = document.getElementById("chatInput");
-            const rawText = input.value.trim();
-            if (!rawText) return;
-            const now = Date.now(); if (now - lastMessageTime < MESSAGE_COOLDOWN) return;
-            lastMessageTime = now;
-            const safeText = escapeHTML(rawText);
-            const chatBox = document.getElementById("chatBox"); if(!chatBox) return;
-            const userMsg = document.createElement("div"); userMsg.className = "message msg-user"; userMsg.textContent = safeText; chatBox.appendChild(userMsg);
+            const input = document.getElementById("chatInput"), raw = input.value.trim();
+            if (!raw || Date.now() - lastMsg < 1500) return;
+            lastMsg = Date.now();
+            const chatBox = document.getElementById("chatBox");
+            const userMsg = document.createElement("div"); userMsg.className = "message msg-user"; userMsg.textContent = raw; chatBox.appendChild(userMsg);
             input.value = ""; chatBox.scrollTop = chatBox.scrollHeight;
             setTimeout(() => {
-                const botMsg = document.createElement("div"); botMsg.className = "message msg-bot"; botMsg.textContent = getAIResponse(rawText); chatBox.appendChild(botMsg); chatBox.scrollTop = chatBox.scrollHeight;
+                const botMsg = document.createElement("div"); botMsg.className = "message msg-bot"; botMsg.textContent = getAIResponse(raw); chatBox.appendChild(botMsg); chatBox.scrollTop = chatBox.scrollHeight;
             }, 600);
         }
-
-        function handleKeyPress(event) { if (event.key === "Enter") sendMessage(); }
+        function quickAsk(text) { const input = document.getElementById("chatInput"); input.value = text; sendMessage(); }
+        function handleKeyPress(e) { if (e.key === "Enter") sendMessage(); }
     </script>
 </body>
 </html>
