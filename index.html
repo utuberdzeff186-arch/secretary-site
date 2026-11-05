@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- 🛡️ ЗАЩИТА (Security Headers) -->
+    <!-- 🛡️ ЗАЩИТА -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://github.com https://raw.githubusercontent.com https://*.githubusercontent.com; connect-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self';">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -109,7 +109,6 @@
 </head>
 <body oncontextmenu="return false;">
 
-    <!-- ⚠️ CANARY TOKENS (Система самозащиты) -->
     <div id="canary-1" style="display:none;" aria-hidden="true"></div>
     <div id="canary-2" style="display:none;" aria-hidden="true"></div>
     <div id="canary-3" style="display:none;" aria-hidden="true"></div>
@@ -120,7 +119,6 @@
         <div class="logo">🛡️ СЕКРЕТАРЬ<span>.</span></div>
         <div class="nav-links">
             <a href="#features">Возможности</a>
-            <a href="#screens">Скриншоты</a>
             <a href="#guide">Установка</a>
             <a href="#faq">FAQ</a>
             <a href="#support">Поддержка</a>
@@ -184,20 +182,7 @@
             </div>
         </div>
 
-        <!-- БЛОК: СКРИНШОТЫ ПРОГРАММЫ -->
-        <div class="guide-box" id="screens" style="margin-top: 40px;">
-            <div style="text-align: center; margin-bottom: 20px;">
-                <h3 style="font-size: 28px; color: var(--text);">🖥️ Как выглядит Секретарь</h3>
-                <p style="color: var(--text-muted); margin-top: 10px;">Темный интерфейс, удобные вкладки и живой маскот</p>
-            </div>
-            <div class="steps-grid">
-                <div class="step-card"><img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/user1.png.png" class="step-img" onclick="openModal(this.src)" alt="Главный экран"></div>
-                <div class="step-card"><img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/user2.png.png" class="step-img" onclick="openModal(this.src)" alt="Кибер-щит"></div>
-                <div class="step-card"><img src="https://raw.githubusercontent.com/utuberdzeff186-arch/secretary-site/main/user3.png.png" class="step-img" onclick="openModal(this.src)" alt="Карантин"></div>
-            </div>
-        </div>
-
-                <!-- ИНСТРУКЦИЯ -->
+        <!-- ИНСТРУКЦИЯ -->
         <div class="guide-box" id="guide">
             <div style="text-align: center; margin-bottom: 20px;">
                 <h3 style="font-size: 28px; color: var(--text);">📖 Как установить Секретаря</h3>
