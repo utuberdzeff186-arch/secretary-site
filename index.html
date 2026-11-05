@@ -98,12 +98,10 @@
         .compromised .mascot-svg { animation: shake 0.2s infinite; }
         .compromised #shield { fill: var(--danger) !important; filter: drop-shadow(0 0 30px rgba(231,76,60,0.8)) !important; }
         .compromised #eye-bg { stroke: var(--danger) !important; }
-        .compromised #pupil { display: none; } /* Прячем зрачки */
-        .compromised .brow { display: none; } /* Прячем брови */
+        .compromised #pupil { display: none; }
+        .compromised .brow { display: none; }
         .compromised .breach-text { opacity: 1; animation: pulseText 0.5s infinite alternate; }
         .compromised #eye-group { transform: translateY(-5px); }
-        
-        /* Крестики вместо глаз */
         .compromised #eye-group::after {
             content: "X X"; position: absolute; font-size: 40px; font-weight: 900; color: var(--danger);
             left: 50%; top: 50%; transform: translate(-50%, -50%); text-shadow: 0 0 10px red;
@@ -120,9 +118,12 @@
 
         /* 😴 СПЯЩИЙ МАСКОТ (AFK) */
         .sleeping .mascot-svg { animation: float 6s ease-in-out infinite; opacity: 0.5; }
-        .sleeping #eye-bg { ry: 2; } /* Закрытые глаза */
+        .sleeping #eye-bg { ry: 2; }
         .sleeping .brow { transform: translateY(5px); opacity: 0; }
         .sleeping #shield { fill: #555; }
+
+        /* 🎉 ПАСХАЛКА (ВРАЩЕНИЕ) */
+        .easter-egg .mascot-svg { animation: spinFast 0.5s linear infinite; }
 
         .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 10; }
         .section-title { text-align: center; font-size: 36px; margin-bottom: 40px; font-weight: 800; }
@@ -208,9 +209,9 @@
         .btn-check-pass { background: var(--accent); color: white; border: none; padding: 15px 30px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; white-space: nowrap; }
         .btn-check-pass:hover { background: #3a8bb8; }
         
-        /* Шкала надежности пароля */
         .strength-meter { height: 5px; background: rgba(255,255,255,0.1); border-radius: 5px; margin-top: 10px; overflow: hidden; display: none; }
         .strength-bar { height: 100%; width: 0%; transition: 0.3s ease; }
+        .strength-text { font-size: 12px; color: var(--text-muted); margin-top: 5px; display: none; }
         
         .pass-result { display: none; padding: 15px; border-radius: 12px; font-size: 14px; font-weight: 600; margin-top: 10px; }
         .pass-safe { background: rgba(46, 204, 113, 0.1); color: #2ecc71; border: 1px solid #2ecc71; }
@@ -231,6 +232,18 @@
         .ip-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; font-size: 14px; }
         .ip-label { color: var(--text-muted); }
         .ip-value { color: #fff; font-weight: 600; font-family: monospace; }
+
+        /* 🕵️‍♂️ PRIVACY CHECKER & URL ANALYZER */
+        .privacy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .privacy-item { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; font-size: 13px; }
+        .privacy-label { color: var(--text-muted); }
+        .privacy-value { color: #fff; font-family: monospace; font-weight: bold; word-break: break-all; }
+        
+        .url-box { display: flex; gap: 10px; margin-bottom: 15px; }
+        .url-input { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; outline: none; }
+        .btn-url { background: #333; color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 0 15px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: bold; }
+        .btn-url:hover { background: #555; }
+        .url-result { display: none; padding: 15px; border-radius: 8px; font-size: 14px; font-weight: 600; }
 
         /* МОДАЛЬНЫЕ ОКНА */
         .modal { display: none; position: fixed; z-index: 9999; padding-top: 5vh; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); }
@@ -338,6 +351,7 @@
             .tools-grid { grid-template-columns: 1fr; }
             .gen-box { flex-direction: column; }
             .btn-gen { padding: 10px; }
+            .privacy-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -451,9 +465,8 @@
                 <input type="password" id="passInput" class="password-input" placeholder="Введите пароль для проверки..." onkeypress="if(event.key === 'Enter') document.getElementById('checkPassBtn').click()">
                 <button id="checkPassBtn" class="btn-check-pass">Проверить</button>
             </div>
-            <div class="strength-meter" id="strengthMeter">
-                <div class="strength-bar" id="strengthBar"></div>
-            </div>
+            <div class="strength-meter" id="strengthMeter"><div class="strength-bar" id="strengthBar"></div></div>
+            <div class="strength-text" id="strengthText"></div>
             <div id="passResult" class="pass-result"></div>
         </div>
 
@@ -483,6 +496,29 @@
                         <div class="ip-row"><span class="ip-label">Провайдер:</span> <span class="ip-value" id="ipIsp">Загрузка...</span></div>
                         <div class="ip-row"><span class="ip-label">Страна/Город:</span> <span class="ip-value" id="ipLocation">Загрузка...</span></div>
                     </div>
+                </div>
+
+                <!-- Цифровой отпечаток (Privacy) -->
+                <div class="tool-card">
+                    <h4>🕵️‍♂️ Что знают о вас сайты</h4>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Ваш браузер передает эти данные каждому сайту.</p>
+                    <div class="privacy-grid">
+                        <div class="privacy-item"><div class="privacy-label">ОС:</div><div class="privacy-value" id="privacyOS">...</div></div>
+                        <div class="privacy-item"><div class="privacy-label">Экран:</div><div class="privacy-value" id="privacyScreen">...</div></div>
+                        <div class="privacy-item"><div class="privacy-label">Язык:</div><div class="privacy-value" id="privacyLang">...</div></div>
+                        <div class="privacy-item"><div class="privacy-label">Ядра CPU:</div><div class="privacy-value" id="privacyCPU">...</div></div>
+                    </div>
+                </div>
+
+                <!-- Анализатор ссылок -->
+                <div class="tool-card">
+                    <h4>🌐 Анализатор ссылок (Антифишинг)</h4>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Проверьте ссылку на признаки фишинга перед переходом.</p>
+                    <div class="url-box">
+                        <input type="text" id="urlInput" class="url-input" placeholder="https://example.com">
+                        <button class="btn-url" onclick="analyzeURL()">Проверить</button>
+                    </div>
+                    <div class="url-result" id="urlResult"></div>
                 </div>
             </div>
         </div>
@@ -886,73 +922,53 @@
         });
 
         // ==========================================
-        // 2. 🧪 ПЕСОЧНИЦА И ВАЛИДАЦИЯ ФАЙЛОВ
+        // 2. 🧪 ПЕСОЧНИЦА
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
-            const dropZone = document.getElementById('dropZone');
-            const fileInput = document.getElementById('fileInput');
-            const fileResult = document.getElementById('fileResult');
-            const fileNameDisplay = document.getElementById('fileNameDisplay');
-            const fileHashDisplay = document.getElementById('fileHashDisplay');
-            const scansElement = document.getElementById('stat-scans');
-            const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
+            const dropZone = document.getElementById('dropZone'), fileInput = document.getElementById('fileInput');
+            const fileResult = document.getElementById('fileResult'), fileNameDisplay = document.getElementById('fileNameDisplay');
+            const fileHashDisplay = document.getElementById('fileHashDisplay'), scansElement = document.getElementById('stat-scans');
+            const MAX_FILE_SIZE = 50 * 1024 * 1024;
 
             if(!dropZone || !fileInput) return;
             dropZone.addEventListener('click', () => fileInput.click());
-
             ['dragenter', 'dragover'].forEach(ev => dropZone.addEventListener(ev, (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('dragover'); }, false));
             ['dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('dragover'); }, false));
-
             dropZone.addEventListener('drop', (e) => { if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]); });
             fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files[0]); });
 
             async function handleFile(file) {
                 if (file.size > MAX_FILE_SIZE) {
-                    fileNameDisplay.textContent = `Файл: ${file.name}`;
-                    fileHashDisplay.textContent = "Ошибка: Файл слишком большой (макс. 50 МБ).";
-                    fileResult.style.display = 'block';
-                    return;
+                    fileNameDisplay.textContent = `Файл: ${file.name}`; fileHashDisplay.textContent = "Ошибка: Файл слишком большой (макс. 50 МБ)."; fileResult.style.display = 'block'; return;
                 }
-
                 fileNameDisplay.textContent = `Файл: ${file.name} (${(file.size / 1024).toFixed(2)} КБ)`;
-                fileHashDisplay.textContent = "Вычисление хэша (Web Crypto API)...";
-                fileResult.style.display = 'block';
-
+                fileHashDisplay.textContent = "Вычисление хэша (Web Crypto API)..."; fileResult.style.display = 'block';
                 try {
                     const arrayBuffer = await file.arrayBuffer();
                     const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer);
                     const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-                    
                     setTimeout(() => {
                         fileHashDisplay.textContent = hashHex;
                         let currentScans = parseInt(localStorage.getItem('secretary_user_scans') || 0) + 1;
                         localStorage.setItem('secretary_user_scans', currentScans);
-                        if(scansElement) {
-                            scansElement.innerText = currentScans;
-                            scansElement.style.color = '#2ecc71';
-                            setTimeout(() => { scansElement.style.color = 'var(--accent)'; }, 1000);
-                        }
+                        if(scansElement) { scansElement.innerText = currentScans; scansElement.style.color = '#2ecc71'; setTimeout(() => { scansElement.style.color = 'var(--accent)'; }, 1000); }
                     }, 600);
-                } catch (error) {
-                    fileHashDisplay.textContent = "Ошибка чтения файла.";
-                }
+                } catch (error) { fileHashDisplay.textContent = "Ошибка чтения файла."; }
             }
         });
 
         // ==========================================
-        // 3. 🔐 ПРОВЕРКА ПАРОЛЕЙ + ШКАЛА НАДЕЖНОСТИ
+        // 3. 🔐 ПРОВЕРКА ПАРОЛЕЙ + ШКАЛА
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
-            const passInput = document.getElementById('passInput');
-            const checkPassBtn = document.getElementById('checkPassBtn');
-            const passResult = document.getElementById('passResult');
-            const strengthMeter = document.getElementById('strengthMeter');
-            const strengthBar = document.getElementById('strengthBar');
+            const passInput = document.getElementById('passInput'), checkPassBtn = document.getElementById('checkPassBtn');
+            const passResult = document.getElementById('passResult'), strengthMeter = document.getElementById('strengthMeter');
+            const strengthBar = document.getElementById('strengthBar'), strengthText = document.getElementById('strengthText');
 
-            // Реакция на ввод пароля (Шкала)
             passInput.addEventListener('input', () => {
                 const val = passInput.value;
                 strengthMeter.style.display = val ? 'block' : 'none';
+                strengthText.style.display = val ? 'block' : 'none';
                 
                 let score = 0;
                 if (val.length > 5) score++;
@@ -964,116 +980,127 @@
                 const width = Math.min(score * 20, 100);
                 strengthBar.style.width = width + '%';
                 
-                if (score <= 2) strengthBar.style.background = '#e74c3c';
-                else if (score <= 4) strengthBar.style.background = '#f1c40f';
-                else strengthBar.style.background = '#2ecc71';
+                if (score <= 2) { strengthBar.style.background = '#e74c3c'; strengthText.textContent = 'Слабый пароль. Добавьте цифры и символы.'; }
+                else if (score <= 4) { strengthBar.style.background = '#f1c40f'; strengthText.textContent = 'Средний пароль. Рекомендуем усложнить.'; }
+                else { strengthBar.style.background = '#2ecc71'; strengthText.textContent = 'Отличный надежный пароль!'; }
             });
 
             if(!checkPassBtn) return;
             checkPassBtn.addEventListener('click', async () => {
                 const password = passInput.value;
-                if (!password) {
-                    passResult.style.display = 'block';
-                    passResult.className = 'pass-result pass-warning';
-                    passResult.textContent = 'Пожалуйста, введите пароль.';
-                    return;
-                }
-
-                passResult.style.display = 'block';
-                passResult.className = 'pass-result';
-                passResult.textContent = 'Проверка баз утечек (k-anonymity)...';
-
+                if (!password) { passResult.style.display = 'block'; passResult.className = 'pass-result pass-warning'; passResult.textContent = 'Введите пароль.'; return; }
+                passResult.style.display = 'block'; passResult.className = 'pass-result'; passResult.textContent = 'Проверка (k-anonymity)...';
                 try {
                     const msgBuffer = new TextEncoder().encode(password);
                     const hashBuffer = await crypto.subtle.digest('SHA-1', msgBuffer);
                     const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
-                    
                     const prefix = hashHex.substring(0, 5), suffix = hashHex.substring(5);
                     const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
                     const data = await response.text();
-                    
                     let found = false, count = 0;
                     for (let line of data.split('\n')) {
                         const [lineSuffix, lineCount] = line.split(':');
                         if (lineSuffix === suffix) { found = true; count = parseInt(lineCount); break; }
                     }
-
-                    if (found) {
-                        passResult.className = 'pass-result pass-danger';
-                        passResult.innerHTML = `⚠️ <b>Внимание!</b> Этот пароль был найден в базах утечек <b>${count}</b> раз. Никогда не используйте его!`;
-                    } else {
-                        passResult.className = 'pass-result pass-safe';
-                        passResult.innerHTML = `✅ <b>Отлично!</b> Этот пароль не найден в известных базах утечек.`;
-                    }
-                } catch (error) {
-                    passResult.className = 'pass-result pass-warning';
-                    passResult.textContent = 'Ошибка подключения к базе.';
-                }
+                    if (found) { passResult.className = 'pass-result pass-danger'; passResult.innerHTML = `⚠️ <b>Внимание!</b> Пароль найден в утечках <b>${count}</b> раз!`; }
+                    else { passResult.className = 'pass-result pass-safe'; passResult.innerHTML = `✅ <b>Отлично!</b> Пароль не найден в базах утечек.`; }
+                } catch (error) { passResult.className = 'pass-result pass-warning'; passResult.textContent = 'Ошибка подключения.'; }
             });
         });
 
         // ==========================================
-        // 4. 🛠️ КИБЕР-ИНСТРУМЕНТЫ
+        // 4. 🛠️ КИБЕР-ИНСТРУМЕНТЫ (Генератор, IP, Privacy, URL)
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
+            // Генератор
             const genOutput = document.getElementById('genOutput');
             window.generatePassword = () => {
                 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
-                let password = "", array = new Uint32Array(16);
-                crypto.getRandomValues(array);
+                let password = "", array = new Uint32Array(16); crypto.getRandomValues(array);
                 for (let i = 0; i < 16; i++) password += chars[array[i] % chars.length];
                 genOutput.value = password;
             };
-
             window.copyPassword = (btn) => {
                 if (!genOutput.value || genOutput.value === 'Нажмите «Сгенерировать»') return;
                 navigator.clipboard.writeText(genOutput.value).then(() => {
-                    const originalText = btn.innerText;
-                    btn.innerText = '✅ Скопировано!'; btn.style.color = '#2ecc71';
+                    const originalText = btn.innerText; btn.innerText = '✅ Скопировано!'; btn.style.color = '#2ecc71';
                     setTimeout(() => { btn.innerText = originalText; btn.style.color = 'white'; }, 2000);
                 });
             };
 
+            // IP
             const ipAddress = document.getElementById('ipAddress');
             if (ipAddress) {
                 fetch('https://ipapi.co/json/').then(res => res.json()).then(data => {
                     ipAddress.textContent = data.ip || 'Неизвестно';
                     document.getElementById('ipIsp').textContent = data.org || 'Неизвестно';
                     document.getElementById('ipLocation').textContent = `${data.country_name || '?'}, ${data.city || '?'}`;
-                }).catch(() => {
-                    ipAddress.textContent = 'Ошибка';
-                    document.getElementById('ipIsp').textContent = 'Ошибка';
-                    document.getElementById('ipLocation').textContent = 'Ошибка';
-                });
+                }).catch(() => { ipAddress.textContent = 'Ошибка'; });
             }
+
+            // Privacy Checker
+            const privacyOS = document.getElementById('privacyOS'), privacyScreen = document.getElementById('privacyScreen');
+            const privacyLang = document.getElementById('privacyLang'), privacyCPU = document.getElementById('privacyCPU');
+            if (privacyOS) {
+                const ua = navigator.userAgent;
+                let os = "Unknown";
+                if (ua.indexOf("Win") != -1) os = "Windows";
+                if (ua.indexOf("Mac") != -1) os = "macOS";
+                if (ua.indexOf("Linux") != -1) os = "Linux";
+                if (ua.indexOf("Android") != -1) os = "Android";
+                if (ua.indexOf("like Mac") != -1) os = "iOS";
+                privacyOS.textContent = os;
+                privacyScreen.textContent = `${screen.width}x${screen.height}`;
+                privacyLang.textContent = navigator.language;
+                privacyCPU.textContent = navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency} ядер` : "Скрыто";
+            }
+
+            // URL Analyzer
+            window.analyzeURL = () => {
+                const urlInput = document.getElementById('urlInput').value.trim();
+                const urlResult = document.getElementById('urlResult');
+                if(!urlInput) return;
+                
+                urlResult.style.display = 'block';
+                let score = 0;
+                let reasons = [];
+
+                if (urlInput.startsWith('http://')) { score += 30; reasons.push("Используется незащищенный протокол HTTP."); }
+                if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.test(urlInput.replace(/^https?:\/\//, ''))) { score += 40; reasons.push("Используется IP-адрес вместо домена."); }
+                if (urlInput.includes('@')) { score += 30; reasons.push("Наличие символа @ (популярный трюк фишеров)."); }
+                if (urlInput.length > 75) { score += 10; reasons.push("Слишком длинная ссылка."); }
+                if (urlInput.includes('xn--')) { score += 30; reasons.push("Использование Punycode (подмена символов)."); }
+                if (/\.(xyz|top|club|online)$/.test(urlInput)) { score += 10; reasons.push("Подозрительная доменная зона."); }
+
+                if (score >= 30) {
+                    urlResult.className = 'url-result pass-danger';
+                    urlResult.innerHTML = `⚠️ <b>Осторожно! Ссылка подозрительная.</b><br><ul style="margin-left:15px; margin-top:5px; font-size:12px;">${reasons.map(r=>`<li>${r}</li>`).join('')}</ul>`;
+                } else {
+                    urlResult.className = 'url-result pass-safe';
+                    urlResult.innerHTML = `✅ <b>Ссылка выглядит безопасной.</b><br><span style="font-size:12px; font-weight:normal;">Явных признаков фишинга не найдено.</span>`;
+                }
+            };
         });
 
         // ==========================================
-        // 5. 🚨 СИСТЕМА ЗАЩИТЫ ОТ ВЗЛОМА (УМНАЯ)
+        // 5. 🚨 СИСТЕМА ЗАЩИТЫ ОТ ВЗЛОМА
         // ==========================================
         (function() {
             'use strict';
-            const downloadBtn = document.getElementById('download-btn');
-            const mascot = document.getElementById('mascot');
+            const downloadBtn = document.getElementById('download-btn'), mascot = document.getElementById('mascot');
             let originalHref = downloadBtn ? downloadBtn.getAttribute('href') : null;
             let isBreached = false;
 
-            // Защита от кликджекинга (встраивания в iframe)
             if (window.top !== window.self) {
-                document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:20vh;'>⚠️ Обнаружена попытка кликджекинга! Сайт заблокирован.</h1>";
-                return;
+                document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:20vh;'>⚠️ Обнаружена попытка кликджекинга!</h1>"; return;
             }
 
-            // Проверка на изменение ссылки через MutationObserver (без ложных срабатываний)
             if (downloadBtn) {
                 const observer = new MutationObserver((mutations) => {
                     mutations.forEach((mutation) => {
                         if (mutation.type === 'attributes' && mutation.attributeName === 'href') {
                             const currentHref = downloadBtn.getAttribute('href');
-                            // Если ссылка изменилась (и это не первоначальная установка)
-                            if (currentHref !== originalHref && currentHref !== null) {
-                                triggerBreach();
-                            }
+                            if (currentHref !== originalHref && currentHref !== null) triggerBreach();
                         }
                     });
                 });
@@ -1083,52 +1110,39 @@
             function triggerBreach() {
                 if (isBreached) return;
                 isBreached = true;
-                
-                console.warn("🚨 [SECURITY] Взлом предотвращен! Попытка подмены ссылки.");
-                
-                // 1. Ломаем кнопку
-                downloadBtn.style.pointerEvents = 'none';
-                downloadBtn.style.opacity = '0.5';
-                downloadBtn.href = '#';
-                downloadBtn.innerText = '🚨 ВЗЛОМ ПРЕДОТВРАЩЕН';
-                downloadBtn.style.background = '#c0392b';
-
-                // 2. Включаем режим тревоги (красный маскот, тряска, затемнение сайта)
+                console.warn("🚨 [SECURITY] Взлом предотвращен!");
+                downloadBtn.style.pointerEvents = 'none'; downloadBtn.style.opacity = '0.5'; downloadBtn.href = '#';
+                downloadBtn.innerText = '🚨 ВЗЛОМ ПРЕДОТВРАЩЕН'; downloadBtn.style.background = '#c0392b';
                 document.body.classList.add('breach-active');
                 if (mascot) mascot.classList.add('compromised');
-                
-                // 3. Добавляем лог в терминал
                 addTerminalLog("⚠️ ВНИМАНИЕ! Обнаружена подмена ссылки. Защита сработала.", "danger");
             }
 
-            // Добавление лога в терминал
             window.addTerminalLog = (text, type = '') => {
                 const termBody = document.getElementById('terminal-body');
                 if(!termBody) return;
-                const line = document.createElement('div');
-                line.className = 'terminal-line';
+                const line = document.createElement('div'); line.className = 'terminal-line';
                 const time = new Date().toLocaleTimeString();
                 let colorClass = type === 'danger' ? 'terminal-danger' : (type === 'warn' ? 'terminal-warn' : '');
                 line.innerHTML = `<span class="terminal-time">[${time}]</span> <span class="${colorClass}">${text}</span>`;
-                termBody.appendChild(line);
-                termBody.scrollTop = termBody.scrollHeight;
+                termBody.appendChild(line); termBody.scrollTop = termBody.scrollHeight;
             };
         })();
 
         // ==========================================
-        // 6. 🧠 НОВЫЕ СОБЫТИЯ (F12, AFK)
+        // 6. 🧠 СОБЫТИЯ (F12, AFK, Tab Visibility, Konami Code)
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const mascot = document.getElementById('mascot');
 
-            // Событие: Нажатие F12 или Ctrl+Shift+I
+            // F12
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
                     addTerminalLog("🔍 Обнаружено открытие консоли разработчика.", "warn");
                 }
             });
 
-            // Событие: Долгое бездействие (AFK) - 3 минуты
+            // AFK (Sleep)
             let afkTimer;
             const resetAfk = () => {
                 if (mascot) mascot.classList.remove('sleeping');
@@ -1136,18 +1150,46 @@
                 afkTimer = setTimeout(() => {
                     if (mascot) mascot.classList.add('sleeping');
                     addTerminalLog("💤 Режим ожидания. Мониторинг продолжается.", "");
-                }, 180000); // 3 минуты
+                }, 180000); // 3 мин
             };
-
             ['mousemove', 'keydown', 'scroll', 'click'].forEach(ev => window.addEventListener(ev, resetAfk));
-            resetAfk(); // Запускаем таймер
+            resetAfk();
+
+            // Tab Visibility
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    addTerminalLog("👁️ Пользователь покинул вкладку. Фоновый мониторинг активен.", "warn");
+                } else {
+                    addTerminalLog("✅ Пользователь вернулся. С возвращением!", "");
+                }
+            });
+
+            // Konami Code (Easter Egg)
+            const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+            let konamiIndex = 0;
+            document.addEventListener('keydown', (e) => {
+                if (e.key === konamiCode[konamiIndex] || e.key.toLowerCase() === konamiCode[konamiIndex]) {
+                    konamiIndex++;
+                    if (konamiIndex === konamiCode.length) {
+                        konamiIndex = 0;
+                        // Активация пасхалки
+                        document.body.classList.add('easter-egg');
+                        addTerminalLog("🚀 СЕКРЕТНЫЙ РЕЖИМ АКТИВИРОВАН! Hacker Mode: ON", "danger");
+                        setTimeout(() => {
+                            document.body.classList.remove('easter-egg');
+                            addTerminalLog("Система возвращена в штатный режим.", "");
+                        }, 5000);
+                    }
+                } else {
+                    konamiIndex = 0;
+                }
+            });
         });
 
         // ==========================================
         // 7. ОСТАЛЬНЫЕ СКРИПТЫ (Терминал, Чат, Меню, Анимации)
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
-            // Терминал
             const terminalLines = [
                 "[SCAN] Проверка C:\\Windows\\System32... OK",
                 "[WARN] Обнаружена подозрительная активность в порту 8080",
@@ -1157,12 +1199,11 @@
             ];
             let termIndex = 0;
             setInterval(() => {
-                if (isBreached) return; // Если взлом, не спамим
+                if (isBreached) return;
                 addTerminalLog(terminalLines[termIndex], terminalLines[termIndex].includes('[WARN]') ? 'warn' : (terminalLines[termIndex].includes('[BLOCK]') ? 'danger' : ''));
                 termIndex = (termIndex + 1) % terminalLines.length;
             }, 5000);
 
-            // Меню
             const menuBtn = document.getElementById('menuBtn'), navLinks = document.getElementById('navLinks');
             if(menuBtn && navLinks) {
                 menuBtn.addEventListener('click', () => {
@@ -1174,12 +1215,10 @@
                 }));
             }
 
-            // Кнопка Наверх
             const scrollTopBtn = document.getElementById('scrollTopBtn');
             window.addEventListener('scroll', () => { scrollTopBtn.style.display = window.scrollY > 300 ? 'block' : 'none'; });
             scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-            // FAQ
             document.querySelectorAll('.faq-question').forEach(button => {
                 button.addEventListener('click', () => {
                     const item = button.parentElement, answer = button.nextElementSibling;
@@ -1189,29 +1228,24 @@
                 });
             });
 
-            // Reveal Анимации
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
             }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-            // GitHub Stars
             fetch('https://api.github.com/repos/utuberdzeff186-arch/secretary-site')
                 .then(res => res.json()).then(data => {
                     const starsElement = document.getElementById('stat-stars');
                     if (starsElement && data.stargazers_count !== undefined) starsElement.innerText = data.stargazers_count;
                 }).catch(() => {});
 
-            // Счетчик проверок
             const scansElement = document.getElementById('stat-scans');
             if (scansElement) scansElement.innerText = localStorage.getItem('secretary_user_scans') || 0;
         });
 
-        // Маскот (Зрачки)
         document.addEventListener('mousemove', (e) => {
             const mascot = document.getElementById('mascot'), pupil = document.getElementById('pupil');
-            if (!mascot || !pupil || mascot.classList.contains('compromised') || mascot.classList.contains('sleeping')) return;
-            
+            if (!mascot || !pupil || mascot.classList.contains('compromised') || mascot.classList.contains('sleeping') || document.body.classList.contains('easter-egg')) return;
             const rect = mascot.getBoundingClientRect();
             const dx = e.clientX - (rect.left + rect.width / 2), dy = e.clientY - (rect.top + rect.height / 2);
             const angle = Math.atan2(dy, dx), maxDist = 7;
@@ -1219,11 +1253,9 @@
             pupil.setAttribute('cy', 95 + Math.sin(angle) * maxDist);
         });
 
-        // Модалка
         function openModal(src) { document.getElementById("imageModal").style.display = "block"; document.getElementById("expandedImg").src = src; }
         function closeModal() { document.getElementById("imageModal").style.display = "none"; }
 
-        // Чат-бот
         const knowledgeBase = [
             { keywords: ["не запускается", "ошибка"], answer: "Если программа не запускается: 1) Проверьте антивирус. 2) Запустите от Администратора. 3) Переустановите." },
             { keywords: ["забыл пароль", "сброс"], answer: "Для сброса пароля введите в PowerShell: Remove-Item -Path 'HKCU:\\Software\\SecretaryDefenderCore' -Recurse -Force" },
