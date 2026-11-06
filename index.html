@@ -1578,3 +1578,234 @@
                 if (type === 'danger') textSpan.className = 'terminal-danger';
                 if (type === 'warn') textSpan.className = 'terminal-warn';
                 textSpan.textContent = text;
+
+                line.appendChild(timeSpan);
+                line.appendChild(textSpan);
+                termBody.appendChild(line); 
+                termBody.scrollTop = termBody.scrollHeight;
+            };
+        })();
+
+        // ==========================================
+        // 8. 🧠 СОБЫТИЯ (F12, AFK, Tab Visibility, Konami Code)
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const mascotContainer = document.getElementById('mascotContainer');
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
+                    addTerminalLog("🔍 Обнаружено открытие консоли разработчика.", "warn");
+                }
+            });
+
+            let afkTimer;
+            const resetAfk = () => {
+                if (mascotContainer) mascotContainer.classList.remove('sleeping');
+                clearTimeout(afkTimer);
+                afkTimer = setTimeout(() => {
+                    if (mascotContainer) mascotContainer.classList.add('sleeping');
+                    addTerminalLog("💤 Режим ожидания. Мониторинг продолжается.", "");
+                }, 180000);
+            };
+            ['mousemove', 'keydown', 'scroll', 'click'].forEach(ev => window.addEventListener(ev, resetAfk));
+            resetAfk();
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) { addTerminalLog("👁️ Пользователь покинул вкладку. Фоновый мониторинг активен.", "warn"); }
+                else { addTerminalLog("✅ Пользователь вернулся. С возвращением!", ""); }
+            });
+
+            const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+            let konamiIndex = 0;
+            document.addEventListener('keydown', (e) => {
+                if (e.key === konamiCode[konamiIndex] || e.key.toLowerCase() === konamiCode[konamiIndex]) {
+                    konamiIndex++;
+                    if (konamiIndex === konamiCode.length) {
+                        konamiIndex = 0;
+                        document.body.classList.add('easter-egg');
+                        addTerminalLog("🚀 СЕКРЕТНЫЙ РЕЖИМ АКТИВИРОВАН! Hacker Mode: ON", "danger");
+                        playSound('alarm');
+                        setTimeout(() => { document.body.classList.remove('easter-egg'); addTerminalLog("Система возвращена в штатный режим.", ""); }, 5000);
+                    }
+                } else { konamiIndex = 0; }
+            });
+
+            // Терминал Ввод
+            const terminalInput = document.getElementById('terminalInput');
+            if (terminalInput) {
+                terminalInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        const cmd = terminalInput.value.trim().toLowerCase();
+                        terminalInput.value = '';
+                        
+                        const termBody = document.getElementById('terminal-body');
+                        const line = document.createElement('div'); line.className = 'terminal-line';
+                        const timeSpan = document.createElement('span'); timeSpan.className = 'terminal-time'; timeSpan.textContent = `[${new Date().toLocaleTimeString()}] `;
+                        const promptSpan = document.createElement('span'); promptSpan.style.color = '#4da8da'; promptSpan.textContent = 'guest@secretary:~$ ';
+                        const cmdSpan = document.createElement('span'); cmdSpan.style.color = '#fff'; cmdSpan.textContent = cmd;
+                        line.appendChild(timeSpan); line.appendChild(promptSpan); line.appendChild(cmdSpan);
+                        termBody.appendChild(line); termBody.scrollTop = termBody.scrollHeight;
+
+                        if (cmd === 'help') {
+                            addTerminalLog("Доступные команды: help, scan, clear, version, whoami, hack", '');
+                        } else if (cmd === 'scan') {
+                            addTerminalLog("Запуск быстрого сканирования...", 'warn');
+                            setTimeout(() => { addTerminalLog("Сканирование завершено. Угроз не обнаружено.", ''); playSound('success'); }, 1500);
+                        } else if (cmd === 'clear') {
+                            document.getElementById('terminal-body').innerHTML = '';
+                        } else if (cmd === 'version') {
+                            addTerminalLog("Секретарь Core v9.3 (Build 2026)", '');
+                        } else if (cmd === 'whoami') {
+                            addTerminalLog("Вы: Гость (guest). Права: ограничены.", '');
+                        } else if (cmd === 'hack') {
+                            addTerminalLog("ДОСТУП ЗАПРЕЩЕН. Попытка зафиксирована в журнале безопасности.", 'danger');
+                            document.body.classList.add('breach-active');
+                            playSound('alarm');
+                            setTimeout(() => document.body.classList.remove('breach-active'), 2000);
+                        } else if (cmd !== '') {
+                            addTerminalLog(`Команда не найдена: ${cmd}`, 'warn');
+                        }
+                    }
+                });
+            }
+
+            // Естественное моргание маскота
+            setInterval(() => {
+                const eyeBg = document.getElementById('eye-bg');
+                if (eyeBg && !mascotContainer.classList.contains('compromised') && !mascotContainer.classList.contains('sleeping')) {
+                    eyeBg.setAttribute('ry', '2');
+                    setTimeout(() => eyeBg.setAttribute('ry', '15'), 150);
+                }
+            }, 4000);
+        });
+
+        // ==========================================
+        // 9. ОСТАЛЬНЫЕ СКРИПТЫ + 3D TILT
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const terminalLines = [
+                "[SCAN] Проверка C:\\Windows\\System32... OK",
+                "[WARN] Обнаружена подозрительная активность в порту 8080",
+                "[BLOCK] Угроза изолирована: Trojan.Win32.Generic",
+                "[SCAN] Проверка реестра HKCU/HKLM... OK",
+                "[SYSTEM] Мониторинг в реальном времени активен."
+            ];
+            let termIndex = 0;
+            
+            // ИСПРАВЛЕНИЕ: Теперь isBreached виден глобально
+            setInterval(() => {
+                if (isBreached) return;
+                addTerminalLog(terminalLines[termIndex], terminalLines[termIndex].includes('[WARN]') ? 'warn' : (terminalLines[termIndex].includes('[BLOCK]') ? 'danger' : ''));
+                termIndex = (termIndex + 1) % terminalLines.length;
+            }, 5000);
+
+            const menuBtn = document.getElementById('menuBtn'), navLinks = document.getElementById('navLinks');
+            if(menuBtn && navLinks) {
+                menuBtn.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    menuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+                });
+                document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', () => {
+                    navLinks.classList.remove('active'); menuBtn.textContent = '☰';
+                }));
+            }
+
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            window.addEventListener('scroll', () => { scrollTopBtn.style.display = window.scrollY > 300 ? 'block' : 'none'; });
+            scrollTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); playSound('click'); });
+
+            document.querySelectorAll('.faq-question').forEach(button => {
+                button.addEventListener('click', () => {
+                    const item = button.parentElement, answer = button.nextElementSibling;
+                    const isActive = item.classList.contains('active');
+                    document.querySelectorAll('.faq-item').forEach(i => { i.classList.remove('active'); i.querySelector('.faq-answer').style.maxHeight = null; });
+                    if (!isActive) { item.classList.add('active'); answer.style.maxHeight = answer.scrollHeight + "px"; }
+                    playSound('click');
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+            }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+            fetch('https://api.github.com/repos/utuberdzeff186-arch/secretary-site')
+                .then(res => res.json()).then(data => {
+                    const starsElement = document.getElementById('stat-stars');
+                    if (starsElement && data.stargazers_count !== undefined) starsElement.innerText = data.stargazers_count;
+                }).catch(() => {});
+
+            let scansCount = parseInt(localStorage.getItem('secretary_user_scans') || 0);
+            if (isNaN(scansCount)) scansCount = 0;
+            const scansElement = document.getElementById('stat-scans');
+            if (scansElement) scansElement.innerText = scansCount;
+        });
+
+        // 3D Tilt и слежение за мышью
+        document.addEventListener('mousemove', (e) => {
+            const mascotContainer = document.getElementById('mascotContainer');
+            const mascot = document.getElementById('mascot'), pupil = document.getElementById('pupil');
+            if (!mascot || !pupil || !mascotContainer) return;
+            
+            const isSleeping = mascotContainer.classList.contains('sleeping');
+            const isHappy = mascotContainer.classList.contains('happy');
+
+            // 3D Tilt (Наклон)
+            if (!isBreached && !isSleeping && !isHappy) {
+                const rect = mascotContainer.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const dx = e.clientX - centerX;
+                const dy = e.clientY - centerY;
+                
+                const tiltX = (dy / window.innerHeight) * -20;
+                const tiltY = (dx / window.innerWidth) * 20;
+                mascot.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+            } else {
+                mascot.style.transform = 'none';
+            }
+
+            // Слежение зрачков
+            if (!isBreached && !isSleeping) {
+                const rect = mascot.getBoundingClientRect();
+                const dx = e.clientX - (rect.left + rect.width / 2), dy = e.clientY - (rect.top + rect.height / 2);
+                const angle = Math.atan2(dy, dx), maxDist = 7;
+                pupil.setAttribute('cx', 100 + Math.cos(angle) * maxDist);
+                pupil.setAttribute('cy', 95 + Math.sin(angle) * maxDist);
+            }
+        });
+
+        function openModal(src) { document.getElementById("imageModal").style.display = "block"; document.getElementById("expandedImg").src = src; playSound('click'); }
+        function closeModal() { document.getElementById("imageModal").style.display = "none"; }
+
+        const knowledgeBase = [
+            { keywords: ["не запускается", "ошибка"], answer: "Если программа не запускается: 1) Проверьте антивирус. 2) Запустите от Администратора. 3) Переустановите." },
+            { keywords: ["забыл пароль", "сброс"], answer: "Для сброса пароля введите в PowerShell: Remove-Item -Path 'HKCU:\\Software\\SecretaryDefenderCore' -Recurse -Force" },
+            { keywords: ["как проверить"], answer: "Откройте Секретаря, вкладка 'Главная', кнопка 'Проверить файл'." },
+            { keywords: ["карантин"], answer: "Все вирусы во вкладке 'Карантин'. Там можно выбрать 'Удалить' или 'Восстановить'." }
+        ];
+        function getAIResponse(text) {
+            const t = text.toLowerCase();
+            for (let item of knowledgeBase) { if (item.keywords.some(kw => t.includes(kw))) return item.answer; }
+            if (t.includes("привет")) return "Приветствую! Задайте вопрос.";
+            return "Я не совсем понял. Нажмите кнопку быстрого ответа или переформулируйте.";
+        }
+        let lastMsg = 0;
+        function sendMessage() {
+            const input = document.getElementById("chatInput"), raw = input.value.trim();
+            if (!raw || Date.now() - lastMsg < 1500) return;
+            lastMsg = Date.now();
+            const chatBox = document.getElementById("chatBox");
+            const userMsg = document.createElement("div"); userMsg.className = "message msg-user"; userMsg.textContent = raw; chatBox.appendChild(userMsg);
+            input.value = ""; chatBox.scrollTop = chatBox.scrollHeight;
+            playSound('click');
+            setTimeout(() => {
+                const botMsg = document.createElement("div"); botMsg.className = "message msg-bot"; botMsg.textContent = getAIResponse(raw); chatBox.appendChild(botMsg); chatBox.scrollTop = chatBox.scrollHeight;
+                playSound('success');
+            }, 600);
+        }
+        function quickAsk(text) { const input = document.getElementById("chatInput"); input.value = text; sendMessage(); }
+        function handleKeyPress(e) { if (e.key === "Enter") sendMessage(); }
+    </script>
+</body>
+</html>
