@@ -44,6 +44,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; background-image: radial-gradient(circle at 15% 50%, rgba(77, 168, 218, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(46, 125, 50, 0.05), transparent 25%); background-attachment: fixed; transition: filter 0.5s ease; }
 
+        /* 🔊 КНОПКА ЗВУКА */
+        #sound-toggle { position: fixed; bottom: 90px; right: 30px; z-index: 1000; background: #1e1e23; border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; padding: 12px; border-radius: 50%; font-size: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: 0.3s; display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; }
+        #sound-toggle:hover { background: #333; transform: scale(1.1); }
+
         /* 🍪 COOKIE BANNER */
         .cookie-banner { position: fixed; bottom: 0; left: 0; width: 100%; background: #11141a; border-top: 1px solid rgba(255,255,255,0.1); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 99999; font-size: 14px; color: var(--text-muted); box-shadow: 0 -5px 20px rgba(0,0,0,0.5); gap: 15px; }
         .cookie-banner-buttons { display: flex; gap: 10px; flex-shrink: 0; }
@@ -80,12 +84,16 @@
         .hero p { font-size: 20px; color: var(--text-muted); max-width: 650px; margin: 0 auto 40px; }
 
         .hero-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px; }
-        .btn-download { background: linear-gradient(135deg, #555, #333); color: white; padding: 20px 50px; font-size: 18px; font-weight: 800; border-radius: 16px; text-decoration: none; display: inline-block; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); cursor: not-allowed; }
+        .btn-download { background: linear-gradient(135deg, #555, #333); color: white; padding: 20px 50px; font-size: 18px; font-weight: 800; border-radius: 16px; text-decoration: none; display: inline-block; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); cursor: not-allowed; text-align: center; }
+        .btn-download.windows-detected { background: linear-gradient(135deg, #2e7d32, #1b5e20); cursor: pointer; box-shadow: 0 8px 25px rgba(46, 125, 50, 0.4); border: 1px solid rgba(255,255,255,0.2); }
+        .btn-download.windows-detected:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 35px rgba(46, 125, 50, 0.6); }
         .btn-secondary { background: transparent; color: var(--accent); border: 2px solid var(--accent); padding: 20px 40px; font-size: 18px; font-weight: 800; border-radius: 16px; cursor: pointer; transition: all 0.3s ease; display: inline-block; text-align: center; text-decoration: none; }
         .btn-secondary:hover { background: rgba(77, 168, 218, 0.1); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(77, 168, 218, 0.2); }
         
-        /* 📧 ФОРМА ПОДПИСКИ (ОБНОВЛЕНА ПО 152-ФЗ) */
-        .subscribe-box { max-width: 500px; margin: 20px auto; display: flex; flex-direction: column; align-items: stretch; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); gap: 10px; }
+        /* 📧 ФОРМА ПОДПИСКИ (152-ФЗ) */
+        .subscribe-box { max-width: 500px; margin: 20px auto; display: flex; flex-direction: column; align-items: stretch; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); gap: 10px; transition: 0.3s; }
+        .subscribe-box.highlight-box { border-color: var(--accent); box-shadow: 0 0 20px rgba(77, 168, 218, 0.2); animation: pulseBox 2s infinite alternate; }
+        @keyframes pulseBox { from { box-shadow: 0 0 10px rgba(77, 168, 218, 0.1); } to { box-shadow: 0 0 30px rgba(77, 168, 218, 0.4); } }
         .subscribe-input-group { display: flex; gap: 10px; }
         .subscribe-input { flex: 1; background: transparent; border: none; padding: 10px 15px; color: #fff; outline: none; font-size: 15px; }
         .subscribe-btn { background: var(--accent); color: #fff; border: none; padding: 10px 25px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; white-space: nowrap; }
@@ -239,10 +247,12 @@
         .strength-meter { height: 5px; background: rgba(255,255,255,0.1); border-radius: 5px; margin-top: 10px; overflow: hidden; display: none; }
         .strength-bar { height: 100%; width: 0%; transition: 0.3s ease; }
         .strength-text { font-size: 12px; color: var(--text-muted); margin-top: 5px; display: none; }
+        
         .pass-result { display: none; padding: 15px; border-radius: 12px; font-size: 14px; font-weight: 600; margin-top: 10px; }
         .pass-safe { background: rgba(46, 204, 113, 0.1); color: #2ecc71; border: 1px solid #2ecc71; }
         .pass-danger { background: rgba(231, 76, 60, 0.1); color: #e74c3c; border: 1px solid #e74c3c; }
         .pass-warning { background: rgba(230, 126, 34, 0.1); color: #e67e22; border: 1px solid #e67e22; }
+        .pass-loading { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); }
 
         /* 🛠️ НАБОР ИНСТРУМЕНТОВ */
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
@@ -267,20 +277,6 @@
         .btn-url { background: #333; color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 0 15px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: bold; }
         .btn-url:hover { background: #555; }
         .url-result { display: none; padding: 15px; border-radius: 8px; font-size: 14px; font-weight: 600; }
-
-        /* 🎮 СИМУЛЯТОР ФАЕРВОЛА */
-        .firewall-sim { background: #0a0d13; border: 1px solid var(--accent); border-radius: 12px; padding: 20px; margin-top: 20px; position: relative; overflow: hidden; height: 200px; display: flex; flex-direction: column; justify-content: space-between; }
-        .fw-packet { position: absolute; top: 20%; left: -150px; background: #1e1e23; border: 1px solid #fff; padding: 5px 10px; border-radius: 8px; font-size: 12px; font-family: monospace; display: flex; align-items: center; gap: 10px; animation: fly 4s linear forwards; z-index: 2; }
-        .fw-packet.bad { border-color: var(--danger); color: var(--danger); }
-        .fw-packet.good { border-color: var(--success); color: var(--success); }
-        .fw-actions { display: flex; gap: 5px; }
-        .fw-btn { padding: 2px 8px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 11px; }
-        .fw-btn.allow { background: var(--success); color: #fff; }
-        .fw-btn.block { background: var(--danger); color: #fff; }
-        .fw-health-bar { width: 100%; height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; overflow: hidden; margin-top: 10px; }
-        .fw-health-fill { height: 100%; width: 100%; background: var(--success); transition: width 0.3s ease, background 0.3s ease; }
-        .fw-score { position: absolute; top: 10px; right: 20px; font-size: 16px; font-weight: bold; color: #fff; font-family: monospace; }
-        @keyframes fly { 0% { left: -150px; } 100% { left: 100%; } }
 
         /* МОДАЛЬНЫЕ ОКНА */
         .modal { display: none; position: fixed; z-index: 9999; padding-top: 5vh; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); }
@@ -376,6 +372,7 @@
             .chat-input-area { flex-direction: column; gap: 10px; }
             .chat-input-area button { margin-left: 0; }
             #scrollTopBtn { bottom: 20px; right: 20px; padding: 12px 16px; font-size: 16px; }
+            #sound-toggle { bottom: 80px; right: 20px; width: 45px; height: 45px; font-size: 18px; padding: 10px; }
             
             .cookie-banner { flex-direction: column; text-align: center; }
             .cookie-banner-buttons { width: 100%; justify-content: center; }
@@ -401,6 +398,9 @@
 
     <div class="breach-overlay"></div>
     <canvas id="cyber-canvas"></canvas>
+
+    <!-- 🔊 Кнопка звука -->
+    <button id="sound-toggle" title="Включить/выключить звук">🔊</button>
 
     <header>
         <div class="logo">🛡️ СЕКРЕТАРЬ<span>.</span></div>
@@ -449,12 +449,13 @@
         <p>Легкий, адаптивный и защищенный от взлома. Секретарь позаботится о твоем железе, пока ты играешь или работаешь.</p>
 
         <div class="hero-buttons">
-            <a href="#" id="download-btn" class="btn-download" onclick="alert('Программа находится на финальной стадии тестирования. Релиз совсем скоро!'); return false;">⏳ Скоро релиз</a>
+            <!-- Кнопка скачивания (текст меняется в зависимости от ОС) -->
+            <a href="#" id="download-btn" class="btn-download" onclick="handleDownloadClick(event)">⏳ Скоро релиз</a>
             <a href="#sandbox" class="btn-secondary">🧪 Песочница</a>
         </div>
 
-        <!-- 📧 ФОРМА ПОДПИСКИ (СОГЛАСИЕ 152-ФЗ) -->
-        <div class="subscribe-box reveal">
+        <!-- 📧 ФОРМА ПОДПИСКИ (152-ФЗ) -->
+        <div class="subscribe-box reveal" id="subscribeBox">
             <div class="subscribe-input-group">
                 <input type="email" id="subEmail" class="subscribe-input" placeholder="Ваш Email для новостей...">
                 <button class="subscribe-btn" onclick="subscribeEmail()">Узнать о релизе</button>
@@ -515,7 +516,7 @@
         <!-- 🔐 БЛОК: ПРОВЕРКА УТЕЧЕК ПАРОЛЕЙ -->
         <div class="guide-box reveal password-section" id="password-check">
             <h3 style="font-size: 28px; color: var(--text); margin-bottom: 10px; text-align: center;">🔐 Проверка утечек паролей</h3>
-            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Узнайте, был ли ваш пароль слит в базы хакеров. Ваш пароль <b>никогда не покидает браузер</b> (k-anonymity).</p>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Узнайте, был ли ваш пароль слит в базы хакеров. Ваш пароль <b>никогда не покидает браузер</b> (k-anonymity).<br><span style="font-size:12px; opacity:0.7;">База: HaveIBeenPwned (реальные данные, более 10 млрд записей).</span></p>
             
             <div class="password-box">
                 <input type="password" id="passInput" class="password-input" placeholder="Введите пароль для проверки..." onkeypress="if(event.key === 'Enter') document.getElementById('checkPassBtn').click()">
@@ -610,18 +611,6 @@
                     <button class="btn-check-pass" style="width: 100%; padding: 10px;" onclick="checkWebRTCLeak()">Проверить утечку</button>
                     <div id="webrtcResult" class="url-result" style="margin-top: 10px;"></div>
                 </div>
-
-                <!-- 🆕 СИМУЛЯТОР ФАЕРВОЛА -->
-                <div class="tool-card" style="grid-column: span 2;">
-                    <h4>🎮 Симулятор Фаервола</h4>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Представьте, что вы — админ. Пропускайте легитимный трафик (зеленый) и блокируйте атаки (красный).</p>
-                    <div class="firewall-sim" id="firewallSim">
-                        <div class="fw-score">Здоровье: <span id="fwHealth">100</span>%</div>
-                        <div class="fw-health-bar"><div class="fw-health-fill" id="fwHealthBar"></div></div>
-                        <div style="flex: 1; position: relative;" id="fwPlayground"></div>
-                    </div>
-                    <button class="btn-secondary" style="width: 100%; padding: 10px; margin-top: 10px;" onclick="startFirewallGame()">▶️ Запустить игру</button>
-                </div>
             </div>
         </div>
 
@@ -661,7 +650,6 @@
                 </div>
             </div>
             
-            <!-- ТЕРМИНАЛ С ВВОДОМ КОМАНД -->
             <div class="terminal" id="terminal">
                 <div class="terminal-body" id="terminal-body">
                     <div class="terminal-line"><span class="terminal-time">[Инициализация]</span> Запуск ядра защиты Secretary Core...</div>
@@ -999,6 +987,106 @@
 
     <script>
         // ==========================================
+        // 🎵 СИСТЕМА ЗВУКОВ (Web Audio API)
+        // ==========================================
+        let audioCtx;
+        let isMuted = false;
+
+        document.getElementById('sound-toggle').addEventListener('click', () => {
+            isMuted = !isMuted;
+            document.getElementById('sound-toggle').textContent = isMuted ? '🔇' : '🔊';
+            if (!isMuted) playSound('click');
+        });
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSound(type) {
+            if (isMuted) return;
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                osc.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                const now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800, now);
+                    osc.frequency.exponentialRampToValueAtTime(300, now + 0.1);
+                    gainNode.gain.setValueAtTime(0.05, now);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                    osc.start(now); osc.stop(now + 0.1);
+                } else if (type === 'success') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.setValueAtTime(600, now + 0.1);
+                    osc.frequency.setValueAtTime(800, now + 0.2);
+                    gainNode.gain.setValueAtTime(0.05, now);
+                    gainNode.gain.linearRampToValueAtTime(0, now + 0.4);
+                    osc.start(now); osc.stop(now + 0.4);
+                } else if (type === 'alarm') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(400, now);
+                    for(let i=1; i<5; i++){
+                        osc.frequency.setValueAtTime(800, now + i*0.2);
+                        osc.frequency.setValueAtTime(400, now + (i+0.5)*0.2);
+                    }
+                    gainNode.gain.setValueAtTime(0.05, now);
+                    gainNode.gain.linearRampToValueAtTime(0, now + 1.0);
+                    osc.start(now); osc.stop(now + 1.0);
+                }
+            } catch (e) { console.warn("Audio not supported"); }
+        }
+
+        // ==========================================
+        // 💻 ОПРЕДЕЛЕНИЕ ОС
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isWindows = userAgent.indexOf('windows') !== -1;
+            const isMac = userAgent.indexOf('mac') !== -1;
+            const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+            
+            const downloadBtn = document.getElementById('download-btn');
+            const subscribeBox = document.getElementById('subscribeBox');
+
+            if (isWindows) {
+                downloadBtn.classList.add('windows-detected');
+                downloadBtn.innerHTML = '⬇ Скачать для Windows <br><span style="font-size:12px; font-weight:normal;">(Обнаружена ваша ОС)</span>';
+                downloadBtn.onclick = (e) => {
+                    e.preventDefault();
+                    playSound('click');
+                    alert('Программа находится на финальной стадии тестирования. Релиз совсем скоро!');
+                };
+            } else {
+                let osName = isMac ? 'macOS' : (isMobile ? 'мобильных устройств' : 'вашей ОС');
+                downloadBtn.innerHTML = `⏳ Пока нет версии для <br>${osName}`;
+                downloadBtn.onclick = (e) => {
+                    e.preventDefault();
+                    playSound('click');
+                    alert(`Программа пока доступна только для Windows. Мы работаем над версией для ${osName}! Подпишитесь на новости, чтобы не пропустить.`);
+                    subscribeBox.classList.add('highlight-box');
+                    subscribeBox.scrollIntoView({behavior: 'smooth', block: 'center'});
+                };
+            }
+        });
+
+        // Привязка звуков к кнопкам
+        document.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.tagName === 'A') {
+                playSound('click');
+            }
+        });
+
+        // ==========================================
         // 1. 🍪 COOKIE BANNER (152-ФЗ)
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
@@ -1009,7 +1097,7 @@
         function acceptCookies(mode) {
             localStorage.setItem('secretary_cookies_accepted', mode);
             document.getElementById('cookieBanner').style.display = 'none';
-            // Здесь можно добавить подключение аналитики, если mode === 'all'
+            playSound('click');
         }
 
         // ==========================================
@@ -1033,6 +1121,7 @@
             document.getElementById('subEmail').value = '';
             addTerminalLog(`Email добавлен в локальную базу ожидания (согласие получено).`, '');
             triggerHappyMascot();
+            playSound('success');
         }
 
         function triggerHappyMascot() {
@@ -1114,13 +1203,14 @@
                         localStorage.setItem('secretary_user_scans', currentScans);
                         if(scansElement) { scansElement.innerText = currentScans; scansElement.style.color = '#2ecc71'; setTimeout(() => { scansElement.style.color = 'var(--accent)'; }, 1000); }
                         triggerHappyMascot();
+                        playSound('success');
                     }, 600);
                 } catch (error) { fileHashDisplay.textContent = "Ошибка чтения файла."; }
             }
         });
 
         // ==========================================
-        // 5. 🔐 ПРОВЕРКА ПАРОЛЕЙ + ШКАЛА + МАСКОТ
+        // 5. 🔐 ПРОВЕРКА ПАРОЛЕЙ + ШКАЛА + РЕАЛЬНЫЕ ДАННЫЕ
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const passInput = document.getElementById('passInput'), checkPassBtn = document.getElementById('checkPassBtn');
@@ -1150,28 +1240,65 @@
             if(!checkPassBtn) return;
             checkPassBtn.addEventListener('click', async () => {
                 const password = passInput.value;
-                if (!password) { passResult.style.display = 'block'; passResult.className = 'pass-result pass-warning'; passResult.textContent = 'Введите пароль.'; return; }
-                passResult.style.display = 'block'; passResult.className = 'pass-result'; passResult.textContent = 'Проверка (k-anonymity)...';
+                if (!password) { 
+                    passResult.style.display = 'block'; 
+                    passResult.className = 'pass-result pass-warning'; 
+                    passResult.textContent = 'Введите пароль.'; 
+                    return; 
+                }
+                
+                passResult.style.display = 'block'; 
+                passResult.className = 'pass-result pass-loading'; 
+                passResult.innerHTML = '⏳ Проверка по базе HaveIBeenPwned...';
+                
                 try {
                     const msgBuffer = new TextEncoder().encode(password);
                     const hashBuffer = await crypto.subtle.digest('SHA-1', msgBuffer);
-                    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
-                    const prefix = hashHex.substring(0, 5), suffix = hashHex.substring(5);
+                    const hashArray = Array.from(new Uint8Array(hashBuffer));
+                    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+                    
+                    const prefix = hashHex.substring(0, 5);
+                    const suffix = hashHex.substring(5);
+
                     const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    
                     const data = await response.text();
-                    let found = false, count = 0;
-                    for (let line of data.split('\n')) {
+                    
+                    const lines = data.split('\n');
+                    let found = false;
+                    let count = 0;
+
+                    for (let line of lines) {
                         const [lineSuffix, lineCount] = line.split(':');
-                        if (lineSuffix === suffix) { found = true; count = parseInt(lineCount); break; }
+                        if (lineSuffix.trim() === suffix) {
+                            found = true;
+                            count = parseInt(lineCount.trim(), 10);
+                            break;
+                        }
                     }
-                    if (found) { passResult.className = 'pass-result pass-danger'; passResult.innerHTML = `⚠️ <b>Внимание!</b> Пароль найден в утечках <b>${count}</b> раз!`; }
-                    else { passResult.className = 'pass-result pass-safe'; passResult.innerHTML = `✅ <b>Отлично!</b> Пароль не найден в базах утечек.`; triggerHappyMascot(); }
-                } catch (error) { passResult.className = 'pass-result pass-warning'; passResult.textContent = 'Ошибка подключения.'; }
+
+                    if (found) {
+                        passResult.className = 'pass-result pass-danger';
+                        passResult.innerHTML = `⚠️ <b>Пароль скомпрометирован!</b><br>Он встречается в базе утечек <b>${count.toLocaleString('ru-RU')}</b> раз.<br><span style="font-size:12px; font-weight:normal;">Никогда не используйте его. Смените пароль везде, где он применялся.</span>`;
+                        playSound('alarm');
+                    } else {
+                        passResult.className = 'pass-result pass-safe';
+                        passResult.innerHTML = `✅ <b>Отлично!</b> Этот пароль не найден в известных базах утечек.<br><span style="font-size:12px; font-weight:normal;">Это не гарантирует 100% безопасность, но риск минимален.</span>`;
+                        triggerHappyMascot();
+                        playSound('success');
+                    }
+
+                } catch (error) {
+                    console.error('HIBP Error:', error);
+                    passResult.className = 'pass-result pass-warning';
+                    passResult.innerHTML = `⚠️ <b>Не удалось проверить.</b><br>Скорее всего, ваш браузер или блокировщик рекламы блокирует запрос к API HaveIBeenPwned. Попробуйте отключить AdBlock и обновить страницу.`;
+                }
             });
         });
 
         // ==========================================
-        // 6. 🛠️ КИБЕР-ИНСТРУМЕНТЫ + NEW FEATURES
+        // 6. 🛠️ КИБЕР-ИНСТРУМЕНТЫ
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             // Генератор
@@ -1181,12 +1308,14 @@
                 let password = "", array = new Uint32Array(16); crypto.getRandomValues(array);
                 for (let i = 0; i < 16; i++) password += chars[array[i] % chars.length];
                 genOutput.value = password;
+                playSound('success');
             };
             window.copyPassword = (btn) => {
                 if (!genOutput.value || genOutput.value === 'Нажмите «Сгенерировать»') return;
                 navigator.clipboard.writeText(genOutput.value).then(() => {
                     const originalText = btn.innerText; btn.innerText = '✅ Скопировано!'; btn.style.color = '#2ecc71';
                     setTimeout(() => { btn.innerText = originalText; btn.style.color = 'white'; }, 2000);
+                    playSound('click');
                 });
             };
 
@@ -1243,9 +1372,11 @@
                         li.textContent = r;
                         reasonList.appendChild(li);
                     });
+                    playSound('alarm');
                 } else {
                     urlResult.className = 'url-result pass-safe';
                     urlResult.innerHTML = `✅ <b>Ссылка выглядит безопасной.</b><br><span style="font-size:12px; font-weight:normal;">Явных признаков фишинга не найдено.</span>`;
+                    playSound('success');
                 }
             };
 
@@ -1278,6 +1409,7 @@
                     resDiv.textContent = btoa(String.fromCharCode(...combined));
                     document.getElementById('cryptoInput').value = resDiv.textContent;
                     addTerminalLog("Текст зашифрован AES-256.", '');
+                    playSound('success');
                 } catch (e) { resDiv.style.display = 'block'; resDiv.className = 'url-result pass-danger'; resDiv.textContent = 'Ошибка шифрования.'; }
             };
             window.decryptTextBtn = async () => {
@@ -1295,8 +1427,9 @@
                     resDiv.textContent = new TextDecoder().decode(decrypted);
                     document.getElementById('cryptoInput').value = resDiv.textContent;
                     addTerminalLog("Текст успешно расшифрован.", '');
-                    triggerHappyMascot(); // Радость при успехе
-                } catch (e) { resDiv.style.display = 'block'; resDiv.className = 'url-result pass-danger'; resDiv.textContent = 'Ошибка: Неверный пароль.'; }
+                    triggerHappyMascot();
+                    playSound('success');
+                } catch (e) { resDiv.style.display = 'block'; resDiv.className = 'url-result pass-danger'; resDiv.textContent = 'Ошибка: Неверный пароль.'; playSound('alarm'); }
             };
 
             // QR
@@ -1307,6 +1440,7 @@
                 img.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}`;
                 img.style.display = 'inline-block';
                 addTerminalLog("QR-код сгенерирован.", '');
+                playSound('success');
             };
 
             // 🆕 WEBRTC LEAK TEST
@@ -1332,6 +1466,7 @@
                         if (!ipFound) {
                             resDiv.className = 'url-result pass-safe';
                             resDiv.innerHTML = '✅ <b>Утечек не обнаружено.</b><br><span style="font-size:12px; font-weight:normal;">Ваш реальный IP скрыт.</span>';
+                            playSound('success');
                         }
                         pc.close();
                         return;
@@ -1341,6 +1476,7 @@
                         ipFound = true;
                         resDiv.className = 'url-result pass-danger';
                         resDiv.innerHTML = `⚠️ <b>Обнаружена утечка IP!</b><br>Ваш реальный IP: <b>${myIP[1]}</b><br><span style="font-size:12px; font-weight:normal;">Даже с VPN этот адрес доступен сайтам.</span>`;
+                        playSound('alarm');
                         pc.close();
                     }
                 };
@@ -1353,89 +1489,6 @@
                     }
                 }, 3000);
             };
-
-            // 🆕 FIREWALL SIMULATOR GAME
-            let fwInterval, fwHealth = 100, fwScore = 0, fwActive = false;
-            
-            window.startFirewallGame = () => {
-                if (fwActive) return;
-                fwActive = true;
-                fwHealth = 100;
-                fwScore = 0;
-                document.getElementById('fwHealth').textContent = fwHealth;
-                document.getElementById('fwHealthBar').style.width = '100%';
-                document.getElementById('fwHealthBar').style.background = 'var(--success)';
-                document.getElementById('fwPlayground').innerHTML = '';
-
-                const playground = document.getElementById('fwPlayground');
-
-                fwInterval = setInterval(() => {
-                    if (fwHealth <= 0) {
-                        clearInterval(fwInterval);
-                        fwActive = false;
-                        playground.innerHTML = '<div style="text-align:center; color:var(--danger); font-weight:bold; margin-top:20px;">СИСТЕМА ВЗЛОМАНА! Нажмите для рестарта.</div>';
-                        document.body.classList.add('breach-active');
-                        setTimeout(() => document.body.classList.remove('breach-active'), 2000);
-                        return;
-                    }
-
-                    const packet = document.createElement('div');
-                    packet.className = 'fw-packet';
-                    
-                    const isBad = Math.random() > 0.4;
-                    if (isBad) {
-                        packet.classList.add('bad');
-                        packet.innerHTML = `🚨 <span>Атака (Порт ${Math.floor(Math.random()*8000)+1000})</span>`;
-                    } else {
-                        packet.classList.add('good');
-                        packet.innerHTML = `✅ <span>HTTPS (Порт 443)</span>`;
-                    }
-
-                    const actions = document.createElement('div');
-                    actions.className = 'fw-actions';
-                    
-                    const btnAllow = document.createElement('button');
-                    btnAllow.className = 'fw-btn allow'; btnAllow.textContent = 'Allow';
-                    btnAllow.onclick = (e) => {
-                        e.stopPropagation();
-                        if (isBad) { takeDamage(20); packet.style.background = 'var(--danger)'; }
-                        else { fwScore += 10; }
-                        packet.remove();
-                    };
-
-                    const btnBlock = document.createElement('button');
-                    btnBlock.className = 'fw-btn block'; btnBlock.textContent = 'Block';
-                    btnBlock.onclick = (e) => {
-                        e.stopPropagation();
-                        if (!isBad) { takeDamage(10); } // Штраф
-                        else { fwScore += 10; }
-                        packet.remove();
-                    };
-
-                    actions.appendChild(btnAllow);
-                    actions.appendChild(btnBlock);
-                    packet.appendChild(actions);
-                    playground.appendChild(packet);
-
-                    setTimeout(() => {
-                        if (packet.parentNode) {
-                            if (isBad) takeDamage(15);
-                            packet.remove();
-                        }
-                    }, 4000);
-
-                }, 2000);
-            };
-
-            function takeDamage(amount) {
-                fwHealth -= amount;
-                if (fwHealth < 0) fwHealth = 0;
-                document.getElementById('fwHealth').textContent = fwHealth;
-                const bar = document.getElementById('fwHealthBar');
-                bar.style.width = fwHealth + '%';
-                if (fwHealth < 40) bar.style.background = 'var(--danger)';
-                else if (fwHealth < 70) bar.style.background = '#e67e22';
-            }
         });
 
         // ==========================================
@@ -1470,6 +1523,7 @@
                 document.body.classList.add('breach-active');
                 if (mascotContainer) mascotContainer.classList.add('compromised');
                 addTerminalLog("⚠️ ВНИМАНИЕ! Обнаружена подмена ссылки. Защита сработала.", "danger");
+                playSound('alarm'); // Сирена!
             }
 
             window.addTerminalLog = (text, type = '') => {
@@ -1532,6 +1586,7 @@
                         konamiIndex = 0;
                         document.body.classList.add('easter-egg');
                         addTerminalLog("🚀 СЕКРЕТНЫЙ РЕЖИМ АКТИВИРОВАН! Hacker Mode: ON", "danger");
+                        playSound('alarm');
                         setTimeout(() => { document.body.classList.remove('easter-egg'); addTerminalLog("Система возвращена в штатный режим.", ""); }, 5000);
                     }
                 } else { konamiIndex = 0; }
@@ -1557,7 +1612,7 @@
                             addTerminalLog("Доступные команды: help, scan, clear, version, whoami, hack", '');
                         } else if (cmd === 'scan') {
                             addTerminalLog("Запуск быстрого сканирования...", 'warn');
-                            setTimeout(() => addTerminalLog("Сканирование завершено. Угроз не обнаружено.", ''), 1500);
+                            setTimeout(() => { addTerminalLog("Сканирование завершено. Угроз не обнаружено.", ''); playSound('success'); }, 1500);
                         } else if (cmd === 'clear') {
                             document.getElementById('terminal-body').innerHTML = '';
                         } else if (cmd === 'version') {
@@ -1567,6 +1622,7 @@
                         } else if (cmd === 'hack') {
                             addTerminalLog("ДОСТУП ЗАПРЕЩЕН. Попытка зафиксирована в журнале безопасности.", 'danger');
                             document.body.classList.add('breach-active');
+                            playSound('alarm');
                             setTimeout(() => document.body.classList.remove('breach-active'), 2000);
                         } else if (cmd !== '') {
                             addTerminalLog(`Команда не найдена: ${cmd}`, 'warn');
@@ -1616,7 +1672,7 @@
 
             const scrollTopBtn = document.getElementById('scrollTopBtn');
             window.addEventListener('scroll', () => { scrollTopBtn.style.display = window.scrollY > 300 ? 'block' : 'none'; });
-            scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            scrollTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); playSound('click'); });
 
             document.querySelectorAll('.faq-question').forEach(button => {
                 button.addEventListener('click', () => {
@@ -1624,6 +1680,7 @@
                     const isActive = item.classList.contains('active');
                     document.querySelectorAll('.faq-item').forEach(i => { i.classList.remove('active'); i.querySelector('.faq-answer').style.maxHeight = null; });
                     if (!isActive) { item.classList.add('active'); answer.style.maxHeight = answer.scrollHeight + "px"; }
+                    playSound('click');
                 });
             });
 
@@ -1677,7 +1734,7 @@
             }
         });
 
-        function openModal(src) { document.getElementById("imageModal").style.display = "block"; document.getElementById("expandedImg").src = src; }
+        function openModal(src) { document.getElementById("imageModal").style.display = "block"; document.getElementById("expandedImg").src = src; playSound('click'); }
         function closeModal() { document.getElementById("imageModal").style.display = "none"; }
 
         const knowledgeBase = [
@@ -1700,8 +1757,10 @@
             const chatBox = document.getElementById("chatBox");
             const userMsg = document.createElement("div"); userMsg.className = "message msg-user"; userMsg.textContent = raw; chatBox.appendChild(userMsg);
             input.value = ""; chatBox.scrollTop = chatBox.scrollHeight;
+            playSound('click');
             setTimeout(() => {
                 const botMsg = document.createElement("div"); botMsg.className = "message msg-bot"; botMsg.textContent = getAIResponse(raw); chatBox.appendChild(botMsg); chatBox.scrollTop = chatBox.scrollHeight;
+                playSound('success');
             }, 600);
         }
         function quickAsk(text) { const input = document.getElementById("chatInput"); input.value = text; sendMessage(); }
