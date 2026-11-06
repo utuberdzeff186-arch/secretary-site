@@ -745,7 +745,7 @@
             <div style="display: inline-block; background: rgba(0,0,0,0.3); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); max-width: 600px;">
                 <div style="width: 80px; height: 80px; background: var(--accent); border-radius: 50%; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 40px;">👤</div>
                 <h4 style="color: #fff; font-size: 20px; margin-bottom: 10px;">Независимый разработчик</h4>
-                <p style="color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 15px;">Привет! Я создал «Секретаря», потому что устал от тяжелых, навязчивых и дорогих антивирусов. Моя цель — сделать легкую, умную и бесплатную защиту, которая уважает вашу приватность. Весь код открыт для проверки.</p>
+                <p style="color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 15px;">Привет! Я создал «Секретаря», потому что устал от тяжелых, навязчивых и дорогих антивирусов. Моя цель — сделать легкую, умную и бесплатную защиту, которая уважает вашу приватность. Исходный код доступен для аудита безопасности, но защищен авторским правом.</p>
                 <a href="https://github.com/utuberdzeff186-arch" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 10px 20px; background: #333; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600; transition: 0.3s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='#333'">Мой GitHub</a>
             </div>
         </div>
@@ -758,14 +758,14 @@
                 <div class="card" style="text-align: center; display: flex; flex-direction: column;">
                     <div style="font-size: 40px; margin-bottom: 15px;">🐞</div>
                     <h4 style="color: #fff; margin-bottom: 10px; font-size: 18px;">Нашли баг?</h4>
-                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px; flex-grow: 1;">Помогите сделать «Секретаря» лучше. Сообщите об ошибке или предложите новую идею на GitHub.</p>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px; flex-grow: 1;">Помогите сделать «Секретаря» лучше. Сообщите об ошибке на GitHub. Исходный код доступен только для ознакомления.</p>
                     <a href="https://github.com/utuberdzeff186-arch/secretary-site/issues" target="_blank" rel="noopener noreferrer" class="community-btn" style="background: #2ea44f;">Сообщить</a>
                 </div>
                 <div class="card" style="text-align: center; display: flex; flex-direction: column;">
-                    <div style="font-size: 40px; margin-bottom: 15px;">⭐</div>
-                    <h4 style="color: #fff; margin-bottom: 10px; font-size: 18px;">Open Source</h4>
-                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px; flex-grow: 1;">Весь код проекта открыт. Поставьте звезду репозиторию, чтобы поддержать разработку.</p>
-                    <a href="https://github.com/utuberdzeff186-arch/secretary-site" target="_blank" rel="noopener noreferrer" class="community-btn" style="background: #333; border: 1px solid rgba(255,255,255,0.2);">Поставить ⭐</a>
+                    <div style="font-size: 40px; margin-bottom: 15px;">📄</div>
+                    <h4 style="color: #fff; margin-bottom: 10px; font-size: 18px;">Лицензия</h4>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px; flex-grow: 1;">Код защищен авторским правом. Использование, копирование или модификация исходного кода строго запрещены.</p>
+                    <a href="https://github.com/utuberdzeff186-arch/secretary-site/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="community-btn" style="background: #333; border: 1px solid rgba(255,255,255,0.2);">Читать лицензию</a>
                 </div>
             </div>
         </div>
@@ -919,7 +919,7 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Абсолютно. Секретарь работает полностью локально. Он не отправляет ваши файлы или пароли на сервера. Код открыт для проверки.</p>
+                        <p>Абсолютно. Секретарь работает полностью локально. Он не отправляет ваши файлы или пароли на сервера. Исходный код доступен для аудита безопасности, но защищен авторским правом (запрещено копировать и изменять).</p>
                     </div>
                 </div>
                 <div class="faq-item">
@@ -980,8 +980,8 @@
 
     <footer>
         <div class="footer-text">
-            © 2026 Секретарь Defender Project. Все права защищены. <br>
-            <a href="privacy.html">Политика конфиденциальности</a> | <a href="#" onclick="alert('Мы не используем сторонние трекеры. Только технические cookie.'); return false;">Cookie</a>
+            © 2026 Секретарь Defender Project. Все права защищены (All Rights Reserved). <br>
+            <a href="privacy.html">Политика конфиденциальности</a> | <a href="LICENSE">Лицензия</a> | <a href="#" onclick="alert('Мы не используем сторонние трекеры. Только технические cookie.'); return false;">Cookie</a>
         </div>
     </footer>
 
@@ -1692,7 +1692,6 @@
             ];
             let termIndex = 0;
             
-            // ИСПРАВЛЕНИЕ: Теперь isBreached виден глобально
             setInterval(() => {
                 if (isBreached) return;
                 addTerminalLog(terminalLines[termIndex], terminalLines[termIndex].includes('[WARN]') ? 'warn' : (terminalLines[termIndex].includes('[BLOCK]') ? 'danger' : ''));
