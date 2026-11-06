@@ -461,7 +461,8 @@
         <p>Легкий, адаптивный и защищенный от взлома. Секретарь позаботится о твоем железе, пока ты играешь или работаешь.</p>
 
         <div class="hero-buttons">
-            <a href="#" id="download-btn" class="btn-download" onclick="handleDownloadClick(event)">⏳ Скоро релиз</a>
+            <!-- Кнопка скачивания (текст меняется в зависимости от ОС) -->
+            <a href="#" id="download-btn" class="btn-download">⏳ Скоро релиз</a>
             <a href="#sandbox" class="btn-secondary">🧪 Песочница</a>
         </div>
 
@@ -1118,8 +1119,10 @@
             const email = document.getElementById('subEmail').value;
             const consent = document.getElementById('subConsent');
             
-            if (!email || !email.includes('@')) {
-                alert('Пожалуйста, введите корректный Email.');
+            // ИСПРАВЛЕНИЕ: Более строгая проверка Email через регулярное выражение
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email || !emailRegex.test(email)) {
+                alert('Пожалуйста, введите корректный Email (например: name@domain.com).');
                 return;
             }
             if (!consent.checked) {
@@ -1210,7 +1213,10 @@
                     const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
                     setTimeout(() => {
                         fileHashDisplay.textContent = hashHex;
-                        let currentScans = parseInt(localStorage.getItem('secretary_user_scans') || 0) + 1;
+                        let currentScans = parseInt(localStorage.getItem('secretary_user_scans') || 0);
+                        // ИСПРАВЛЕНИЕ: Защита от NaN
+                        if (isNaN(currentScans)) currentScans = 0;
+                        currentScans++;
                         localStorage.setItem('secretary_user_scans', currentScans);
                         if(scansElement) { scansElement.innerText = currentScans; scansElement.style.color = '#2ecc71'; setTimeout(() => { scansElement.style.color = 'var(--accent)'; }, 1000); }
                         triggerHappyMascot();
@@ -1509,6 +1515,7 @@
             'use strict';
             const downloadBtn = document.getElementById('download-btn'), mascotContainer = document.getElementById('mascotContainer');
             let originalHref = downloadBtn ? downloadBtn.getAttribute('href') : null;
+            let originalOnclick = downloadBtn ? downloadBtn.onclick : null; // Запоминаем функцию клика
             let isBreached = false;
 
             if (window.top !== window.self) { document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:20vh;'>⚠️ Обнаружена попытка кликджекинга!</h1>"; return; }
@@ -1516,9 +1523,15 @@
             if (downloadBtn) {
                 const observer = new MutationObserver((mutations) => {
                     mutations.forEach((mutation) => {
-                        if (mutation.type === 'attributes' && mutation.attributeName === 'href') {
-                            const currentHref = downloadBtn.getAttribute('href');
-                            if (currentHref !== originalHref && currentHref !== null) triggerBreach();
+                        if (mutation.type === 'attributes') {
+                            if (mutation.attributeName === 'href') {
+                                const currentHref = downloadBtn.getAttribute('href');
+                                if (currentHref !== originalHref && currentHref !== null) triggerBreach();
+                            }
+                            // ИСПРАВЛЕНИЕ: Защита от подмены onclick
+                            if (mutation.attributeName === 'onclick') {
+                                if (downloadBtn.onclick !== originalOnclick) triggerBreach();
+                            }
                         }
                     });
                 });
@@ -1531,9 +1544,10 @@
                 console.warn("🚨 [SECURITY] Взлом предотвращен!");
                 downloadBtn.style.pointerEvents = 'none'; downloadBtn.style.opacity = '0.5'; downloadBtn.href = '#';
                 downloadBtn.innerText = '🚨 ВЗЛОМ ПРЕДОТВРАЩЕН'; downloadBtn.style.background = '#c0392b';
+                downloadBtn.onclick = null; // Убираем клик
                 document.body.classList.add('breach-active');
                 if (mascotContainer) mascotContainer.classList.add('compromised');
-                addTerminalLog("⚠️ ВНИМАНИЕ! Обнаружена подмена ссылки. Защита сработала.", "danger");
+                addTerminalLog("⚠️ ВНИМАНИЕ! Обнаружена подмена ссылки или кода кнопки. Защита сработала.", "danger");
                 playSound('alarm'); // Сирена!
             }
 
@@ -1706,8 +1720,11 @@
                     if (starsElement && data.stargazers_count !== undefined) starsElement.innerText = data.stargazers_count;
                 }).catch(() => {});
 
+            let scansCount = parseInt(localStorage.getItem('secretary_user_scans') || 0);
+            // ИСПРАВЛЕНИЕ: Защита от NaN
+            if (isNaN(scansCount)) scansCount = 0;
             const scansElement = document.getElementById('stat-scans');
-            if (scansElement) scansElement.innerText = localStorage.getItem('secretary_user_scans') || 0;
+            if (scansElement) scansElement.innerText = scansCount;
         });
 
         // 3D Tilt и слежение за мышью
